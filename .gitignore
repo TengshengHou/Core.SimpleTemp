@@ -1,2 +1,4 @@
 .vs/
 Core.SimpleTemp.Mvc/obj/
+Core.SimpleTemp.Repository/obj/
+Core.SimpleTemp.Repository/bin/
