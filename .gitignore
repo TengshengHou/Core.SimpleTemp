@@ -2,3 +2,9 @@
 Core.SimpleTemp.Mvc/obj/
 Core.SimpleTemp.Repository/obj/
 Core.SimpleTemp.Repository/bin/
+/Core.SimpleTemp.Entity/bin/Debug/netcoreapp2.1
+Core.SimpleTemp.Entity/obj/
+Core.SimpleTemp.Mvc/wwwroot/lib/
+Core.SimpleTemp.Mvc/bin/
+Core.SimpleTemp.Service/obj/
+Core.SimpleTemp.Service/bin/

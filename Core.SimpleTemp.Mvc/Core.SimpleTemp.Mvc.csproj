@@ -2,10 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TypeScriptToolsVersion>3.0</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core.SimpleTemp.Entity\Core.SimpleTemp.Domain.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Repository\Core.SimpleTemp.Repository.csproj" />
+    <ProjectReference Include="..\Core.SimpleTemp.Service\Core.SimpleTemp.Service.csproj" />
   </ItemGroup>
 
 </Project>

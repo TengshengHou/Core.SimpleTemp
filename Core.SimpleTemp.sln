@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Mvc", "Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Repository", "Core.SimpleTemp.Repository\Core.SimpleTemp.Repository.csproj", "{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Domain", "Core.SimpleTemp.Entity\Core.SimpleTemp.Domain.csproj", "{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Service", "Core.SimpleTemp.Service\Core.SimpleTemp.Service.csproj", "{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
