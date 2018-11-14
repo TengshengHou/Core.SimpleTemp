@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css">
-  
+
     <!-- Theme style -->
     <link rel="stylesheet" href="~/css/AdminLTE.css">
     <!-- iCheck -->
@@ -39,14 +39,18 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
-
-            <form asp-controller="Account" asp-action="LoginAsync" method="post">
+            @Html.ValidationMessage("LoginErr")
+            <form asp-controller="Account"  asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
                 <div class="form-group has-feedback">
                     <input asp-for="LoginName" class="form-control" placeholder="账号">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <span asp-validation-for="LoginName" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
                     <input type="password" asp-for="Password" class="form-control" placeholder="密码">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
@@ -90,6 +94,12 @@
     <script src="~/lib//bootstrap/dist/js/bootstrap.js"></script>
     <!-- iCheck -->
     <script src="~/lib//iCheck/icheck.js"></script>
+
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>*@
+
+
+
     <script>
         $(function () {
             $('input').iCheck({

@@ -10,12 +10,11 @@ namespace Core.SimpleTemp.Domain.Entities
 
         public string Name { get; set; }
 
-        public Guid CreateUserId { get; set; }
+        public int CreateUserId { get; set; }
 
         public DateTime? CreateTime { get; set; }
 
         public string Remarks { get; set; }
 
-        public virtual ICollection<SysMenu> RoleMenus { get; set; }
     }
 }

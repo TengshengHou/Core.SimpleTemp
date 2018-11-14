@@ -1,4 +1,8 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Domain.IRepositories;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository
@@ -16,12 +20,16 @@ namespace Core.SimpleTemp.Repository
         /// <param name="Pwd"></param>
         /// <returns></returns>
 
-        public Task<SysUser> FindUserForLoginAsync(string userName, string Pwd)
+        public async Task<SysUser> FindUserForLoginAsync(string userName, string Pwd)
         {
-            return FirstOrDefaultAsync(u => userName.Equals(userName) && u.Password.Equals(Pwd));
+            var user = await FirstOrDefaultAsync(u => userName.Equals(userName) && u.Password.Equals(Pwd));
 
+            return user;
         }
-
+        public Task<List<int>> FindUserRole(int userId)
+        {
+            return _dbContext.SysUserRole.Where(ur => ur.SysUserId == userId).AsNoTracking().Select(ur => ur.SysRoleId).ToListAsync();
+        }
 
     }
 }

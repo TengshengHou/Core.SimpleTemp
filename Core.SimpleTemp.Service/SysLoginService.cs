@@ -1,4 +1,5 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Domain.IRepositories;
 using Core.SimpleTemp.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +37,11 @@ namespace Core.SimpleTemp.Service
             var claimIdentity = new ClaimsIdentity("Cookie");
             claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.LoginName));
+            var roleIds = await _sysUserRepository.FindUserRole(user.Id);
+            foreach (var roleId in roleIds)
+            {
+                claimIdentity.AddClaim(new Claim(ClaimTypes.Role, roleId.ToString()));
+            }
             var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
             await context.SignInAsync(claimsPrincipal, new AuthenticationProperties()
             {

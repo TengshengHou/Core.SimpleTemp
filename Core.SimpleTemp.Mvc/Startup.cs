@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Mvc.Common;
+﻿using Core.SimpleTemp.Domain.IRepositories;
+using Core.SimpleTemp.Mvc.Common;
 using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore.Authentication.Cookies;

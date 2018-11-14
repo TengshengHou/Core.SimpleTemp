@@ -97,7 +97,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
     }
 
     /// <summary>
-    /// 默认Guid主键类型仓储
+    /// int
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TEntity> : IRepository<TEntity, int> where TEntity : Entity

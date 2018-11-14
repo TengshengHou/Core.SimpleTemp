@@ -8,16 +8,31 @@ namespace Core.SimpleTemp.Repository
     /// </summary>
     public class CoreDBContext : DbContext
     {
+        //static CoreDBContext()
+        //{
+        //    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<PortalContext>());
+        //}
         public CoreDBContext(DbContextOptions<CoreDBContext> options) : base(options)
         {
 
         }
-
+        public DbSet<SysDepartment> SysDepartment { get; set; }
+        public DbSet<SysMenu> SysMenu { get; set; }
+        public DbSet<SysRole> SysRole { get; set; }
+        public DbSet<SysRoleMenu> SysRoleMenu { get; set; }
         public DbSet<SysUser> SysUser { get; set; }
+        public DbSet<SysUserRole> SysUserRole { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //UserRole组合主键
+            modelBuilder.Entity<SysUserRole>()
+              .HasKey(ur => new { ur.SysUserId, ur.SysRoleId });
 
+            //RoleMenu组合主键
+            modelBuilder.Entity<SysRoleMenu>()
+              .HasKey(rm => new { rm.SysRoleId, rm.SysMenuId });
         }
     }
 

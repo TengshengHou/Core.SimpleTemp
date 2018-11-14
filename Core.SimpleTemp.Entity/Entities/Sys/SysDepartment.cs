@@ -37,7 +37,7 @@ namespace Core.SimpleTemp.Domain.Entities
         /// <summary>
         /// 父级部门ID
         /// </summary>
-        public Guid ParentId { get; set; }
+        public int ParentId { get; set; }
 
         /// <summary>
         /// 创建人

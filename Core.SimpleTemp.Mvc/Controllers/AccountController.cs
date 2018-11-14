@@ -1,6 +1,7 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
@@ -28,6 +29,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 bool ret = await _sysLoginService.LoginAsync(HttpContext, sysUser);
                 if (ret)
                 {
+                    //登录成功
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -35,7 +37,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
                     return RedirectToAction("index", "Home");
                 }
             }
-            return RedirectToAction("Login");
+            //登录失败
+            ModelState.AddModelError("LoginErr", "用户名或密码错误");
+
+            //return RedirectToAction("Login"); //Redirect 302 无法返回服务端验证信息。在无客户的认证情况下很不友好
+            return View("Login");
         }
 
         [HttpGet("SignOut")]
