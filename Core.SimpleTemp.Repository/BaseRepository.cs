@@ -1,5 +1,7 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
+using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
+using Core.SimpleTemp.Repository.Internal.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace Core.SimpleTemp.Repository
     public abstract class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         //定义数据访问上下文对象
-        protected readonly CoreDBContext _dbContext;
+        public readonly CoreDBContext _dbContext;
 
         /// <summary>
         /// 通过构造函数注入得到数据上下文对象实例
@@ -33,9 +35,9 @@ namespace Core.SimpleTemp.Repository
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        public List<TEntity> GetAllList()
+        public Task<List<TEntity>> GetAllListAsync()
         {
-            return _dbContext.Set<TEntity>().ToList();
+            return _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -43,9 +45,9 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate)
+        public Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbContext.Set<TEntity>().Where(predicate).AsNoTracking().ToList();
+            return _dbContext.Set<TEntity>().Where(predicate).AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -74,16 +76,16 @@ namespace Core.SimpleTemp.Repository
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
         /// <returns></returns>
-        public TEntity Insert(TEntity entity, bool autoSave = true)
+        public async Task<TEntity> InsertAsync(TEntity entity, bool autoSave = true)
         {
-            _dbContext.Set<TEntity>().Add(entity);
+            await _dbContext.Set<TEntity>().AddAsync(entity);
             if (autoSave)
-                Save();
+                await SaveAsync();
             return entity;
         }
 
         /// <summary>
-        /// 更新实体
+        /// 更新实体(待优化)
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
@@ -92,9 +94,10 @@ namespace Core.SimpleTemp.Repository
             var obj = await GetAsync(entity.Id);
             EntityToEntity(entity, obj);
             if (autoSave)
-                Save();
+                await SaveAsync();
             return entity;
         }
+
         private void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)
         {
             foreach (var mItem in typeof(T).GetProperties())
@@ -108,11 +111,11 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="entity">要删除的实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        public void Delete(TEntity entity, bool autoSave = true)
+        public async Task DeleteAsync(TEntity entity, bool autoSave = true)
         {
             _dbContext.Set<TEntity>().Remove(entity);
             if (autoSave)
-                Save();
+                await SaveAsync();
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace Core.SimpleTemp.Repository
         {
             _dbContext.Set<TEntity>().Remove(await GetAsync(id));
             if (autoSave)
-                Save();
+                await SaveAsync();
         }
 
         /// <summary>
@@ -132,41 +135,19 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="where">lambda表达式</param>
         /// <param name="autoSave">是否自动保存</param>
-        public void Delete(Expression<Func<TEntity, bool>> where, bool autoSave = true)
+        public async Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true)
         {
             _dbContext.Set<TEntity>().Where(where).ToList().ForEach(it => _dbContext.Set<TEntity>().Remove(it));
             if (autoSave)
-                Save();
-        }
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <param name="startPage">页码</param>
-        /// <param name="pageSize">单页数据数</param>
-        /// <param name="rowCount">行数</param>
-        /// <param name="where">条件</param>
-        /// <param name="order">排序</param>
-        /// <returns></returns>
-        public IQueryable<TEntity> LoadPageList(int startPage, int pageSize, out int rowCount, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
-        {
-            var result = from p in _dbContext.Set<TEntity>()
-                         select p;
-            if (where != null)
-                result = result.Where(where);
-            if (order != null)
-                result = result.OrderBy(order);
-            else
-                result = result.OrderBy(m => m.Id);
-            rowCount = result.Count();
-            return result.Skip((startPage - 1) * pageSize).Take(pageSize);
+                await SaveAsync();
         }
 
         /// <summary>
         /// 事务性保存
         /// </summary>
-        public void Save()
+        public Task<int> SaveAsync()
         {
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -185,8 +166,6 @@ namespace Core.SimpleTemp.Repository
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
     }
-
-
 
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,14 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        List<TEntity> GetAllList();
+        Task<List<TEntity>> GetAllListAsync();
 
         /// <summary>
         /// 根据lambda表达式条件获取实体集合
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        List<TEntity> GetAllList(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 根据主键获取实体
@@ -52,10 +53,10 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
         /// <returns></returns>
-        TEntity Insert(TEntity entity, bool autoSave = true);
+        Task<TEntity> InsertAsync(TEntity entity, bool autoSave = true);
 
         /// <summary>
-        /// 更新实体
+        /// 更新实体（待优化）
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
@@ -66,7 +67,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="entity">要删除的实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        void Delete(TEntity entity, bool autoSave = true);
+        Task DeleteAsync(TEntity entity, bool autoSave = true);
 
         /// <summary>
         /// 删除实体
@@ -80,20 +81,9 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="where">lambda表达式</param>
         /// <param name="autoSave">是否自动保存</param>
-        void Delete(Expression<Func<TEntity, bool>> where, bool autoSave = true);
+         Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true);
 
-        /// <summary>
-        /// 分页获取数据
-        /// </summary>
-        /// <param name="startPage">起始页</param>
-        /// <param name="pageSize">页面条目</param>
-        /// <param name="rowCount">数据总数</param>
-        /// <param name="where">查询条件</param>
-        /// <param name="order">排序</param>
-        /// <returns></returns>
-        IQueryable<TEntity> LoadPageList(int startPage, int pageSize, out int rowCount, Expression<Func<TEntity, bool>> where, Expression<Func<TEntity, object>> order);
-
-        void Save();
+        Task<int> SaveAsync();
     }
 
     /// <summary>
