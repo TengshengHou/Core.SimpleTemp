@@ -3,7 +3,7 @@
     ViewData["Title"] = "登录";
     Layout = null;
 }
-@model Core.SimpleTemp.Domain.Entities.SysUser
+@model Core.SimpleTemp.Mvc.Models.LoginViewModel
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +40,7 @@
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
             @Html.ValidationMessage("LoginErr")
-            <form asp-controller="Account"  asp-action="LoginAsync" method="post">
+            <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
                 <div class="form-group has-feedback">
                     <input asp-for="LoginName" class="form-control" placeholder="账号">
@@ -80,13 +80,13 @@
                 </a>
             </div>
             <!-- /.social-auth-links -->
-
-            <a href="#">I forgot my password</a><br>
-            <a href="#" class="text-center">Register a new membership</a>
+            <a href="https://github.com/TengshengHou/Core.SimpleTemp.git">项目GitHub地址</a><br>
 
         </div>
         <!-- /.login-box-body -->
     </div>
+
+
     <!-- /.login-box -->
     <!-- jQuery 3 -->
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -94,11 +94,9 @@
     <script src="~/lib//bootstrap/dist/js/bootstrap.js"></script>
     <!-- iCheck -->
     <script src="~/lib//iCheck/icheck.js"></script>
-
-    @*<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>*@
-
-
+    <!-- 客户验证 -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
         $(function () {

@@ -33,6 +33,9 @@ namespace Core.SimpleTemp.Repository
             //RoleMenu组合主键
             modelBuilder.Entity<SysRoleMenu>()
               .HasKey(rm => new { rm.SysRoleId, rm.SysMenuId });
+
+            //启用Guid主键类型扩展
+            //modelBuilder.HasPostgresExtension("uuid-ossp");
         }
     }
 

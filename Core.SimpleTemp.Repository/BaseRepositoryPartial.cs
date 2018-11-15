@@ -6,10 +6,11 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Repository.Internal.Data;
 using System.Linq;
+using Core.SimpleTemp.Domain.IRepositories;
 
 namespace Core.SimpleTemp.Repository
 {
-    public static class BaseRepositoryExtensions
+    public abstract partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
 
         /// <summary>
@@ -20,10 +21,10 @@ namespace Core.SimpleTemp.Repository
         /// <param name="where">条件</param>
         /// <param name="order">排序</param>
         /// <returns></returns>
-        public static async Task<IPageModel<TEntity>> LoadPageListAsync<TEntity>(this BaseRepository<TEntity> baseRepository, int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null) where TEntity : Entity
+        public async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null) 
         {
-            var result = from p in baseRepository._dbContext.Set<TEntity>()
-            select p;
+            var result = from p in _dbContext.Set<TEntity>()
+                         select p;
             if (where != null)
                 result = result.Where(where);
             if (order != null)

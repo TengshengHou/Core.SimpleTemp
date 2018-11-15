@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.SimpleTemp.Domain.IRepositories.Internal.Data
 {
-    public interface IPageModel<TEntity> where TEntity : Entity
+    public interface IPageModel<TEntity>
     {
         List<TEntity> PageData { get; set; }
         int RowCount { get; set; }

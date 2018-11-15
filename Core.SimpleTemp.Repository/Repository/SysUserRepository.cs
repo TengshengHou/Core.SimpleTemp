@@ -1,6 +1,7 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Core.SimpleTemp.Repository
 
             return user;
         }
-        public Task<List<int>> FindUserRole(int userId)
+        public Task<List<Guid>> FindUserRoleAsync(Guid userId)
         {
             return _dbContext.SysUserRole.Where(ur => ur.SysUserId == userId).AsNoTracking().Select(ur => ur.SysRoleId).ToListAsync();
         }

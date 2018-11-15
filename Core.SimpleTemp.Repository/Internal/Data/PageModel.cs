@@ -10,7 +10,7 @@ namespace Core.SimpleTemp.Repository.Internal.Data
     /// 分页Model
     /// </summary>
     /// <typeparam name="TPageData"></typeparam>
-    public class PageModel<TEntity> : IPageModel<TEntity> where TEntity : Entity
+    public class PageModel<TEntity> : IPageModel<TEntity> 
     {
         public List<TEntity> PageData { get; set; }
         public int RowCount { get; set; }

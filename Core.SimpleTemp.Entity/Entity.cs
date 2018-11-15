@@ -18,7 +18,7 @@ namespace Core.SimpleTemp.Domain.Entities
     /// <summary>
     /// 定义默认主键类型为Int的实体基类
     /// </summary>
-    public abstract class Entity : Entity<int>
+    public abstract class Entity : Entity<Guid>
     {
 
     }

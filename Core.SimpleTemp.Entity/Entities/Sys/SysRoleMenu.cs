@@ -7,10 +7,10 @@ namespace Core.SimpleTemp.Domain.Entities
     public class SysRoleMenu
     {
 
-        public int SysRoleId { get; set; }
+        public Guid SysRoleId { get; set; }
         public SysRole SysRole { get; set; }
 
-        public int SysMenuId { get; set; }
+        public Guid SysMenuId { get; set; }
         public SysMenu SysMenu { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : Entity<TPrimaryKey>
+    public partial interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : Entity<TPrimaryKey>
     {
         /// <summary>
         /// 获取实体集合
@@ -31,7 +31,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 根据主键获取实体
@@ -81,7 +81,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="where">lambda表达式</param>
         /// <param name="autoSave">是否自动保存</param>
-         Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true);
+        Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true);
 
         Task<int> SaveAsync();
     }
@@ -90,7 +90,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
     /// int
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IRepository<TEntity> : IRepository<TEntity, int> where TEntity : Entity
+    public interface IRepository<TEntity> : IRepository<TEntity, Guid> where TEntity : Entity
     {
 
     }

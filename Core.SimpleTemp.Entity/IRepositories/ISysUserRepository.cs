@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,6 @@ namespace Core.SimpleTemp.Domain.IRepositories
     {
         Task<SysUser> FindUserForLoginAsync(string userName, string Pwd);
 
-        Task<List<int>> FindUserRole(int userId);
+        Task<List<Guid>> FindUserRoleAsync(Guid userId);
     }
 }

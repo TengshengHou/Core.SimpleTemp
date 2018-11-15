@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.SimpleTemp.Domain.Entities
+namespace Core.SimpleTemp.Service.MenuApp
 {
-    /// <summary>
-    /// 功能菜单实体
-    /// </summary>
-    public class SysMenu : Entity
+    public class SysMenuDto
     {
+        public Guid Id { get; set; }
+
         /// <summary>
         /// 父级ID
         /// </summary>
@@ -22,6 +22,7 @@ namespace Core.SimpleTemp.Domain.Entities
         /// <summary>
         /// 菜单名称
         /// </summary>
+        [Required(ErrorMessage = "功能名称不能为空。")]
         public string Name { get; set; }
 
         /// <summary>

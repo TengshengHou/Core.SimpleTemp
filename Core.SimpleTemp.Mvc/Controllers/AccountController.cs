@@ -1,4 +1,5 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Mvc.Models;
 using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -22,11 +23,16 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> LoginAsync(SysUser sysUser, string returnUrl)
+        public async Task<IActionResult> LoginAsync(LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                bool ret = await _sysLoginService.LoginAsync(HttpContext, sysUser);
+
+                bool ret = await _sysLoginService.LoginAsync(HttpContext, new SysUser()
+                {
+                    LoginName = model.LoginName,
+                    Password = model.Password
+                });
                 if (ret)
                 {
                     //登录成功

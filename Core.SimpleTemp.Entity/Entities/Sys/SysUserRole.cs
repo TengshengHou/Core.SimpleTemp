@@ -6,10 +6,10 @@ namespace Core.SimpleTemp.Domain.Entities
 {
     public class SysUserRole
     {
-        public int SysUserId { get; set; }
+        public Guid SysUserId { get; set; }
         public SysUser SysUser { get; set; }
 
-        public int SysRoleId { get; set; }
+        public Guid SysRoleId { get; set; }
         public SysRole SysRole { get; set; }
     }
 }

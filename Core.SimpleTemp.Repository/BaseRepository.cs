@@ -17,7 +17,7 @@ namespace Core.SimpleTemp.Repository
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public abstract class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public abstract partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         //定义数据访问上下文对象
         public readonly CoreDBContext _dbContext;
@@ -45,7 +45,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>> predicate)
+        public Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate).AsNoTracking().ToListAsync();
         }
@@ -172,7 +172,7 @@ namespace Core.SimpleTemp.Repository
     /// 主键为int类型的仓储基类
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, int> where TEntity : Entity
+    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid> where TEntity : Entity
     {
         public BaseRepository(CoreDBContext dbContext) : base(dbContext)
         {

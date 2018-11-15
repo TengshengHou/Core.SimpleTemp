@@ -1,14 +1,18 @@
 ﻿using Core.SimpleTemp.Domain.IRepositories;
 using Core.SimpleTemp.Mvc.Common;
 using Core.SimpleTemp.Repository;
+using Core.SimpleTemp.Repository.Repository;
 using Core.SimpleTemp.Service;
+using Core.SimpleTemp.Service.MenuApp;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using System;
+using System.IO;
 
 namespace Core.SimpleTemp.Mvc
 {
@@ -60,9 +64,11 @@ namespace Core.SimpleTemp.Mvc
 
             //仓储DI
             services.AddTransient(typeof(ISysUserRepository), typeof(SysUserRepository));
-
+            services.AddTransient(typeof(ISysMenuRepository), typeof(SysMenuRepository));
+            services.AddTransient(typeof(ISysRoleRepository), typeof(SysRoleRepository));
             //Service DI
             services.AddTransient(typeof(ISysLoginService), typeof(SysLoginService));
+            services.AddTransient(typeof(ISysMenuAppService), typeof(SysMenuAppService));
             services.AddAuthorization();
             services.AddMvc();
         }
@@ -81,6 +87,10 @@ namespace Core.SimpleTemp.Mvc
 
             //使用静态文件
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory())
+            });
 
             app.UseAuthentication();
 

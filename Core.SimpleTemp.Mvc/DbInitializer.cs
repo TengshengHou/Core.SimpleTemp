@@ -28,37 +28,55 @@ namespace Core.SimpleTemp.Repository
           );
             //添加系统默认管理员
             context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now });
+            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now });
             //增加四个基本功能菜单
             context.SysMenu.AddRange(
-             new SysMenu
-             {
-                 Name = "组织机构管理",
-                 Code = "Department",
-                 SerialNumber = 0,
-                 Icon = "fa fa-link"
-             },
+                  new SysMenu
+                  {
+
+                      ParentId = Guid.Empty,
+                      Name = "顶级菜单",
+                      Code = "Department",
+                      SerialNumber = 0,
+                      Icon = "fa fa-link"
+                  }
+
+            );
+
+            context.SaveChanges();
+            var topMenu = context.SysMenu.SingleOrDefault(m => m.ParentId == Guid.Empty);
+            context.SysMenu.AddRange(new SysMenu
+            {
+                Name = "组织机构管理",
+                Code = "Department",
+                SerialNumber = 0,
+                Icon = "fa fa-link",
+                ParentId = topMenu.Id
+            },
              new SysMenu
              {
                  Name = "角色管理",
                  Code = "Role",
                  SerialNumber = 1,
-                 Icon = "fa fa-link"
+                 Icon = "fa fa-link",
+                 ParentId = topMenu.Id
              },
              new SysMenu
              {
                  Name = "用户管理",
                  Code = "User",
                  SerialNumber = 2,
-                 Icon = "fa fa-link"
+                 Icon = "fa fa-link",
+                 ParentId = topMenu.Id
              },
              new SysMenu
              {
                  Name = "功能管理",
                  Code = "Department",
                  SerialNumber = 3,
-                 Icon = "fa fa-link"
-             }
-          );
+                 Icon = "fa fa-link",
+                 ParentId = topMenu.Id
+             });
 
             context.SysRole.Add(new SysRole()
             {

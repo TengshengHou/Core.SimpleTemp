@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Repository;
+using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,8 @@ namespace Core.SimpleTemp.Mvc
             var webHost = CreateWebHostBuilder(args).Build();
             //初始化DB
             DBInitializer.Initialize(webHost);
+            //初始化AutoMapper
+            CoreMapper.Initialize();
             webHost.Run();
         }
 

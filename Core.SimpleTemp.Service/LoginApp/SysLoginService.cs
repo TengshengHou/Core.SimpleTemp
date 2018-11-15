@@ -37,7 +37,7 @@ namespace Core.SimpleTemp.Service
             var claimIdentity = new ClaimsIdentity("Cookie");
             claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.LoginName));
-            var roleIds = await _sysUserRepository.FindUserRole(user.Id);
+            var roleIds = await _sysUserRepository.FindUserRoleAsync(user.Id);
             foreach (var roleId in roleIds)
             {
                 claimIdentity.AddClaim(new Claim(ClaimTypes.Role, roleId.ToString()));
