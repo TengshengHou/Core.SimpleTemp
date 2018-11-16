@@ -33,7 +33,7 @@ namespace Core.SimpleTemp.Repository.Repository
         /// <returns></returns>
         public async Task<bool> UpdateRoleMenuAsync(Guid sysRoleId, List<SysRoleMenu> sysRoleMenus)
         {
-            var oldDatas = await _dbContext.Set<SysRoleMenu>().Where(it => it.SysRoleId == sysRoleId).AsNoTracking().ToListAsync();
+            var oldDatas = await _dbContext.Set<SysRoleMenu>().Where(it => it.SysRoleId == sysRoleId).ToListAsync();
             oldDatas.ForEach(it => _dbContext.Set<SysRoleMenu>().Remove(it));
             await _dbContext.SaveChangesAsync();
             _dbContext.Set<SysRoleMenu>().AddRange(sysRoleMenus);

@@ -30,6 +30,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
+        [HttpPost("Edit")]
         public async Task<IActionResult> EditAsync(SysRoleDto dto)
         {
             if (!ModelState.IsValid)
@@ -52,7 +53,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 return Json(new { Result = "Success" });
             }
         }
-
+        [HttpGet("GetAllPageList")]
         public async Task<IActionResult> GetAllPageListAsync(int startPage, int pageSize)
         {
             int rowCount = 0;
@@ -65,6 +66,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 rows = result.PageData,
             });
         }
+        [HttpPost("DeleteMuti")]
         public async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             try
@@ -90,6 +92,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
+
+        [HttpPost("Delete")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
@@ -109,6 +113,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
+
+
+        [HttpGet("Get")]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var dto = await _service.GetAsync(id);
@@ -119,12 +126,14 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// 根据角色获取权限
         /// </summary>
         /// <returns></returns>
+        [HttpGet("GetMenusByRole")]
         public async Task<IActionResult> GetMenusByRoleAsync(Guid roleId)
         {
             var dtos = await _service.GetMenuListByRoleAsync(roleId);
             return Json(dtos);
         }
 
+        [HttpPost("SavePermission")]
         public async Task<IActionResult> SavePermissionAsync(Guid roleId, List<SysRoleMenuDto> roleMenus)
         {
             if (await _service.UpdateRoleMenuAsync(roleId, roleMenus))

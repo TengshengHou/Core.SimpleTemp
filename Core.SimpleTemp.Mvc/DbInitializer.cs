@@ -26,9 +26,12 @@ namespace Core.SimpleTemp.Repository
                  Name = "总部",
              }
           );
+            context.SaveChanges();
+            var dep = context.SysDepartment.FirstOrDefault();
+           
             //添加系统默认管理员
-            context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now });
-            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now });
+            context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
+            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
             //增加四个基本功能菜单
             context.SysMenu.AddRange(
                   new SysMenu

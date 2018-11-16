@@ -24,6 +24,10 @@ namespace Core.SimpleTemp.Service
 
         public Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true) => _repository.DeleteAsync(where, autoSave);
 
+        public Task DeleteBatchAsync(List<Guid> ids)
+        {
+            return this.DeleteAsync(it => ids.Contains(it.Id));
+        }
 
         public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) => Mapper.Map<TDto>(await _repository.FirstOrDefaultAsync(predicate));
 

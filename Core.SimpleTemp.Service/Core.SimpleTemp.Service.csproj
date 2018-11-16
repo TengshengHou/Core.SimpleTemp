@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UserApp\" />
+    <Folder Include="LoginApp\Dtos\" />
   </ItemGroup>
 
 </Project>

@@ -9,28 +9,20 @@ using System.Threading.Tasks;
 using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.Internal.Data;
-using Core.SimpleTemp.Service.LoginApp;
+using Core.SimpleTemp.Service.UserApp.Dto;
 
 namespace Core.SimpleTemp.Service.MenuApp
 {
-    public class SysMenuAppService : ISysMenuAppService
+    public class SysMenuAppService : BaseAppService<SysMenuDto, SysMenu, ISysMenuRepository>, ISysMenuAppService
     {
         private readonly ISysMenuRepository _sysMenuRepository;
         private readonly ISysUserRepository _sysUserRepository;
         private readonly ISysRoleRepository _sysRoleRepository;
-        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository)
+        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository) : base(sysMenuRepository)
         {
             _sysMenuRepository = sysMenuRepository;
             _sysUserRepository = sysUserRepository;
             _sysRoleRepository = sysRoleRepository;
-        }
-
-        public async Task<List<SysMenuDto>> GetAllListAsync()
-        {
-            var menus = await _sysMenuRepository.GetAllListAsync();
-            menus = menus.OrderBy(it => it.SerialNumber).ToList();
-            //使用AutoMapper进行实体转换
-            return Mapper.Map<List<SysMenuDto>>(menus);
         }
 
 
@@ -43,27 +35,6 @@ namespace Core.SimpleTemp.Service.MenuApp
                 RowCount = pageMenu.RowCount
             };
             return pageModel;
-        }
-
-        public async Task<bool> InsertAsync(SysMenuDto dto)
-        {
-            var Menu = await _sysMenuRepository.InsertAsync(Mapper.Map<SysMenuDto, SysMenu>(dto));
-            return Menu != null;
-        }
-
-        public async Task DeleteBatchAsync(List<Guid> ids)
-        {
-            await _sysMenuRepository.DeleteAsync(it => ids.Contains(it.Id));
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            await _sysMenuRepository.DeleteAsync(id);
-        }
-
-        public async Task<SysMenuDto> GetAsync(Guid id)
-        {
-            return Mapper.Map<SysMenuDto>(await _sysMenuRepository.GetAsync(id));
         }
 
         /// <summary>
@@ -94,14 +65,6 @@ namespace Core.SimpleTemp.Service.MenuApp
             }
             allMenus = allMenus.Where(it => menuIds.Contains(it.Id)).OrderBy(it => it.SerialNumber).ToList();
             return Mapper.Map<List<SysMenuDto>>(allMenus);
-        }
-
-        public async Task<SysMenuDto> UpdateAsync(SysMenuDto sysMenuDto)
-        {
-            var entity = await _sysMenuRepository.UpdateAsync(Mapper.Map<SysMenu>(sysMenuDto));
-            var retDto = Mapper.Map<SysMenuDto>(entity);
-            return retDto;
-
         }
     }
 }

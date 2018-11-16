@@ -1,59 +1,66 @@
-﻿var selectedRole = 0;
-var ajaxCount = 0;
+﻿var selectedId = "00000000-0000-0000-0000-000000000000";
 $(function () {
-
-    $(document).ajaxStart(function () {
-        if (ajaxCount != 0)
-            layer.load(1);
-        ajaxCount++;
-    }).ajaxStop(function () {
-        layer.closeAll('loading');
-    })
     $("#btnAdd").click(function () { add(); });
-    $("#btnDelete").click(function () { deleteMulti(); });
     $("#btnSave").click(function () { save(); });
-    $("#btnSavePermission").click(function () { savePermission(); });
+    $("#btnDelete").click(function () { deleteMulti(); });
     $("#checkAll").click(function () { checkAll(this) });
     initTree();
-    loadTables(1, 10);
 });
-//加载树
+//全选
+function checkAll(obj) {
+    $(".checkboxs").each(function () {
+        if (obj.checked == true) {
+            $(this).prop("checked", true)
+
+        }
+        if (obj.checked == false) {
+            $(this).prop("checked", false)
+        }
+    });
+};
+//加载组织机构树
 function initTree() {
     $.jstree.destroy();
     $.ajax({
         type: "Get",
-        url: "/Menu/GetMenuTreeData?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
+        url: "/Department/GetTreeData?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
         success: function (data) {
             $('#treeDiv').jstree({       //创建JsTtree
                 'core': {
                     'data': data,        //绑定JsTree数据
-                    "multiple": true    //是否多选
+                    "multiple": false    //是否多选
                 },
-                "plugins": ["state", "types", "wholerow", "checkbox", ],  //配置信息
-                "checkbox": {
-                    "keep_selected_style": false
-                }
+                "plugins": ["state", "types", "wholerow"]  //配置信息
             })
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
+            });
+            $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
+                var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
+                if (node) {
+                    selectedId = node.id;
+                    loadTables(1, 10);
+                };
             });
         }
     });
 
 }
-//加载列表数据
+//加载用户列表数据
 function loadTables(startPage, pageSize) {
     $("#tableBody").html("");
     $("#checkAll").prop("checked", false);
     $.ajax({
         type: "GET",
-        url: "/Role/GetAllPageList?startPage=" + startPage + "&pageSize=" + pageSize + "&_t=" + new Date().getTime(),
+        url: "/User/GetUserByDepartment?startPage=" + startPage + "&pageSize=" + pageSize + "&departmentId=" + selectedId + "&_t=" + new Date().getTime(),
         success: function (data) {
             $.each(data.rows, function (i, item) {
                 var tr = "<tr>";
                 tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
-                tr += "<td>" + (item.code == null ? "" : item.code) + "</td>";
-                tr += "<td>" + item.name + "</td>";
+                tr += "<td>" + item.userName + "</td>";
+                tr += "<td>" + (item.name == null ? "" : item.LoginName) + "</td>";
+                tr += "<td>" + (item.email == null ? "" : item.email) + "</td>";
+                tr += "<td>" + (item.mobileNumber == null ? "" : item.mobileNumber) + "</td>";
                 tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
                 tr += "<td><button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
                 tr += "</tr>";
@@ -72,34 +79,29 @@ function loadTables(startPage, pageSize) {
                 }
                 elment.bootstrapPaginator(options); //分页插件初始化
             }
-            $("table > tbody > tr").click(function () {
-                $("table > tbody > tr").removeAttr("style")
-                $(this).attr("style", "background-color:#beebff");
-                selectedRole = $(this).find("input").val();
-                loadPermissionByRole(selectedRole);
-            });
+            loadRoles(data);
         }
     })
-}
-//全选
-function checkAll(obj) {
-    $(".checkboxs").each(function () {
-        if (obj.checked == true) {
-            $(this).prop("checked", true)
-
-        }
-        if (obj.checked == false) {
-            $(this).prop("checked", false)
-        }
-    });
 };
+function loadRoles(data) {
+    $("#Role").select2();
+    var option = "";
+    $.each(data.roles, function (i, item) {
+        option += "<option value='" + item.id + "'>" + item.name + "</option>"
+    })
+    $("#Role").html(option);
+}
 //新增
 function add() {
     $("#Id").val("00000000-0000-0000-0000-000000000000");
-    $("#Code").val("");
+    $("#UserName").val("");
+    $("#Password").val("");
     $("#Name").val("");
+    $("#EMail").val("");
+    $("#MobileNumber").val("");
     $("#Remarks").val("");
-    $("#Title").text("新增角色");
+    $("#Role").select2("val", "");
+    $("#Title").text("新增用户");
     //弹出新增窗体
     $("#editModal").modal("show");
 };
@@ -107,24 +109,36 @@ function add() {
 function edit(id) {
     $.ajax({
         type: "Get",
-        url: "/Role/Get?id=" + id + "&_t=" + new Date().getTime(),
+        url: "/User/Get?id=" + id + "&_t=" + new Date().getTime(),
         success: function (data) {
             $("#Id").val(data.id);
+            $("#UserName").val(data.userName);
+            $("#Password").val(data.password);
             $("#Name").val(data.name);
-            $("#Code").val(data.code);
+            $("#EMail").val(data.eMail);
+            $("#mobileNumber").val(data.mobileNumber);
             $("#Remarks").val(data.remarks);
-
-            $("#Title").text("编辑角色")
+            var roleIds = [];
+            if (data.userRoles) {
+                $.each(data.userRoles, function (i, item) {
+                    roleIds.push(item.roleId)
+                });
+                $("#Role").select2("val", roleIds);
+            }
+            $("#Title").text("编辑用户")
             $("#editModal").modal("show");
         }
     })
 };
 //保存
 function save() {
-    var postData = { "dto": { "Id": $("#Id").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Remarks": $("#Remarks").val() } };
+    var roles = "";
+    if ($("#Role").val())
+        roles = $("#Role").val().toString();
+    var postData = { "dto": { "Id": $("#Id").val(), "UserName": $("#UserName").val(), "Password": $("#Password").val(), "Name": $("#Name").val(), "EMail": $("#EMail").val(), "MobileNumber": $("#MobileNumber").val(), "Remarks": $("#Remarks").val(), "SysDepartmentId": selectedId }, "roles": roles };
     $.ajax({
         type: "Post",
-        url: "/Role/Edit",
+        url: "/User/Edit",
         data: postData,
         success: function (data) {
             if (data.result == "Success") {
@@ -156,7 +170,7 @@ function deleteMulti() {
         var sendData = { "ids": ids };
         $.ajax({
             type: "Post",
-            url: "/Role/DeleteMuti",
+            url: "/User/DeleteMuti",
             data: sendData,
             success: function (data) {
                 if (data.result == "Success") {
@@ -177,7 +191,7 @@ function deleteSingle(id) {
     }, function () {
         $.ajax({
             type: "POST",
-            url: "/Role/Delete",
+            url: "/User/Delete",
             data: { "id": id },
             success: function (data) {
                 if (data.result == "Success") {
@@ -189,45 +203,5 @@ function deleteSingle(id) {
                 }
             }
         })
-    });
-};
-//保存角色权限关联关系
-function savePermission() {
-    if (selectedRole == 0) {
-        layer.alert("请选择角色。");
-        return;
-    }
-    var checkedMenu = $('#treeDiv').jstree().get_checked(true);
-    var permissions = [];
-    $.each(checkedMenu, function (i, item) {
-        permissions.push({ "SysRoleId": selectedRole, "SysMenuId": item.id });
-    })
-    $.ajax({
-        type: "POST",
-        url: "/Role/SavePermission",
-        data: { "roleId": selectedRole, "roleMenus": permissions },
-        success: function (data) {
-            if (data.result = true) {
-                layer.alert("保存成功！");
-            }
-            else {
-                layer.alert("保存失败！");
-            }
-        }
-    })
-};
-//根据选中角色加载功能权限
-function loadPermissionByRole(selectedRole) {
-    $.ajax({
-        type: "Get",
-        url: "/Role/GetMenusByRole?roleId=" + selectedRole + "&_t=" + new Date().getTime(),
-        success: function (data) {
-            $("#treeDiv").find("li").each(function () {
-                $("#treeDiv").jstree("uncheck_node", $(this));
-                if (data.indexOf($(this).attr("id")) != -1) {
-                    $("#treeDiv").jstree("check_node", $(this));
-                }
-            })
-        }
     });
 };

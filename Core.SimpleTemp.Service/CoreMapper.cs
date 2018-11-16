@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Service.LoginApp;
 using Core.SimpleTemp.Service.MenuApp;
 using Core.SimpleTemp.Service.RoleApp.Dtos;
+using Core.SimpleTemp.Service.UserApp.Dto;
 
 namespace Core.SimpleTemp.Service
 {
@@ -26,6 +26,10 @@ namespace Core.SimpleTemp.Service
 
                 cfg.CreateMap<SysRoleDto, SysRole>();
                 cfg.CreateMap<SysRole, SysRoleDto>();
+
+                cfg.CreateMap<SysUserRole, SysUserRoleDto>();
+                cfg.CreateMap<SysUserRoleDto, SysUserRole>();
+                
             });
         }
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.SimpleTemp.Domain.IRepositories
 {
-    public interface ISysDepartmentRepository : IRepository<SysDepartment, Guid>
+    public interface ISysDepartmentRepository : IRepository<SysDepartment>
     {
     }
 }

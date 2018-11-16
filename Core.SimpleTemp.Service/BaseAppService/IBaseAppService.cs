@@ -21,7 +21,11 @@ namespace Core.SimpleTemp.Service
         Task DeleteAsync(TEntity entity, bool autoSave = true);
         Task DeleteAsync(TPrimaryKey id, bool autoSave = true);
         Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true);
+        Task DeleteBatchAsync(List<Guid> ids);
+
         Task<IPageModel<TDto>> GetAllPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null);
+
+
     }
 
     public interface IBaseAppService<TDto, TEntity> : IBaseAppService<TDto, TEntity, Guid>

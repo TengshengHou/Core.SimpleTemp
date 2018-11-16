@@ -13,14 +13,7 @@ namespace Core.SimpleTemp.Service.RoleApp
     {
 
 
-        /// <summary>
-        /// 获取分页列表
-        /// </summary>
-        /// <param name="startPage">起始页</param>
-        /// <param name="pageSize">页面大小</param>
-        /// <param name="rowCount">数据总数</param>
-        /// <returns></returns>
-        Task<IPageModel<SysRoleDto>> GetAllPageListAsync(int startPage, int pageSize);
+       
 
 
         /// <summary>
