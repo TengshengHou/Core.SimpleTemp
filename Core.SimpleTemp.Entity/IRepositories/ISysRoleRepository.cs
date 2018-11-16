@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Core.SimpleTemp.Domain.IRepositories
 {
 
-    public interface ISysRoleRepository
+    public interface ISysRoleRepository : IRepository<SysRole>
     {
         Task<List<Guid>> GetMenuListByRoleAsync(Guid roleId);
         Task<bool> UpdateRoleMenuAsync(Guid sysRoleId, List<SysRoleMenu> sysRoleMenus);

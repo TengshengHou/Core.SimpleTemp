@@ -96,7 +96,7 @@ namespace Core.SimpleTemp.Service.MenuApp
             return Mapper.Map<List<SysMenuDto>>(allMenus);
         }
 
-        public async Task<SysMenuDto> UpdateAsync(SysMenuDto sysMenuDto, bool autoSave = true)
+        public async Task<SysMenuDto> UpdateAsync(SysMenuDto sysMenuDto)
         {
             var entity = await _sysMenuRepository.UpdateAsync(Mapper.Map<SysMenu>(sysMenuDto));
             var retDto = Mapper.Map<SysMenuDto>(entity);

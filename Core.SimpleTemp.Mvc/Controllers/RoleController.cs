@@ -1,5 +1,6 @@
-﻿using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service.MenuApp;
+﻿using Core.SimpleTemp.Service.MenuApp;
+using Core.SimpleTemp.Service.RoleApp;
+using Core.SimpleTemp.Service.RoleApp.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,54 +9,20 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
-    [Route("Menu")]
-    public class MenuController : Controller
+    [Route("Role")]
+    public class RoleController : Controller
     {
-        private readonly ISysMenuAppService _sysMenuAppService;
-        public MenuController(ISysMenuAppService sysMenuAppService)
+        private readonly ISysRoleAppService _service;
+        public RoleController(ISysRoleAppService service)
         {
-            _sysMenuAppService = sysMenuAppService;
+            _service = service;
         }
 
         // GET: /<controller>/
-        [HttpGet("index")]
+        [HttpGet("Index")]
         public IActionResult Index()
         {
             return View();
-        }
-        /// <summary>
-        /// 获取功能树JSON数据
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetMenuTreeData")]
-        public async Task<IActionResult> GetMenuTreeDataAsync()
-        {
-            var menus = await _sysMenuAppService.GetAllListAsync();
-            List<TreeModel> treeModels = new List<TreeModel>();
-            foreach (var menu in menus)
-            {
-                treeModels.Add(new TreeModel() { Id = menu.Id.ToString(), Text = menu.Name, Parent = menu.ParentId == Guid.Empty ? "#" : menu.ParentId.ToString() });
-            }
-            return Json(treeModels);
-        }
-
-        /// <summary>
-        /// 获取子级功能列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetMneusByParent")]
-        public async Task<IActionResult> GetMneusByParentAsync(Guid parentId, int startPage, int pageSize)
-        {
-            int rowCount = 0;
-            var pageModel = await _sysMenuAppService.GetMenusByParentAsync(parentId, startPage, pageSize);
-            rowCount = pageModel.RowCount;
-
-            return Json(new
-            {
-                rowCount = rowCount,
-                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = pageModel.PageData,
-            });
         }
 
         /// <summary>
@@ -63,8 +30,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPost("Edit")]
-        public async Task<IActionResult> EditAsync(SysMenuDto dto)
+        public async Task<IActionResult> EditAsync(SysRoleDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -74,20 +40,31 @@ namespace Core.SimpleTemp.Mvc.Controllers
                     Message = GetModelStateError()
                 });
             }
-            var model = await _sysMenuAppService.GetAsync(dto.Id);
+            var model = await _service.GetAsync(dto.Id);
             if (model == null)
             {
-                await _sysMenuAppService.InsertAsync(dto);
+                await _service.InsertAsync(dto);
                 return Json(new { Result = "Success" });
             }
             else
             {
-                await _sysMenuAppService.UpdateAsync(dto);
+                await _service.UpdateAsync(dto);
                 return Json(new { Result = "Success" });
             }
         }
 
-        [HttpPost("DeleteMuti")]
+        public async Task<IActionResult> GetAllPageListAsync(int startPage, int pageSize)
+        {
+            int rowCount = 0;
+            var result = await _service.GetAllPageListAsync(startPage, pageSize);
+            rowCount = result.RowCount;
+            return Json(new
+            {
+                rowCount = rowCount,
+                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
+                rows = result.PageData,
+            });
+        }
         public async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             try
@@ -98,7 +75,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 {
                     delIds.Add(Guid.Parse(id));
                 }
-                await _sysMenuAppService.DeleteBatchAsync(delIds);
+                await _service.DeleteBatchAsync(delIds);
                 return Json(new
                 {
                     Result = "Success"
@@ -113,13 +90,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
-
-        [HttpPost("Delete")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
             {
-                await _sysMenuAppService.DeleteAsync(id);
+                await _service.DeleteAsync(id);
                 return Json(new
                 {
                     Result = "Success"
@@ -134,14 +109,30 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
-
-        [HttpGet("Get")]
-        public async Task<ActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
-            var dto = await _sysMenuAppService.GetAsync(id);
+            var dto = await _service.GetAsync(id);
             return Json(dto);
         }
 
+        /// <summary>
+        /// 根据角色获取权限
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetMenusByRoleAsync(Guid roleId)
+        {
+            var dtos = await _service.GetMenuListByRoleAsync(roleId);
+            return Json(dtos);
+        }
+
+        public async Task<IActionResult> SavePermissionAsync(Guid roleId, List<SysRoleMenuDto> roleMenus)
+        {
+            if (await _service.UpdateRoleMenuAsync(roleId, roleMenus))
+            {
+                return Json(new { Result = "Success" });
+            }
+            return Json(new { Result = "Faild" });
+        }
 
         public string GetModelStateError()
         {

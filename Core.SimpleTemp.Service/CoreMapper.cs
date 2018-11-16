@@ -2,9 +2,7 @@
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Service.LoginApp;
 using Core.SimpleTemp.Service.MenuApp;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Core.SimpleTemp.Service.RoleApp.Dtos;
 
 namespace Core.SimpleTemp.Service
 {
@@ -19,6 +17,15 @@ namespace Core.SimpleTemp.Service
 
                 cfg.CreateMap<SysUser, SysUserDto>();
                 cfg.CreateMap<SysUserDto, SysUser>();
+
+                cfg.CreateMap<SysDepartmentDto, SysDepartment>();
+                cfg.CreateMap<SysDepartment, SysDepartmentDto>();
+
+                cfg.CreateMap<SysRoleMenu, SysRoleMenuDto>();
+                cfg.CreateMap<SysRoleMenuDto, SysRoleMenu>();
+
+                cfg.CreateMap<SysRoleDto, SysRole>();
+                cfg.CreateMap<SysRole, SysRoleDto>();
             });
         }
     }

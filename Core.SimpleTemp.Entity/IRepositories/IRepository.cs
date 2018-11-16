@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Domain.IRepositories
 {
-    public interface IRepository
-    {
-    }
+
 
     /// <summary>
     /// 定义泛型仓储接口
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public partial interface IRepository<TEntity, TPrimaryKey> : IRepository where TEntity : Entity<TPrimaryKey>
+    public partial interface IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         /// <summary>
         /// 获取实体集合

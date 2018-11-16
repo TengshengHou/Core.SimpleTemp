@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
+    [Route("Account")]
     public class AccountController : Controller
     {
         private ISysLoginService _sysLoginService;
@@ -15,7 +16,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             _sysLoginService = sysLoginService;
         }
 
-        [HttpGet]
+        [HttpGet("Login")]
         public IActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;

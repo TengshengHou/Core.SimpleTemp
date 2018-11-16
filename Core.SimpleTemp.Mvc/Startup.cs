@@ -4,6 +4,7 @@ using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Repository.Repository;
 using Core.SimpleTemp.Service;
 using Core.SimpleTemp.Service.MenuApp;
+using Core.SimpleTemp.Service.RoleApp;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,9 +67,12 @@ namespace Core.SimpleTemp.Mvc
             services.AddTransient(typeof(ISysUserRepository), typeof(SysUserRepository));
             services.AddTransient(typeof(ISysMenuRepository), typeof(SysMenuRepository));
             services.AddTransient(typeof(ISysRoleRepository), typeof(SysRoleRepository));
+            services.AddTransient(typeof(ISysDepartmentRepository), typeof(SysDepartmentRepository));
             //Service DI
             services.AddTransient(typeof(ISysLoginService), typeof(SysLoginService));
             services.AddTransient(typeof(ISysMenuAppService), typeof(SysMenuAppService));
+            services.AddTransient(typeof(ISysDepartmentAppService), typeof(SysDepartmentAppService));
+            services.AddTransient(typeof(ISysRoleAppService), typeof(SysRoleAppService));
             services.AddAuthorization();
             services.AddMvc();
         }

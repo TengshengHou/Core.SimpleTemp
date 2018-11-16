@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Core.SimpleTemp.Domain.Entities
+namespace Core.SimpleTemp.Service
 {
-    /// <summary>
-    /// 部门实体
-    /// </summary>
-    public class SysDepartment : Entity
+    public class SysDepartmentDto
     {
+        public Guid Id { get; set; }
+
         /// <summary>
         /// 部门名称
         /// </summary>
@@ -53,10 +50,5 @@ namespace Core.SimpleTemp.Domain.Entities
         /// 是否已删除
         /// </summary>
         public int IsDeleted { get; set; }
-
-        /// <summary>
-        /// 包含用户
-        /// </summary>
-        public virtual ICollection<SysUser> Users { get; set; }
     }
 }

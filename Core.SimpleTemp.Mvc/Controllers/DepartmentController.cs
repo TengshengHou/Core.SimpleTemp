@@ -1,21 +1,21 @@
 ﻿using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service.MenuApp;
+using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
 namespace Core.SimpleTemp.Mvc.Controllers
 {
-    [Route("Menu")]
-    public class MenuController : Controller
+    [Route("Department")]
+    public class DepartmentController : Controller
     {
-        private readonly ISysMenuAppService _sysMenuAppService;
-        public MenuController(ISysMenuAppService sysMenuAppService)
+        private readonly ISysDepartmentAppService _service;
+        public DepartmentController(ISysDepartmentAppService service)
         {
-            _sysMenuAppService = sysMenuAppService;
+            _service = service;
         }
+
+
 
         // GET: /<controller>/
         [HttpGet("index")]
@@ -23,40 +23,41 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// 获取功能树JSON数据
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetMenuTreeData")]
-        public async Task<IActionResult> GetMenuTreeDataAsync()
+        [HttpGet("GetTreeData")]
+        public async Task<IActionResult> GetTreeDataAsync()
         {
-            var menus = await _sysMenuAppService.GetAllListAsync();
+            var dtos = await _service.GetAllListAsync();
             List<TreeModel> treeModels = new List<TreeModel>();
-            foreach (var menu in menus)
+            foreach (var dto in dtos)
             {
-                treeModels.Add(new TreeModel() { Id = menu.Id.ToString(), Text = menu.Name, Parent = menu.ParentId == Guid.Empty ? "#" : menu.ParentId.ToString() });
+                treeModels.Add(new TreeModel() { Id = dto.Id.ToString(), Text = dto.Name, Parent = dto.ParentId == Guid.Empty ? "#" : dto.ParentId.ToString() });
             }
             return Json(treeModels);
         }
 
         /// <summary>
-        /// 获取子级功能列表
+        /// 获取子级列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetMneusByParent")]
-        public async Task<IActionResult> GetMneusByParentAsync(Guid parentId, int startPage, int pageSize)
+        [HttpGet("GetChildrenByParent")]
+        public async Task<IActionResult> GetChildrenByParentAsync(Guid parentId, int startPage, int pageSize)
         {
             int rowCount = 0;
-            var pageModel = await _sysMenuAppService.GetMenusByParentAsync(parentId, startPage, pageSize);
-            rowCount = pageModel.RowCount;
-
+            var result = await _service.GetChildrenByParentAsync(parentId, startPage, pageSize);
+            rowCount = result.RowCount;
             return Json(new
             {
                 rowCount = rowCount,
                 pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = pageModel.PageData,
+                rows = result.PageData,
             });
         }
+
 
         /// <summary>
         /// 新增或编辑功能
@@ -64,7 +65,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("Edit")]
-        public async Task<IActionResult> EditAsync(SysMenuDto dto)
+        public async Task<IActionResult> EditAsync(SysDepartmentDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -74,15 +75,15 @@ namespace Core.SimpleTemp.Mvc.Controllers
                     Message = GetModelStateError()
                 });
             }
-            var model = await _sysMenuAppService.GetAsync(dto.Id);
+            var model = await _service.GetAsync(dto.Id);
             if (model == null)
             {
-                await _sysMenuAppService.InsertAsync(dto);
+                await _service.InsertAsync(dto);
                 return Json(new { Result = "Success" });
             }
             else
             {
-                await _sysMenuAppService.UpdateAsync(dto);
+                await _service.UpdateAsync(dto);
                 return Json(new { Result = "Success" });
             }
         }
@@ -98,7 +99,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 {
                     delIds.Add(Guid.Parse(id));
                 }
-                await _sysMenuAppService.DeleteBatchAsync(delIds);
+                await _service.DeleteBatchAsync(delIds);
                 return Json(new
                 {
                     Result = "Success"
@@ -113,13 +114,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
-
         [HttpPost("Delete")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
             {
-                await _sysMenuAppService.DeleteAsync(id);
+                await _service.DeleteAsync(id);
                 return Json(new
                 {
                     Result = "Success"
@@ -134,15 +134,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 });
             }
         }
-
         [HttpGet("Get")]
-        public async Task<ActionResult> GetAsync(Guid id)
+        public async Task<IActionResult> GetAsync(Guid id)
         {
-            var dto = await _sysMenuAppService.GetAsync(id);
+            var dto = await _service.GetAsync(id);
             return Json(dto);
         }
-
-
         public string GetModelStateError()
         {
             foreach (var item in ModelState.Values)
@@ -156,3 +153,4 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
     }
 }
+

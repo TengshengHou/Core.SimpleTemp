@@ -1,7 +1,6 @@
-﻿var selectedMenuId = "00000000-0000-0000-0000-000000000000";
+﻿var selectedId = "00000000-0000-0000-0000-000000000000";
 var ajaxCount = 0;
 $(function () {
-
     $(document).ajaxStart(function () {
         if (ajaxCount != 0)
             layer.load(1);
@@ -14,7 +13,7 @@ $(function () {
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
     $("#btnLoadRoot").click(function () {
-        selectedMenuId = "00000000-0000-0000-0000-000000000000";
+        selectedId = "00000000-0000-0000-0000-000000000000";
         loadTables(1, 10);
     });
     $("#checkAll").click(function () { checkAll(this) });
@@ -25,7 +24,7 @@ function initTree() {
     $.jstree.destroy();
     $.ajax({
         type: "Get",
-        url: "/Menu/GetMenuTreeData?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
+        url: "/Department/GetTreeData?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
         success: function (data) {
             $('#treeDiv').jstree({       //创建JsTtree
                 'core': {
@@ -40,7 +39,7 @@ function initTree() {
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
                 if (node) {
-                    selectedMenuId = node.id;
+                    selectedId = node.id;
                     loadTables(1, 10);
                 };
             });
@@ -54,15 +53,15 @@ function loadTables(startPage, pageSize) {
     $("#checkAll").prop("checked", false);
     $.ajax({
         type: "GET",
-        url: "/Menu/GetMneusByParent?parentId=" + selectedMenuId + "&startPage=" + startPage + "&pageSize=" + pageSize + "&_t=" + new Date().getTime(),
+        url: "/Department/GetChildrenByParent?startPage=" + startPage + "&pageSize=" + pageSize + "&parentId=" + selectedId + "&_t=" + new Date().getTime(),
         success: function (data) {
             $.each(data.rows, function (i, item) {
                 var tr = "<tr>";
                 tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
                 tr += "<td>" + item.name + "</td>";
                 tr += "<td>" + (item.code == null ? "" : item.code) + "</td>";
-                tr += "<td>" + (item.url == null ? "" : item.url) + "</td>";
-                tr += "<td>" + (item.type == 0 ? "功能菜单" : "操作按钮") + "</td>";
+                tr += "<td>" + (item.manager == null ? "" : item.manager) + "</td>";
+                tr += "<td>" + (item.contactNumber == null ? "" : item.contactNumber) + "</td>";
                 tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
                 tr += "<td><button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
                 tr += "</tr>";
@@ -99,11 +98,11 @@ function checkAll(obj) {
 //新增
 function add(type) {
     if (type === 1) {
-        if (selectedMenuId === "00000000-0000-0000-0000-000000000000") {
-            layer.alert("请选择功能。");
+        if (selectedId === "00000000-0000-0000-0000-000000000000") {
+            layer.alert("请选择部门。");
             return;
         }
-        $("#ParentId").val(selectedMenuId);
+        $("#ParentId").val(selectedId);
     }
     else {
         $("#ParentId").val("00000000-0000-0000-0000-000000000000");
@@ -111,10 +110,8 @@ function add(type) {
     $("#Id").val("00000000-0000-0000-0000-000000000000");
     $("#Code").val("");
     $("#Name").val("");
-    $("#Type").val(0);
-    $("#Url").val("");
-    $("#Icon").val("");
-    $("#SerialNumber").val(0);
+    $("#Manager").val("");
+    $("#ContactNumber").val("");
     $("#Remarks").val("");
     $("#Title").text("新增顶级");
     //弹出新增窗体
@@ -124,17 +121,15 @@ function add(type) {
 function edit(id) {
     $.ajax({
         type: "Get",
-        url: "/Menu/Get?id=" + id + "&_t=" + new Date(),
+        url: "/Department/Get?id=" + id + "&_t=" + new Date().getTime(),
         success: function (data) {
             $("#Id").val(data.id);
             $("#ParentId").val(data.parentId);
             $("#Name").val(data.name);
             $("#Code").val(data.code);
-            $("#Type").val(data.type);
-            $("#Url").val(data.url);
-            $("#Icon").val(data.icon);
-            $("#SerialNumber").val(data.serialNumber);
-            $("#Remarks").val("");
+            $("#Manager").val(data.manager);
+            $("#ContactNumber").val(data.contactNumber);
+            $("#Remarks").val(data.remarks);
 
             $("#Title").text("编辑功能")
             $("#addRootModal").modal("show");
@@ -143,10 +138,10 @@ function edit(id) {
 };
 //保存
 function save() {
-    var postData = { "dto": { "Id": $("#Id").val(), "ParentId": $("#ParentId").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Type": $("#Type").val(), "Url": $("#Url").val(), "Icon": $("#Icon").val(), "SerialNumber": $("#SerialNumber").val(), "Remarks": $("#Remarks").val() } };
+    var postData = { "dto": { "Id": $("#Id").val(), "ParentId": $("#ParentId").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Manager": $("#Manager").val(), "ContactNumber": $("#ContactNumber").val(), "Remarks": $("#Remarks").val() } };
     $.ajax({
         type: "Post",
-        url: "/Menu/Edit",
+        url: "/Department/Edit",
         data: postData,
         success: function (data) {
             debugger
@@ -179,7 +174,7 @@ function deleteMulti() {
         var sendData = { "ids": ids };
         $.ajax({
             type: "Post",
-            url: "/Menu/DeleteMuti",
+            url: "/Department/DeleteMuti",
             data: sendData,
             success: function (data) {
                 if (data.result == "Success") {
@@ -200,7 +195,7 @@ function deleteSingle(id) {
     }, function () {
         $.ajax({
             type: "POST",
-            url: "/Menu/Delete",
+            url: "/Department/Delete",
             data: { "id": id },
             success: function (data) {
                 if (data.result == "Success") {

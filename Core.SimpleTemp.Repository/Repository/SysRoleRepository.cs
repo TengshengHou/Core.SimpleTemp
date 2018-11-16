@@ -35,7 +35,7 @@ namespace Core.SimpleTemp.Repository.Repository
         {
             var oldDatas = await _dbContext.Set<SysRoleMenu>().Where(it => it.SysRoleId == sysRoleId).AsNoTracking().ToListAsync();
             oldDatas.ForEach(it => _dbContext.Set<SysRoleMenu>().Remove(it));
-            // _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             _dbContext.Set<SysRoleMenu>().AddRange(sysRoleMenus);
             await _dbContext.SaveChangesAsync();
             return true;
