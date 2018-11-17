@@ -28,7 +28,7 @@ namespace Core.SimpleTemp.Repository
           );
             context.SaveChanges();
             var dep = context.SysDepartment.FirstOrDefault();
-           
+
             //添加系统默认管理员
             context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
             context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
@@ -54,6 +54,7 @@ namespace Core.SimpleTemp.Repository
                 Code = "Department",
                 SerialNumber = 0,
                 Icon = "fa fa-link",
+                Url = "/Department/index",
                 ParentId = topMenu.Id
             },
              new SysMenu
@@ -62,6 +63,7 @@ namespace Core.SimpleTemp.Repository
                  Code = "Role",
                  SerialNumber = 1,
                  Icon = "fa fa-link",
+                 Url = "/role/index",
                  ParentId = topMenu.Id
              },
              new SysMenu
@@ -70,7 +72,8 @@ namespace Core.SimpleTemp.Repository
                  Code = "User",
                  SerialNumber = 2,
                  Icon = "fa fa-link",
-                 ParentId = topMenu.Id
+                 ParentId = topMenu.Id,
+                 Url = "/user/index"
              },
              new SysMenu
              {
@@ -78,14 +81,16 @@ namespace Core.SimpleTemp.Repository
                  Code = "Department",
                  SerialNumber = 3,
                  Icon = "fa fa-link",
-                 ParentId = topMenu.Id
+                 ParentId = topMenu.Id,
+                 Url = "/Department/index"
              });
 
             context.SysRole.Add(new SysRole()
             {
-                Code = "admin",
-                Name = "admin"
-
+                Code = "Admin",
+                Name = "管理员",
+                Remarks = "管理员",
+                CreateTime = DateTime.Now
             });
             context.SaveChanges();
             context.SysUserRole.Add(new SysUserRole

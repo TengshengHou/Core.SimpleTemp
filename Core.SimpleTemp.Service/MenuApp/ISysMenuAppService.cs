@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
+using Core.SimpleTemp.Service.UserApp.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,8 @@ namespace Core.SimpleTemp.Service.MenuApp
         /// <param name="rowCount">数据总数</param>
         /// <returns></returns>
         Task<IPageModel<SysMenuDto>> GetMenusByParentAsync(Guid parentId, int startPage, int pageSize);
-       
+
+        Task<List<SysMenuDto>> GetMenusByUserAsync(SysUserDto sysUserDto);
+     
     }
 }

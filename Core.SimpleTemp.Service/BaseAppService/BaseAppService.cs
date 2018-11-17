@@ -49,7 +49,6 @@ namespace Core.SimpleTemp.Service
             return pageModelDto;
         }
 
-
         public async Task<TDto> InsertAsync(TDto dto, bool autoSave = true)
         {
             var entity = await _repository.InsertAsync(Mapper.Map<TEntity>(dto));

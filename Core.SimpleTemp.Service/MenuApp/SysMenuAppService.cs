@@ -66,5 +66,8 @@ namespace Core.SimpleTemp.Service.MenuApp
             allMenus = allMenus.Where(it => menuIds.Contains(it.Id)).OrderBy(it => it.SerialNumber).ToList();
             return Mapper.Map<List<SysMenuDto>>(allMenus);
         }
+
+
+
     }
 }

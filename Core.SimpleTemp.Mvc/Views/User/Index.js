@@ -57,11 +57,8 @@ function loadTables(startPage, pageSize) {
             $.each(data.rows, function (i, item) {
                 var tr = "<tr>";
                 tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
-                tr += "<td>" + item.userName + "</td>";
-                tr += "<td>" + (item.name == null ? "" : item.LoginName) + "</td>";
-                tr += "<td>" + (item.email == null ? "" : item.email) + "</td>";
-                tr += "<td>" + (item.mobileNumber == null ? "" : item.mobileNumber) + "</td>";
-                tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
+                tr += "<td>" + (item.loginName == null ? "" : item.loginName) + "</td>";
+                tr += "<td>" + (item.name == null ? "" : item.name) + "</td>";
                 tr += "<td><button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
                 tr += "</tr>";
                 $("#tableBody").append(tr);
@@ -94,12 +91,10 @@ function loadRoles(data) {
 //新增
 function add() {
     $("#Id").val("00000000-0000-0000-0000-000000000000");
-    $("#UserName").val("");
+    $("#LoginName").val("");
     $("#Password").val("");
     $("#Name").val("");
-    $("#EMail").val("");
-    $("#MobileNumber").val("");
-    $("#Remarks").val("");
+
     $("#Role").select2("val", "");
     $("#Title").text("新增用户");
     //弹出新增窗体
@@ -112,12 +107,9 @@ function edit(id) {
         url: "/User/Get?id=" + id + "&_t=" + new Date().getTime(),
         success: function (data) {
             $("#Id").val(data.id);
-            $("#UserName").val(data.userName);
-            $("#Password").val(data.password);
+            $("#LoginName").val(data.loginName);
+            $("#Password").val(data.Password);
             $("#Name").val(data.name);
-            $("#EMail").val(data.eMail);
-            $("#mobileNumber").val(data.mobileNumber);
-            $("#Remarks").val(data.remarks);
             var roleIds = [];
             if (data.userRoles) {
                 $.each(data.userRoles, function (i, item) {
@@ -135,7 +127,7 @@ function save() {
     var roles = "";
     if ($("#Role").val())
         roles = $("#Role").val().toString();
-    var postData = { "dto": { "Id": $("#Id").val(), "UserName": $("#UserName").val(), "Password": $("#Password").val(), "Name": $("#Name").val(), "EMail": $("#EMail").val(), "MobileNumber": $("#MobileNumber").val(), "Remarks": $("#Remarks").val(), "SysDepartmentId": selectedId }, "roles": roles };
+    var postData = { "dto": { "Id": $("#Id").val(), "LoginName": $("#LoginName").val(), "Password": $("#Password").val(), "Name": $("#Name").val(), "SysDepartmentId": selectedId }, "roles": roles };
     $.ajax({
         type: "Post",
         url: "/User/Edit",
