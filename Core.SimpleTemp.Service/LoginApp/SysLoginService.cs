@@ -20,7 +20,7 @@ namespace Core.SimpleTemp.Service
         }
 
         /// <summary>
-        /// 登录逻辑
+        /// 登录
         /// </summary>
         /// <param name="context"></param>
         /// <param name="sysUser"></param>

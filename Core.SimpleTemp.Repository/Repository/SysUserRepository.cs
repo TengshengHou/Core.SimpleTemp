@@ -27,6 +27,12 @@ namespace Core.SimpleTemp.Repository
 
             return user;
         }
+
+        public override Task<SysUser> GetAsync(Guid id)
+        {
+            return _dbContext.Set<SysUser>().Include(u => u.UserRoles).FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
+        }
+
         public Task<List<Guid>> FindUserRoleAsync(Guid userId)
         {
             return _dbContext.SysUserRole.Where(ur => ur.SysUserId == userId).AsNoTracking().Select(ur => ur.SysRoleId).ToListAsync();

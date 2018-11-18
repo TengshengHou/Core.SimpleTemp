@@ -50,16 +50,15 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             try
             {
-                if (dto.Id == Guid.Empty)
+                if (roles.Length > 0)
                 {
-                    dto.Id = Guid.NewGuid();
+                    var userRoles = new List<SysUserRoleDto>();
+                    foreach (var role in roles.Split(','))
+                    {
+                        userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
+                    }
+                    dto.UserRoles = userRoles;
                 }
-                var userRoles = new List<SysUserRoleDto>();
-                foreach (var role in roles.Split(','))
-                {
-                    userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
-                }
-                dto.UserRoles = userRoles;
 
                 var model = await _service.GetAsync(dto.Id);
                 if (model == null)
@@ -72,7 +71,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
                     await _service.UpdateAsync(dto);
                     return Json(new { Result = "Success" });
                 }
-
             }
             catch (Exception ex)
             {

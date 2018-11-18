@@ -102,6 +102,7 @@ function add() {
 };
 //编辑
 function edit(id) {
+
     $.ajax({
         type: "Get",
         url: "/User/Get?id=" + id + "&_t=" + new Date().getTime(),
@@ -110,12 +111,12 @@ function edit(id) {
             $("#LoginName").val(data.loginName);
             $("#Password").val(data.Password);
             $("#Name").val(data.name);
-            var roleIds = [];
+            var sysRoleIds = [];
             if (data.userRoles) {
                 $.each(data.userRoles, function (i, item) {
-                    roleIds.push(item.roleId)
+                    sysRoleIds.push(item.sysRoleId)
                 });
-                $("#Role").select2("val", roleIds);
+                $("#Role").select2("val", sysRoleIds);
             }
             $("#Title").text("编辑用户")
             $("#editModal").modal("show");

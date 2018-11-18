@@ -21,7 +21,7 @@ namespace Core.SimpleTemp.Repository
         /// <param name="where">条件</param>
         /// <param name="order">排序</param>
         /// <returns></returns>
-        public async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null) 
+        public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
         {
             var result = from p in _dbContext.Set<TEntity>()
                          select p;
@@ -40,6 +40,30 @@ namespace Core.SimpleTemp.Repository
                 PageData = pageData
             };
             return PageModel;
+        }
+
+        private void EntityToEntity(TEntity pTargetObjSrc, TEntity pTargetObjDest)
+        {
+            foreach (var mItem in typeof(TEntity).GetProperties())
+            {
+                mItem.SetValue(pTargetObjDest, mItem.GetValue(pTargetObjSrc, new object[] { }), null);
+            }
+        }
+
+        /// <summary>
+        /// 根据主键构建判断表达式
+        /// </summary>
+        /// <param name="id">主键</param>
+        /// <returns></returns>
+        protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
+        {
+            var lambdaParam = Expression.Parameter(typeof(TEntity));
+            var lambdaBody = Expression.Equal(
+                Expression.PropertyOrField(lambdaParam, "Id"),
+                Expression.Constant(id, typeof(TPrimaryKey))
+                );
+
+            return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Core.SimpleTemp.Repository
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        public Task<List<TEntity>> GetAllListAsync()
+        public virtual Task<List<TEntity>> GetAllListAsync()
         {
             return _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
         }
@@ -45,7 +45,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().Where(predicate).AsNoTracking().ToListAsync();
         }
@@ -55,7 +55,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <returns></returns>
-        public Task<TEntity> GetAsync(TPrimaryKey id)
+        public virtual Task<TEntity> GetAsync(TPrimaryKey id)
         {
             return _dbContext.Set<TEntity>().FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
         }
@@ -65,7 +65,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(predicate);
         }
@@ -76,7 +76,7 @@ namespace Core.SimpleTemp.Repository
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
         /// <returns></returns>
-        public async Task<TEntity> InsertAsync(TEntity entity, bool autoSave = true)
+        public virtual async Task<TEntity> InsertAsync(TEntity entity, bool autoSave = true)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
             if (autoSave)
@@ -89,7 +89,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        public async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
         {
             var obj = await GetAsync(entity.Id);
             EntityToEntity(entity, obj);
@@ -98,20 +98,12 @@ namespace Core.SimpleTemp.Repository
             return entity;
         }
 
-        private void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)
-        {
-            foreach (var mItem in typeof(T).GetProperties())
-            {
-                mItem.SetValue(pTargetObjDest, mItem.GetValue(pTargetObjSrc, new object[] { }), null);
-            }
-        }
-
         /// <summary>
         /// 删除实体
         /// </summary>
         /// <param name="entity">要删除的实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        public async Task DeleteAsync(TEntity entity, bool autoSave = true)
+        public virtual async Task DeleteAsync(TEntity entity, bool autoSave = true)
         {
             _dbContext.Set<TEntity>().Remove(entity);
             if (autoSave)
@@ -123,7 +115,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        public async Task DeleteAsync(TPrimaryKey id, bool autoSave = true)
+        public virtual async Task DeleteAsync(TPrimaryKey id, bool autoSave = true)
         {
             _dbContext.Set<TEntity>().Remove(await GetAsync(id));
             if (autoSave)
@@ -135,7 +127,7 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="where">lambda表达式</param>
         /// <param name="autoSave">是否自动保存</param>
-        public async Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true)
+        public virtual async Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true)
         {
             _dbContext.Set<TEntity>().Where(where).ToList().ForEach(it => _dbContext.Set<TEntity>().Remove(it));
             if (autoSave)
@@ -145,28 +137,11 @@ namespace Core.SimpleTemp.Repository
         /// <summary>
         /// 事务性保存
         /// </summary>
-        public Task<int> SaveAsync()
+        public virtual Task<int> SaveAsync()
         {
             return _dbContext.SaveChangesAsync();
         }
-
-        /// <summary>
-        /// 根据主键构建判断表达式
-        /// </summary>
-        /// <param name="id">主键</param>
-        /// <returns></returns>
-        protected static Expression<Func<TEntity, bool>> CreateEqualityExpressionForId(TPrimaryKey id)
-        {
-            var lambdaParam = Expression.Parameter(typeof(TEntity));
-            var lambdaBody = Expression.Equal(
-                Expression.PropertyOrField(lambdaParam, "Id"),
-                Expression.Constant(id, typeof(TPrimaryKey))
-                );
-
-            return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
-        }
     }
-
 
     /// <summary>
     /// 主键为int类型的仓储基类
