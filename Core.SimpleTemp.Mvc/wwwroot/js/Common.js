@@ -14,7 +14,8 @@
                 layer.alert(request.status + '登录信息过期请重新登录', 20000,
                     Unauthorized());
             }
-            if (request.status === 301) {
+            if (request.status === 403) {
+                layer.alert(request.status + "无权限进行此操作");
             }
         });
 

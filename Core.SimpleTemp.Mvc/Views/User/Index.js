@@ -31,6 +31,7 @@ function initTree() {
     $.jstree.destroy();
     $.ajax({
         type: "Get",
+        async: false,
         url: "/Department/GetTreeData?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
         success: function (data) {
             $('#treeDiv').jstree({       //创建JsTtree
@@ -38,10 +39,15 @@ function initTree() {
                     'data': data,        //绑定JsTree数据
                     "multiple": false    //是否多选
                 },
-                "plugins": ["state", "types", "wholerow"]  //配置信息
+                "plugins": ["types", "wholerow"]  //配置信息
             })
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
+
+                //默认选中根节点
+                var inst = data.instance;
+                var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
+                inst.select_node(obj);
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
@@ -60,6 +66,7 @@ function loadTables(startPage, pageSize) {
     $("#checkAll").prop("checked", false);
     $.ajax({
         type: "GET",
+        async: false,
         url: "/User/GetUserByDepartment?startPage=" + startPage + "&pageSize=" + pageSize + "&departmentId=" + selectedId + "&_t=" + new Date().getTime(),
         success: function (data) {
             $.each(data.rows, function (i, item) {
@@ -113,6 +120,7 @@ function edit(id) {
 
     $.ajax({
         type: "Get",
+        async: false,
         url: "/User/Get?id=" + id + "&_t=" + new Date().getTime(),
         success: function (data) {
             $("#Id").val(data.id);
@@ -140,6 +148,7 @@ function save() {
     var postData = { "dto": { "Id": $("#Id").val(), "LoginName": $("#LoginName").val(), "Password": $("#Password").val(), "Name": $("#Name").val(), "SysDepartmentId": selectedId }, "roles": roles };
     $.ajax({
         type: "Post",
+        async: false,
         url: "/User/Edit",
         data: postData,
         success: function (data) {
@@ -172,6 +181,7 @@ function deleteMulti() {
         var sendData = { "ids": ids };
         $.ajax({
             type: "Post",
+            async: false,
             url: "/User/DeleteMuti",
             data: sendData,
             success: function (data) {
@@ -193,6 +203,7 @@ function deleteSingle(id) {
     }, function () {
         $.ajax({
             type: "POST",
+            async: false,
             url: "/User/Delete",
             data: { "id": id },
             success: function (data) {

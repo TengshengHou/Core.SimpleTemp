@@ -1,7 +1,10 @@
 ﻿
 @model List<Core.SimpleTemp.Service.MenuApp.SysMenuDto>
 <li class="header">权限管理</li>
-@foreach (var menu in Model)
+@{
+    var menuList = Model.Where(a => a.Type == 0);
+}
+@foreach (var menu in menuList)
 {
     var isActive = ViewBag.CurrentMenu == menu.Code; //判断当前功能是否处于激活
     <li class="@(isActive ? "active" : "")"><a href="@menu.Url"><i class="fa fa-link"></i> <span>@menu.Name</span></a></li>

@@ -32,10 +32,14 @@ function initTree() {
                     'data': data,        //绑定JsTree数据
                     "multiple": false    //是否多选
                 },
-                "plugins": ["state", "types", "wholerow"]  //配置信息
+                "plugins": [ "types", "wholerow"]  //配置信息
             })
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
+                //默认选中根节点
+                var inst = data.instance;
+                var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
+                inst.select_node(obj);
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点

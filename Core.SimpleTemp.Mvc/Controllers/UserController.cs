@@ -1,4 +1,6 @@
-﻿using Core.SimpleTemp.Service.RoleApp;
+﻿using Core.SimpleTemp.Domain.Authorization;
+using Core.SimpleTemp.Service.Authorization;
+using Core.SimpleTemp.Service.RoleApp;
 using Core.SimpleTemp.Service.UserApp;
 using Core.SimpleTemp.Service.UserApp.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -48,6 +50,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("Edit")]
+        [PermissionFilter(Permission.UserController_Edit)]
         public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
         {
             try

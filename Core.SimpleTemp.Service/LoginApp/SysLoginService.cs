@@ -1,8 +1,11 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using Core.SimpleTemp.Repository;
+using Core.SimpleTemp.Service.MenuApp;
+using Core.SimpleTemp.Service.UserApp.Dto;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,9 +17,11 @@ namespace Core.SimpleTemp.Service
     public class SysLoginService : ISysLoginService
     {
         ISysUserRepository _sysUserRepository;
-        public SysLoginService(ISysUserRepository sysUserRepository)
+        ISysMenuAppService _sysMenuAppService;
+        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService)
         {
             _sysUserRepository = sysUserRepository;
+            _sysMenuAppService = sysMenuAppService;
         }
 
         /// <summary>
@@ -66,6 +71,12 @@ namespace Core.SimpleTemp.Service
             context.SignOutAsync();
             //清理内存缓存，待做
             return Task.CompletedTask;
+        }
+
+
+        public Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto)
+        {
+            return _sysMenuAppService.GetMenusAndFunctionByUserAsync(sysUserDto);
         }
     }
 }

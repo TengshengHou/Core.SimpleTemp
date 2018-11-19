@@ -29,7 +29,7 @@ function initTree() {
                     'data': data,        //绑定JsTree数据
                     "multiple": true    //是否多选
                 },
-                "plugins": ["state", "types", "wholerow", "checkbox", ],  //配置信息
+                "plugins": [ "types", "wholerow", "checkbox", ],  //配置信息
                 "checkbox": {
                     "keep_selected_style": false
                 }

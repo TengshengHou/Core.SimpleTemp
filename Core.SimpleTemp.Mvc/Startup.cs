@@ -3,10 +3,12 @@ using Core.SimpleTemp.Mvc.Common;
 using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Repository.Repository;
 using Core.SimpleTemp.Service;
+using Core.SimpleTemp.Service.Authorization;
 using Core.SimpleTemp.Service.MenuApp;
 using Core.SimpleTemp.Service.RoleApp;
 using Core.SimpleTemp.Service.UserApp;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +53,7 @@ namespace Core.SimpleTemp.Mvc
             {
                 //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
                 option.ExpireTimeSpan = TimeSpan.FromMinutes(WebAppConfiguration.TimeOutOfLogin);
-                
+
                 //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
                 option.SlidingExpiration = true;
 
@@ -77,7 +79,12 @@ namespace Core.SimpleTemp.Mvc
             services.AddTransient(typeof(ISysDepartmentAppService), typeof(SysDepartmentAppService));
             services.AddTransient(typeof(ISysRoleAppService), typeof(SysRoleAppService));
             services.AddTransient(typeof(ISysUserAppService), typeof(SysUserAppService));
-            services.AddAuthorization();
+
+            services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            
+            services.AddAuthorization(option =>
+            {
+            });
             services.AddMvc();
         }
 

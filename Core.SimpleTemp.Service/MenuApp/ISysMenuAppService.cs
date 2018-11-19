@@ -20,7 +20,7 @@ namespace Core.SimpleTemp.Service.MenuApp
         /// <returns></returns>
         Task<IPageModel<SysMenuDto>> GetMenusByParentAsync(Guid parentId, int startPage, int pageSize);
 
-        Task<List<SysMenuDto>> GetMenusByUserAsync(SysUserDto sysUserDto);
+        Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto);
      
     }
 }

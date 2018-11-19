@@ -24,9 +24,9 @@ namespace Core.SimpleTemp.Service
 
         public Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true) => _repository.DeleteAsync(where, autoSave);
 
-        public Task DeleteBatchAsync(List<Guid> ids)
+        public Task DeleteBatchAsync(List<Guid> ids, bool autoSave = true)
         {
-            return this.DeleteAsync(it => ids.Contains(it.Id));
+            return this.DeleteAsync(it => ids.Contains(it.Id), autoSave);
         }
 
         public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) => Mapper.Map<TDto>(await _repository.FirstOrDefaultAsync(predicate));
@@ -51,14 +51,14 @@ namespace Core.SimpleTemp.Service
 
         public async Task<TDto> InsertAsync(TDto dto, bool autoSave = true)
         {
-            var entity = await _repository.InsertAsync(Mapper.Map<TEntity>(dto));
+            var entity = await _repository.InsertAsync(Mapper.Map<TEntity>(dto), autoSave);
             return Mapper.Map<TDto>(entity);
         }
 
 
         public async Task<TDto> UpdateAsync(TDto dto, bool autoSave = true, List<string> noUpdateProperties = null)
         {
-            var entity = await _repository.UpdateAsync(Mapper.Map<TEntity>(dto));
+            var entity = await _repository.UpdateAsync(Mapper.Map<TEntity>(dto), autoSave, noUpdateProperties);
             return Mapper.Map<TDto>(entity);
         }
     }

@@ -24,7 +24,7 @@ namespace Core.SimpleTemp.Mvc.ViewComponents
             var nameIdentifierClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             var id = nameIdentifierClaim.Value;
             var userDto = new SysUserDto() { Id = Guid.Parse(id), LoginName = HttpContext.User.Identity.Name };
-            var menus = await _menuAppService.GetMenusByUserAsync(userDto);
+            var menus = await _menuAppService.GetMenusAndFunctionByUserAsync(userDto);
             return View(menus);
         }
     }
