@@ -10,6 +10,6 @@ namespace Core.SimpleTemp.Mvc.Common
         //登录有效时长
         //统一用此参数作为滑动时间单位分钟
         //1.票据 2.Cookie 3. SessionStore
-        public static int TimeOutOfLogin = 1;
+        public static int TimeOutOfLogin = 30;
     }
 }
