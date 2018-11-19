@@ -103,7 +103,7 @@ function add() {
     $("#Password").val("");
     $("#Password").removeAttr("disabled", "disabled");
     $("#Name").val("");
-    $("#Role").select2("val", "");
+    $("#Role").val("").trigger("change");
     $("#Title").text("新增用户");
     //弹出新增窗体
     $("#editModal").modal("show");
