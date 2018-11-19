@@ -1,6 +1,7 @@
 ﻿using Core.SimpleTemp.Service.RoleApp;
 using Core.SimpleTemp.Service.UserApp;
 using Core.SimpleTemp.Service.UserApp.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
+    [Authorize]
     [Route("User")]
     public class UserController : Controller
     {
         private readonly ISysUserAppService _service;
         private readonly ISysRoleAppService _roleService;
-        public UserController(ISysUserAppService service, ISysRoleAppService roleService)
+        public UserController(ISysUserAppService service, ISysRoleAppService sysRoleAppService)
         {
             _service = service;
-            _roleService = roleService;
+            _roleService = sysRoleAppService;
         }
 
         [HttpGet("Index")]
@@ -34,7 +36,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             int rowCount = 0;
             var result = await _service.GetUserByDepartmentAsync(departmentId, startPage, pageSize);
             rowCount = result.RowCount;
-
+            result?.PageData?.ForEach(r => r.Password = null);
             var roles = await _roleService.GetAllListAsync();
             return Json(new
             {
@@ -50,7 +52,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             try
             {
-                if (roles.Length > 0)
+                if (!string.IsNullOrEmpty(roles))
                 {
                     var userRoles = new List<SysUserRoleDto>();
                     foreach (var role in roles.Split(','))
@@ -68,7 +70,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 }
                 else
                 {
-                    await _service.UpdateAsync(dto);
+
+                    await _service.UpdateAsync(dto, noUpdateProperties: new List<string> { nameof(dto.Password) });
                     return Json(new { Result = "Success" });
                 }
             }

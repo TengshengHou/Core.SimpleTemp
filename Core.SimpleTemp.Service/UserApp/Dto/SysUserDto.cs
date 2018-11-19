@@ -8,7 +8,7 @@ namespace Core.SimpleTemp.Service.UserApp.Dto
 {
     public class SysUserDto
     {
-        public Guid Id;
+        public Guid Id { get; set; }
         [StringLength(30)]
         public string LoginName { get; set; }
         [StringLength(30)]

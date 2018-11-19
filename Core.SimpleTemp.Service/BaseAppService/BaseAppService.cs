@@ -55,7 +55,8 @@ namespace Core.SimpleTemp.Service
             return Mapper.Map<TDto>(entity);
         }
 
-        public async Task<TDto> UpdateAsync(TDto dto, bool autoSave = true)
+
+        public async Task<TDto> UpdateAsync(TDto dto, bool autoSave = true, List<string> noUpdateProperties = null)
         {
             var entity = await _repository.UpdateAsync(Mapper.Map<TEntity>(dto));
             return Mapper.Map<TDto>(entity);

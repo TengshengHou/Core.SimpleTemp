@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Core.SimpleTemp.Repository.Internal.Data;
 using System.Linq;
 using Core.SimpleTemp.Domain.IRepositories;
+using System.Collections.Generic;
 
 namespace Core.SimpleTemp.Repository
 {
@@ -42,11 +43,19 @@ namespace Core.SimpleTemp.Repository
             return PageModel;
         }
 
-        private void EntityToEntity(TEntity pTargetObjSrc, TEntity pTargetObjDest)
+        /// <summary>
+        /// 该方法优化空间很大。以后有时间定要优化
+        /// </summary>
+        /// <param name="pTargetObjSrc"></param>
+        /// <param name="pTargetObjDest"></param>
+        /// <param name="noUpdateProperties"></param>
+        protected void EntityToEntity(TEntity pTargetObjSrc, TEntity pTargetObjDest, List<string> noUpdateProperties = null)
         {
             foreach (var mItem in typeof(TEntity).GetProperties())
             {
-                mItem.SetValue(pTargetObjDest, mItem.GetValue(pTargetObjSrc, new object[] { }), null);
+                noUpdateProperties = noUpdateProperties ?? new List<string>();
+                if (!noUpdateProperties.Contains(mItem.Name))
+                    mItem.SetValue(pTargetObjDest, mItem.GetValue(pTargetObjSrc, new object[] { }), null);
             }
         }
 

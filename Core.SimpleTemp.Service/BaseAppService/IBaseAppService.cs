@@ -16,7 +16,7 @@ namespace Core.SimpleTemp.Service
         Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TDto> InsertAsync(TDto dto, bool autoSave = true);
-        Task<TDto> UpdateAsync(TDto entity, bool autoSave = true);
+        Task<TDto> UpdateAsync(TDto dto, bool autoSave = true, List<string> noUpdateProperties = null);
 
         Task DeleteAsync(TEntity entity, bool autoSave = true);
         Task DeleteAsync(TPrimaryKey id, bool autoSave = true);

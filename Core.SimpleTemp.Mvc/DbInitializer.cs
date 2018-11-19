@@ -78,11 +78,11 @@ namespace Core.SimpleTemp.Repository
              new SysMenu
              {
                  Name = "功能管理",
-                 Code = "Department",
+                 Code = "Menu",
                  SerialNumber = 3,
                  Icon = "fa fa-link",
                  ParentId = topMenu.Id,
-                 Url = "/Department/index"
+                 Url = "/Menu/index"
              });
 
             context.SysRole.Add(new SysRole()

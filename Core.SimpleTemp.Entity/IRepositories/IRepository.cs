@@ -58,7 +58,7 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true);
+        Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null);
 
         /// <summary>
         /// 删除实体

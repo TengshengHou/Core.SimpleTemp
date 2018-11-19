@@ -89,10 +89,11 @@ namespace Core.SimpleTemp.Repository
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
-        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
             var obj = await GetAsync(entity.Id);
-            EntityToEntity(entity, obj);
+            
+            EntityToEntity(entity, obj, noUpdateProperties);
             if (autoSave)
                 await SaveAsync();
             return entity;

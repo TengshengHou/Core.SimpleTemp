@@ -1,6 +1,7 @@
 ﻿using Core.SimpleTemp.Service.MenuApp;
 using Core.SimpleTemp.Service.RoleApp;
 using Core.SimpleTemp.Service.RoleApp.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
+    [Authorize]
     [Route("Role")]
     public class RoleController : Controller
     {

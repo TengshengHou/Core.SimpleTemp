@@ -1,11 +1,13 @@
 ﻿using Core.SimpleTemp.Mvc.Models;
 using Core.SimpleTemp.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
+    [Authorize]
     [Route("Department")]
     public class DepartmentController : Controller
     {

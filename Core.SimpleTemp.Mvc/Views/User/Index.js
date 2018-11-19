@@ -1,5 +1,13 @@
 ﻿var selectedId = "00000000-0000-0000-0000-000000000000";
+var ajaxCount = 0;
 $(function () {
+    $(document).ajaxStart(function () {
+        if (ajaxCount != 0)
+            layer.load(1);
+        ajaxCount++;
+    }).ajaxStop(function () {
+        layer.closeAll('loading');
+    })
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
@@ -81,7 +89,7 @@ function loadTables(startPage, pageSize) {
     })
 };
 function loadRoles(data) {
-    $("#Role").select2();
+    $("#Role").select2({ multiple: true });
     var option = "";
     $.each(data.roles, function (i, item) {
         option += "<option value='" + item.id + "'>" + item.name + "</option>"
@@ -93,8 +101,8 @@ function add() {
     $("#Id").val("00000000-0000-0000-0000-000000000000");
     $("#LoginName").val("");
     $("#Password").val("");
+    $("#Password").removeAttr("disabled", "disabled");
     $("#Name").val("");
-
     $("#Role").select2("val", "");
     $("#Title").text("新增用户");
     //弹出新增窗体
@@ -109,14 +117,15 @@ function edit(id) {
         success: function (data) {
             $("#Id").val(data.id);
             $("#LoginName").val(data.loginName);
-            $("#Password").val(data.Password);
+            //$("#Password").val(data.Password);
+            $("#Password").attr("disabled", "disabled");
             $("#Name").val(data.name);
             var sysRoleIds = [];
             if (data.userRoles) {
                 $.each(data.userRoles, function (i, item) {
                     sysRoleIds.push(item.sysRoleId)
                 });
-                $("#Role").select2("val", sysRoleIds);
+                $("#Role").val(sysRoleIds).trigger("change");
             }
             $("#Title").text("编辑用户")
             $("#editModal").modal("show");

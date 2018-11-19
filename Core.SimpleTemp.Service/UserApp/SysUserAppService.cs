@@ -26,5 +26,6 @@ namespace Core.SimpleTemp.Service.UserApp
             };
             return pageModelDto;
         }
+      
     }
 }

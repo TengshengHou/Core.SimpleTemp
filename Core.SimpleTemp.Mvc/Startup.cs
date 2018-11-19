@@ -51,6 +51,7 @@ namespace Core.SimpleTemp.Mvc
             {
                 //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
                 option.ExpireTimeSpan = TimeSpan.FromMinutes(WebAppConfiguration.TimeOutOfLogin);
+                
                 //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
                 option.SlidingExpiration = true;
 
