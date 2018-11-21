@@ -58,7 +58,16 @@ namespace Core.SimpleTemp.Domain.IRepositories
         /// </summary>
         /// <param name="entity">实体</param>
         /// <param name="autoSave">是否立即执行保存</param>
+        /// <param name="noUpdateProperties">不更新的字段集合</param>
         Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null);
+
+        /// <summary>
+        /// 更新实体（需要先从EF中查询出来再做更新)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="autoSave"></param>
+        /// <returns></returns>
+        Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true);
 
         /// <summary>
         /// 删除实体

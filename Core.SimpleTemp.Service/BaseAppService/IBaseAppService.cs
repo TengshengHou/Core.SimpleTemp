@@ -14,9 +14,12 @@ namespace Core.SimpleTemp.Service
         Task<List<TDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
         Task<TDto> GetAsync(TPrimaryKey id);
         Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> FirstOrDefaultEntityAsync(Expression<Func<TEntity, bool>> predicate) ;
 
         Task<TDto> InsertAsync(TDto dto, bool autoSave = true);
         Task<TDto> UpdateAsync(TDto dto, bool autoSave = true, List<string> noUpdateProperties = null);
+        Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true);
+
 
         Task DeleteAsync(TEntity entity, bool autoSave = true);
         Task DeleteAsync(TPrimaryKey id, bool autoSave = true);

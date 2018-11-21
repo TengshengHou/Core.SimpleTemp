@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userNamee = Context.User.Identity.Name;
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -87,6 +90,7 @@
     <script src="~/lib/select2/dist/js/i18n/zh-CN.js"></script>
     <script src="~/js/Common.js"></script>
     @RenderSection("scripts", false)
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
@@ -110,7 +114,7 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="~/images/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">Alexander Pierce</span>
+                                <span class="hidden-xs">@userNamee</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
@@ -139,7 +143,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="/user/Updatepwd" class="btn btn-default btn-flat">修改密码</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="/Account/SignOut" class="btn btn-default btn-flat">安全退出</a>

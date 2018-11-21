@@ -92,8 +92,19 @@ namespace Core.SimpleTemp.Repository
         public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
             var obj = await GetAsync(entity.Id);
-            
+
             EntityToEntity(entity, obj, noUpdateProperties);
+            return await UpdateAsync(entity, autoSave);
+        }
+
+        /// <summary>
+        /// 更新实体（需要先从EF中查询出来再做更新)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="autoSave"></param>
+        /// <returns></returns>
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
+        {
             if (autoSave)
                 await SaveAsync();
             return entity;

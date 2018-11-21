@@ -10,5 +10,7 @@ namespace Core.SimpleTemp.Service.UserApp
     {
 
         Task<IPageModel<SysUserDto>> GetUserByDepartmentAsync(Guid departmentId, int startPage, int pageSize);
+
+        Task<bool> UpdatePwdAsync(UpdatePwdDto dto);
     }
 }

@@ -26,6 +26,17 @@ namespace Core.SimpleTemp.Service.UserApp
             };
             return pageModelDto;
         }
-      
+
+        public async Task<bool> UpdatePwdAsync(UpdatePwdDto dto)
+        {
+            var userEntity = await FirstOrDefaultEntityAsync(user => user.LoginName == dto.LoginName && user.Password == dto.OldPwd);
+
+            if (userEntity == null)
+                return false;
+            userEntity.Password = dto.NewPwdTow;
+            await UpdateAsync(userEntity, true);
+            return true;
+        }
+
     }
 }

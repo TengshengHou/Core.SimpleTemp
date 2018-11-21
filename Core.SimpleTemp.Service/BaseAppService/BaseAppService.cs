@@ -30,6 +30,7 @@ namespace Core.SimpleTemp.Service
         }
 
         public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) => Mapper.Map<TDto>(await _repository.FirstOrDefaultAsync(predicate));
+        public async Task<TEntity> FirstOrDefaultEntityAsync(Expression<Func<TEntity, bool>> predicate) => await _repository.FirstOrDefaultAsync(predicate);
 
         public async Task<List<TDto>> GetAllListAsync() => Mapper.Map<List<TDto>>(await _repository.GetAllListAsync());
 
@@ -61,5 +62,11 @@ namespace Core.SimpleTemp.Service
             var entity = await _repository.UpdateAsync(Mapper.Map<TEntity>(dto), autoSave, noUpdateProperties);
             return Mapper.Map<TDto>(entity);
         }
+
+        public async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
+        {
+            return await _repository.UpdateAsync(entity, autoSave);
+        }
+
     }
 }

@@ -142,5 +142,31 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var dto = await _service.GetAsync(id);
             return Json(dto);
         }
+
+
+        [HttpGet("UpdatePwd")]
+        public IActionResult UpdatePwd()
+        {
+            return View();
+        }
+
+        [HttpPost("UpdatePwd")]
+        public async Task<IActionResult> UpdatePwdAsync(UpdatePwdDto updatePwdDto)
+        {
+            if (ModelState.IsValid)
+            {
+                //取当前登录账号
+                updatePwdDto.LoginName = HttpContext.User.Identity.Name;
+                var ret = await _service.UpdatePwdAsync(updatePwdDto);
+                //老密码验证成功后修改密码
+                if (ret)
+                {
+                    ModelState.AddModelError("ErrMsg", "密码修改成功，点击返回主页，下次登录请使用新密码");
+                }
+            }
+            //登录失败
+            ModelState.AddModelError("ErrMsg", "用户名或密码错误");
+            return View("UpdatePwd");
+        }
     }
 }

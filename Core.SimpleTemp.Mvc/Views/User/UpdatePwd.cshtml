@@ -1,9 +1,10 @@
 ﻿
 @{
-    ViewData["Title"] = "登录";
+    ViewData["Title"] = "修改密码";
     Layout = null;
 }
-@model Core.SimpleTemp.Mvc.Models.LoginViewModel
+@model Core.SimpleTemp.Service.UserApp.Dto.UpdatePwdDto
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,59 +35,39 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="#"><b>Admin</b>Core</a>
+            <a href="#"><b>修改密码</b></a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
-            @Html.ValidationMessage("LoginErr")
-            <form asp-controller="Account" asp-action="LoginAsync" method="post">
-                <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+            <p class="login-box-msg">当前登录账号 @Context.User.Identity.Name</p>
+            @Html.ValidationMessage("ErrMsg")
+            <form asp-controller="User" asp-action="UpdatePwdAsync" method="post">
                 <div class="form-group has-feedback">
-                    <input asp-for="LoginName" class="form-control" placeholder="账号">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    <span asp-validation-for="LoginName" class="text-danger"></span>
+                    <input type="password" asp-for="OldPwd" class="form-control" placeholder="原密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span asp-validation-for="OldPwd" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" asp-for="Password" class="form-control" placeholder="密码">
+                    <input type="password" asp-for="NewPwdOne" class="form-control" placeholder="密码">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <span asp-validation-for="NewPwdOne" class="text-danger"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" asp-for="NewPwdTow" class="form-control" placeholder="确认密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <span asp-validation-for="NewPwdTow" class="text-danger"></span>
                 </div>
                 <div class="row">
-                    <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                                <input type="checkbox"> 记住我
-                            </label>
-                        </div>
-                    </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+                        <a href="/home/index" class="btn btn-primary btn-block btn-flat">返回首页</a>
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">修改密码</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
-
-            <div class="social-auth-links text-center">
-                <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
-                    <i class="fa fa-facebook"></i> Sign in using
-                    Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
-                    <i class="fa fa-google-plus"></i> Sign in using
-                    Google+
-                </a>
-            </div>
-            <!-- /.social-auth-links -->
-            <a href="https://github.com/TengshengHou/Core.SimpleTemp.git">项目GitHub地址</a><br>
-
         </div>
-        <!-- /.login-box-body -->
     </div>
-
-
     <!-- /.login-box -->
     <!-- jQuery 3 -->
     <script src="~/lib/jquery/dist/jquery.js"></script>

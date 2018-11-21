@@ -57,5 +57,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             await _sysLoginService.SignOutAsync(HttpContext);
             return RedirectToAction("Login");
         }
+
+     
     }
 }
