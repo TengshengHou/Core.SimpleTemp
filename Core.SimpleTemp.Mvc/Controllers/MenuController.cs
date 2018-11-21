@@ -1,4 +1,6 @@
-﻿using Core.SimpleTemp.Mvc.Models;
+﻿using Core.SimpleTemp.Domain.Authorization;
+using Core.SimpleTemp.Mvc.Models;
+using Core.SimpleTemp.Service.Authorization;
 using Core.SimpleTemp.Service.MenuApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         // GET: /<controller>/
         [HttpGet("index")]
+
+        [PermissionFilter(MenuPermission.Menu_Index)]
         public IActionResult Index()
         {
             return View();
@@ -30,6 +34,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetMenuTreeData")]
+        [PermissionFilter(MenuPermission.Menu_GetMenuTreeData)]
         public async Task<IActionResult> GetMenuTreeDataAsync()
         {
             var menus = await _sysMenuAppService.GetAllListAsync();
@@ -46,6 +51,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetMneusByParent")]
+        [PermissionFilter(MenuPermission.Menu_GetMneusByParent)]
         public async Task<IActionResult> GetMneusByParentAsync(Guid parentId, int startPage, int pageSize)
         {
             int rowCount = 0;
@@ -66,6 +72,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("Edit")]
+        [PermissionFilter(MenuPermission.Menu_Edit)]
         public async Task<IActionResult> EditAsync(SysMenuDto dto)
         {
             if (!ModelState.IsValid)
@@ -90,6 +97,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("DeleteMuti")]
+        [PermissionFilter(MenuPermission.Menu_DeleteMuti)]
         public async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             try
@@ -117,6 +125,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("Delete")]
+        [PermissionFilter(MenuPermission.Menu_Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
@@ -138,6 +147,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpGet("Get")]
+        [PermissionFilter(MenuPermission.Menu_Get)]
         public async Task<ActionResult> GetAsync(Guid id)
         {
             var dto = await _sysMenuAppService.GetAsync(id);

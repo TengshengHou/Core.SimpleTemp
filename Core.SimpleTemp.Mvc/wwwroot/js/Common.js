@@ -1,12 +1,4 @@
 ﻿$(function () {
-    //$(document).ajaxStart(function () {
-    //    if (ajaxCount != 0)
-    //        layer.load(1);
-    //    ajaxCount++;
-    //}).ajaxStop(function () {
-    //    layer.closeAll('loading');
-    //})
-
     $(document).ajaxComplete(function (event, request, settings) {
         $(document).ajaxComplete(function (event, request, settings) {
             console.log(request.status);
@@ -15,7 +7,7 @@
                     Unauthorized());
             }
             if (request.status === 403) {
-                layer.alert(request.status + "无权限进行此操作");
+                layer.msg(request.status + "无权限进行此操作");
             }
         });
 
@@ -24,6 +16,5 @@
             var port = location.port == 80 ? "" : ":" + location.port
             window.location.href = location.protocol + "//" + location.hostname + port + '/account/login?ReturnUrl=' + currHref;
         }
-
     });
 });

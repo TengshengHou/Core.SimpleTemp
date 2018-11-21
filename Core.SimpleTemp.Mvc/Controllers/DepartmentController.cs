@@ -1,5 +1,7 @@
-﻿using Core.SimpleTemp.Mvc.Models;
+﻿using Core.SimpleTemp.Domain.Authorization;
+using Core.SimpleTemp.Mvc.Models;
 using Core.SimpleTemp.Service;
+using Core.SimpleTemp.Service.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,6 +23,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         // GET: /<controller>/
         [HttpGet("index")]
+        [PermissionFilter(DepartmentPermission.Department_Index)]
         public IActionResult Index()
         {
             return View();
@@ -31,6 +34,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetTreeData")]
+        [PermissionFilter(DepartmentPermission.Department_GetTreeData)]
         public async Task<IActionResult> GetTreeDataAsync()
         {
             var dtos = await _service.GetAllListAsync();
@@ -47,6 +51,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetChildrenByParent")]
+        [PermissionFilter(DepartmentPermission.Department_GetChildrenByParent)]
         public async Task<IActionResult> GetChildrenByParentAsync(Guid parentId, int startPage, int pageSize)
         {
             int rowCount = 0;
@@ -67,6 +72,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("Edit")]
+        [PermissionFilter(DepartmentPermission.Department_Edit)]
         public async Task<IActionResult> EditAsync(SysDepartmentDto dto)
         {
             if (!ModelState.IsValid)
@@ -91,6 +97,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("DeleteMuti")]
+        [PermissionFilter(DepartmentPermission.Department_DeleteMuti)]
         public async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             try
@@ -117,6 +124,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             }
         }
         [HttpPost("Delete")]
+        [PermissionFilter(DepartmentPermission.Department_Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
@@ -137,6 +145,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             }
         }
         [HttpGet("Get")]
+        [PermissionFilter(DepartmentPermission.Department_Get)]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var dto = await _service.GetAsync(id);

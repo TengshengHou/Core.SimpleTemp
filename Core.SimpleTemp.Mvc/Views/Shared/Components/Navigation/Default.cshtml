@@ -1,11 +1,69 @@
-﻿
-@model List<Core.SimpleTemp.Service.MenuApp.SysMenuDto>
-<li class="header">权限管理</li>
+﻿@using Core.SimpleTemp.Service.MenuApp;
+@using System.Text;
+@using System.Collections.Generic;
+@model List<SysMenuDto>
+
 @{
-    var menuList = Model.Where(a => a.Type == 0);
+    var menuList = Model.Where(a => a.Type == 0).ToList();
+    var topMenuList = menuList.Where(a => a.ParentId == Guid.Empty);
 }
-@foreach (var menu in menuList)
+
+@foreach (var topMenu in topMenuList)
 {
-    var isActive = ViewBag.CurrentMenu == menu.Code; //判断当前功能是否处于激活
-    <li class="@(isActive ? "active" : "")"><a href="@menu.Url"><i class="fa fa-link"></i> <span>@menu.Name</span></a></li>
+    <li class="header">@topMenu.Name</li>
+    StringBuilder sb = new StringBuilder();
+    GetChild(ref sb, menuList.Where(a => a.ParentId == topMenu.Id).ToList(), menuList, true);
+    @Html.Raw(sb);
+
+    //菜单自动展开
+    <script>
+        $('.sidebar-menu li:not(.treeview) > a').on('click', function () {
+            var $parent = $(this).parent().addClass('active');
+            $parent.siblings('.treeview.active').find('> a').trigger('click');
+            $parent.siblings().removeClass('active').find('li').removeClass('active');
+        });
+        $(window).on('load', function () {
+            $('.sidebar-menu a').each(function () {
+                var aHref = $(this).attr("href")
+                if (aHref != '#' && aHref != "") {
+                    console.log(this);
+                    var cur = window.location.href;
+                    var url = this.href;
+                    console.log("cur:" + cur);
+                    console.log("url:" + url);
+                    if (cur == url) {
+                        $(this).parent().addClass('active')
+                            .closest('.treeview-menu').addClass('.menu-open')
+                            .closest('.treeview').addClass('active');
+                    }
+                }
+            });
+        });
+    </script>
+
+}
+
+@functions{
+    void GetChild(ref StringBuilder sb, List<SysMenuDto> menus, List<SysMenuDto> AllMenus, bool firstFlag)
+    {
+        int count = 0;
+        if (!firstFlag)
+            sb.Append("<ul class='treeview-menu'>");
+        foreach (var m in menus)
+        {
+            List<SysMenuDto> menusChild = AllMenus.Where(a => a.ParentId == m.Id)?.ToList();
+            count = menusChild.Count();
+            sb.AppendFormat("<li class='{0}'>", count > 0 ? "treeview" : "");
+            sb.AppendFormat("<a href='{0}'><i class='{1}'></i><span class='title'>{2}</span>{3}</a>", count > 0 ? "#" : m.Url, m.Icon, m.Name, count > 0 ? "<span class='pull-right-container'>   <i class='fa fa-angle-left pull-right'></i> </span>" : "");
+            firstFlag = false;
+            if (count > 0)
+            {
+                GetChild(ref sb, menusChild, AllMenus, firstFlag);
+            }
+            sb.Append("</li>");
+        }
+        if (!firstFlag)
+            sb.Append("</ul>");
+
+    }
 }

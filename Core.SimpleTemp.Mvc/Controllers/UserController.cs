@@ -25,14 +25,14 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpGet("Index")]
-        // GET: /<controller>/
+        [PermissionFilter(UserPermission.UserController_Index)]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet("GetUserByDepartment")]
-
+        [PermissionFilter(UserPermission.UserController_GetUserByDepartment)]
         public async Task<IActionResult> GetUserByDepartmentAsync(Guid departmentId, int startPage, int pageSize)
         {
             int rowCount = 0;
@@ -50,7 +50,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("Edit")]
-        [PermissionFilter(Permission.UserController_Edit)]
+        [PermissionFilter(UserPermission.UserController_Edit)]
         public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
         {
             try
@@ -86,6 +86,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("DeleteMuti")]
+        [PermissionFilter(UserPermission.UserController_DeleteMuti)]
         public async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             try
@@ -113,6 +114,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpPost("Delete")]
+        [PermissionFilter(UserPermission.UserController_Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
             try
@@ -134,6 +136,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
         [HttpGet("Get")]
+        [PermissionFilter(UserPermission.UserController_Get)]
         public async Task<IActionResult> GetAsync(Guid id)
         {
             var dto = await _service.GetAsync(id);

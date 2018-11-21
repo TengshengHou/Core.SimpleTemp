@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Domain.Authorization;
+using Core.SimpleTemp.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,9 @@ namespace Core.SimpleTemp.Repository
             //添加系统默认管理员
             context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
             context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
-            //增加四个基本功能菜单
+
+
+            #region 增加四个基本功能菜单
             context.SysMenu.AddRange(
                   new SysMenu
                   {
@@ -51,7 +54,7 @@ namespace Core.SimpleTemp.Repository
             context.SysMenu.AddRange(new SysMenu
             {
                 Name = "组织机构管理",
-                Code = "Department",
+                Code = "Department_Index",
                 SerialNumber = 0,
                 Icon = "fa fa-link",
                 Url = "/Department/index",
@@ -69,7 +72,7 @@ namespace Core.SimpleTemp.Repository
              new SysMenu
              {
                  Name = "用户管理",
-                 Code = "User",
+                 Code = "UserController_Index",
                  SerialNumber = 2,
                  Icon = "fa fa-link",
                  ParentId = topMenu.Id,
@@ -78,13 +81,173 @@ namespace Core.SimpleTemp.Repository
              new SysMenu
              {
                  Name = "功能管理",
-                 Code = "Menu",
+                 Code = "MenuPermission.Menu_Index",
                  SerialNumber = 3,
                  Icon = "fa fa-link",
                  ParentId = topMenu.Id,
                  Url = "/Menu/index"
              });
 
+            context.SaveChanges();
+            #endregion
+
+            #region 用户管理功能初始化
+            var parentMenu = context.SysMenu.SingleOrDefault(m => m.Name == "用户管理");
+            //var prefix = "UserController_";
+            context.SysMenu.AddRange(new SysMenu
+            {
+                Name = "GetUserByDepartment",
+                Code = UserPermission.UserController_GetUserByDepartment,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Edit",
+                Code = UserPermission.UserController_Edit,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "DeleteMuti",
+                Code = UserPermission.UserController_DeleteMuti,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Delete",
+                Code = UserPermission.UserController_Delete,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Get",
+                Code = UserPermission.UserController_Get,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            });
+            context.SaveChanges();
+            #endregion
+
+            #region 组织机构管理功能初始化
+            parentMenu = context.SysMenu.SingleOrDefault(m => m.Name == "组织机构管理");
+            context.SysMenu.AddRange(new SysMenu
+            {
+                Name = "Edit",
+                Code = DepartmentPermission.Department_Edit,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "DeleteMuti",
+                Code = DepartmentPermission.Department_DeleteMuti,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Delete",
+                Code = DepartmentPermission.Department_Delete,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Get",
+                Code = DepartmentPermission.Department_Get,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetTreeData",
+                Code = DepartmentPermission.Department_GetTreeData,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetChildrenByParent",
+                Code = DepartmentPermission.Department_GetChildrenByParent,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            });
+            context.SaveChanges();
+            #endregion
+
+            #region Menu
+            parentMenu = context.SysMenu.SingleOrDefault(m => m.Name == "功能管理");
+            context.SysMenu.AddRange(new SysMenu
+            {
+                Name = "Edit",
+                Code = MenuPermission.Menu_Edit,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "DeleteMuti",
+                Code = MenuPermission.Menu_DeleteMuti,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Delete",
+                Code = MenuPermission.Menu_Delete,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Get",
+                Code = MenuPermission.Menu_Get,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetTreeData",
+                Code = MenuPermission.Menu_GetMenuTreeData,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetMneusByParent",
+                Code = MenuPermission.Menu_GetMneusByParent,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            });
+            context.SaveChanges();
+            #endregion
+
+
+            //角色
             context.SysRole.Add(new SysRole()
             {
                 Code = "Admin",
@@ -92,10 +255,11 @@ namespace Core.SimpleTemp.Repository
                 Remarks = "管理员",
                 CreateTime = DateTime.Now
             });
+
             context.SaveChanges();
             context.SysUserRole.Add(new SysUserRole
             {
-                SysRoleId = context.SysRole.FirstOrDefault(r => r.Name == "admin").Id,
+                SysRoleId = context.SysRole.FirstOrDefault(r => r.Name == "管理员").Id,
                 SysUserId = context.SysUser.FirstOrDefault(u => u.LoginName == "admin").Id
             });
             context.SaveChanges();

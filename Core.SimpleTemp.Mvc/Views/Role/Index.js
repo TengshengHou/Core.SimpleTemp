@@ -29,7 +29,7 @@ function initTree() {
                     'data': data,        //绑定JsTree数据
                     "multiple": true    //是否多选
                 },
-                "plugins": [ "types", "wholerow", "checkbox", ],  //配置信息
+                "plugins": ["types", "wholerow", "checkbox",],  //配置信息
                 "checkbox": {
                     "keep_selected_style": false
                 }
@@ -202,6 +202,11 @@ function savePermission() {
     $.each(checkedMenu, function (i, item) {
         permissions.push({ "SysRoleId": selectedRole, "SysMenuId": item.id });
     })
+    //获取半选状态ID
+    $(".jstree-undetermined").each(function () {
+        var id = $(this).parent().parent().attr('id');
+        permissions.push({ "SysRoleId": selectedRole, "SysMenuId": id });
+    });
     $.ajax({
         type: "POST",
         url: "/Role/SavePermission",
