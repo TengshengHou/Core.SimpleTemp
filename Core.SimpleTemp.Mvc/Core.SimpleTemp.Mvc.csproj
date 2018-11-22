@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.SimpleTemp.Entity\Core.SimpleTemp.Domain.csproj" />
-    <ProjectReference Include="..\Core.SimpleTemp.Repository\Core.SimpleTemp.Repository.csproj" />
+    <ProjectReference Include="..\Core.SimpleTemp.Domain\Core.SimpleTemp.Domain.csproj" />
+    <ProjectReference Include="..\Core.SimpleTemp.EntityFrameworkCore\Core.SimpleTemp.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Service\Core.SimpleTemp.Service.csproj" />
   </ItemGroup>
 

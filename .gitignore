@@ -8,3 +8,7 @@ Core.SimpleTemp.Mvc/wwwroot/lib/
 Core.SimpleTemp.Mvc/bin/
 Core.SimpleTemp.Service/obj/
 Core.SimpleTemp.Service/bin/
+Core.SimpleTemp.EntityFrameworkCore/obj/
+Core.SimpleTemp.EntityFrameworkCore/Migrations/
+Core.SimpleTemp.EntityFrameworkCore/bin/
+Core.SimpleTemp.Domain/obj/

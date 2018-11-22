@@ -67,7 +67,7 @@ namespace Core.SimpleTemp.Repository
         /// <returns></returns>
         public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return _dbContext.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(predicate);
+            return _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
         }
 
         /// <summary>
