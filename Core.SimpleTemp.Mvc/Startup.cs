@@ -30,12 +30,16 @@ namespace Core.SimpleTemp.Mvc
         public IConfiguration Configuration { get; }
 
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IHostingEnvironment env)
         {
             //仓储相关
             services.AddDbContext<CoreDBContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //生成环境用NpgConnection
+                if (env.IsDevelopment())
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                else
+                    options.UseNpgsql(Configuration.GetConnectionString("NpgConnection"));
             });
 
             //认证相关
@@ -81,7 +85,7 @@ namespace Core.SimpleTemp.Mvc
             services.AddTransient(typeof(ISysUserAppService), typeof(SysUserAppService));
 
             services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
-            
+
             services.AddAuthorization(option =>
             {
             });

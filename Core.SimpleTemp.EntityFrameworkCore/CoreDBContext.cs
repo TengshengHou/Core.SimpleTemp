@@ -35,7 +35,7 @@ namespace Core.SimpleTemp.Repository
               .HasKey(rm => new { rm.SysRoleId, rm.SysMenuId });
 
             //启用Guid主键类型扩展
-            //modelBuilder.HasPostgresExtension("uuid-ossp");
+            modelBuilder.HasPostgresExtension("uuid-ossp");
         }
     }
 
