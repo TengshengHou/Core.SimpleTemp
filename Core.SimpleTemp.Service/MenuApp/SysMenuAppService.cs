@@ -1,4 +1,4 @@
-﻿ using AutoMapper;
+﻿using AutoMapper;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using System;
@@ -10,6 +10,9 @@ using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.Internal.Data;
 using Core.SimpleTemp.Service.UserApp.Dto;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Core.SimpleTemp.Service.MenuApp
 {
@@ -18,11 +21,14 @@ namespace Core.SimpleTemp.Service.MenuApp
         private readonly ISysMenuRepository _sysMenuRepository;
         private readonly ISysUserRepository _sysUserRepository;
         private readonly ISysRoleRepository _sysRoleRepository;
-        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository) : base(sysMenuRepository)
+        private readonly IDistributedCache _distributedCache;
+        private const string MENU_CACHEKEY_PREFIX = "MENU_CACHEKEY";
+        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository, IDistributedCache distributedCache) : base(sysMenuRepository)
         {
             _sysMenuRepository = sysMenuRepository;
             _sysUserRepository = sysUserRepository;
             _sysRoleRepository = sysRoleRepository;
+            _distributedCache = distributedCache;
         }
 
 
@@ -43,6 +49,36 @@ namespace Core.SimpleTemp.Service.MenuApp
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
         public async Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto)
+        {
+            List<SysMenuDto> ret = new List<SysMenuDto>();
+            JsonSerializer jsonSerializer = new JsonSerializer();
+            var checheKey = MENU_CACHEKEY_PREFIX + sysUserDto.Id;
+            //缓存
+            if ((await _distributedCache.GetAsync(checheKey)) == null)
+            {
+
+                ret = await GetMenusAsync(sysUserDto);
+
+                //序列化好麻烦
+                var stringWriter = new StringWriter();
+                var jsonWriter = new JsonTextWriter(stringWriter);
+                jsonSerializer.Serialize(jsonWriter, ret);
+
+                await _distributedCache.SetStringAsync(checheKey, stringWriter.ToString(), new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(5) });
+            }
+            else
+            {
+                var jsonString = await _distributedCache.GetStringAsync(checheKey);
+                var stringReader = new StringReader(jsonString);
+                var jsonTextReader = new JsonTextReader(stringReader);
+
+                ret = jsonSerializer.Deserialize<List<SysMenuDto>>(jsonTextReader);
+            }
+
+            return ret;
+        }
+
+        public async Task<List<SysMenuDto>> GetMenusAsync(SysUserDto sysUserDto)
         {
             //查询出系统所有菜单
             List<SysMenuDto> result = new List<SysMenuDto>();

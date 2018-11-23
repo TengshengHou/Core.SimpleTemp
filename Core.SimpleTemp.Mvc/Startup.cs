@@ -35,8 +35,8 @@ namespace Core.SimpleTemp.Mvc
             //仓储相关
             services.AddDbContext<CoreDBContext>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             //认证相关
@@ -67,6 +67,7 @@ namespace Core.SimpleTemp.Mvc
 
             });
 
+            #region 仓储/Service Di
             //仓储DI
             services.AddTransient(typeof(ISysUserRepository), typeof(SysUserRepository));
             services.AddTransient(typeof(ISysMenuRepository), typeof(SysMenuRepository));
@@ -79,12 +80,15 @@ namespace Core.SimpleTemp.Mvc
             services.AddTransient(typeof(ISysDepartmentAppService), typeof(SysDepartmentAppService));
             services.AddTransient(typeof(ISysRoleAppService), typeof(SysRoleAppService));
             services.AddTransient(typeof(ISysUserAppService), typeof(SysUserAppService));
+            #endregion
 
+            //自定义授权处理
             services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            //services.AddAuthorization();
 
-            services.AddAuthorization(option =>
-            {
-            });
+            //采用内存版分布缓存 方便以后切换Redis
+            services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
+
             services.AddMvc();
         }
 

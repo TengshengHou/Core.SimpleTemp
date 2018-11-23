@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Service.MenuApp;
+﻿using Core.SimpleTemp.Service;
+using Core.SimpleTemp.Service.MenuApp;
 using Core.SimpleTemp.Service.UserApp;
 using Core.SimpleTemp.Service.UserApp.Dto;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +12,11 @@ namespace Core.SimpleTemp.Mvc.ViewComponents
     [ViewComponent(Name = "Navigation")]
     public class NavigationViewComponent : ViewComponent
     {
-        private readonly ISysMenuAppService _menuAppService;
+        private readonly ISysLoginService _sysLoginService;
         private readonly ISysUserAppService _userAppService;
-        public NavigationViewComponent(ISysMenuAppService menuAppService)
+        public NavigationViewComponent(ISysLoginService sysLoginService)
         {
-            _menuAppService = menuAppService;
+            _sysLoginService = sysLoginService;
 
         }
 
@@ -24,7 +25,7 @@ namespace Core.SimpleTemp.Mvc.ViewComponents
             var nameIdentifierClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             var id = nameIdentifierClaim.Value;
             var userDto = new SysUserDto() { Id = Guid.Parse(id), LoginName = HttpContext.User.Identity.Name };
-            var menus = await _menuAppService.GetMenusAndFunctionByUserAsync(userDto);
+            var menus = await _sysLoginService.GetMenusAndFunctionByUserAsync(userDto);
 
             return View(menus);
         }
