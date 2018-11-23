@@ -58,6 +58,15 @@ namespace Core.SimpleTemp.Mvc.Controllers
             return RedirectToAction("Login");
         }
 
-     
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+            return new JsonResult(new { msg = "无权限访问" });
+        }
+
     }
 }
