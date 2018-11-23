@@ -1,3 +1,9 @@
-﻿<p>@ViewData["UserName"]</p>
+﻿@using System.Runtime.InteropServices;
 
-@await Component.InvokeAsync("Navigation");
+
+<br>@($"系统架构：{RuntimeInformation.OSArchitecture}");
+<br>@($"系统名称：{RuntimeInformation.OSDescription}");
+<br>@($"进程架构：{RuntimeInformation.ProcessArchitecture}");
+<br>@($"是否64位操作系统：{Environment.Is64BitOperatingSystem}");
+<br>@($"机器名称：{Environment.MachineName}");
+

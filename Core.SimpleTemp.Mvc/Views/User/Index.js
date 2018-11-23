@@ -190,7 +190,7 @@ function deleteMulti() {
                     layer.closeAll();
                 }
                 else {
-                    layer.alert("删除失败！");
+                    layer.alert(data.message);
                 }
             }
         });
@@ -212,7 +212,7 @@ function deleteSingle(id) {
                     layer.closeAll();
                 }
                 else {
-                    layer.alert("删除失败！");
+                    layer.alert(data.message);
                 }
             }
         })

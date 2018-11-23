@@ -74,7 +74,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 else
                 {
 
-                    await _service.UpdateAsync(dto, noUpdateProperties: new List<string> { nameof(dto.Password) });
+                    await _service.UpdateAsync(dto, noUpdateProperties: new List<string> { nameof(dto.Password), nameof(dto.LoginName) });
                     return Json(new { Result = "Success" });
                 }
             }
@@ -97,6 +97,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 {
                     delIds.Add(Guid.Parse(id));
                 }
+
+                //验证是否是admin
+                var retDleteVerifyAdmin = await DleteVerifyAdmin(delIds);
+                if (retDleteVerifyAdmin != null)
+                    return retDleteVerifyAdmin;
+
                 await _service.DeleteBatchAsync(delIds);
                 return Json(new
                 {
@@ -119,6 +125,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             try
             {
+                //验证是否是admin
+                var retDleteVerifyAdmin = await DleteVerifyAdmin(new List<Guid>() { id });
+                if (retDleteVerifyAdmin != null)
+                    return retDleteVerifyAdmin;
+
                 await _service.DeleteAsync(id);
                 return Json(new
                 {
@@ -167,6 +178,30 @@ namespace Core.SimpleTemp.Mvc.Controllers
             //登录失败
             ModelState.AddModelError("ErrMsg", "用户名或密码错误");
             return View("UpdatePwd");
+        }
+
+        /// <summary>
+        /// 删除时验证用户是否是admin
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        private async Task<IActionResult> DleteVerifyAdmin(List<Guid> delIds)
+        {
+            Guid adminId = Guid.Empty;
+            var admin = (await _service.GetAllListAsync(u => u.LoginName == "admin"));
+            if (admin != null && admin.Any())
+            {
+                adminId = (Guid)admin.FirstOrDefault()?.Id;
+                if (delIds.Contains(adminId))
+                {
+                    return Json(new
+                    {
+                        Result = "Faild",
+                        Message = "admin用户不能删除"
+                    });
+                }
+            }
+            return null;
         }
     }
 }

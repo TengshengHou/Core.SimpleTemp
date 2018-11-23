@@ -37,6 +37,5 @@ namespace Core.SimpleTemp.Service.UserApp
             await UpdateAsync(userEntity, true);
             return true;
         }
-
     }
 }
