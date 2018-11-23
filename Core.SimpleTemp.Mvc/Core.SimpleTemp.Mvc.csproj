@@ -22,4 +22,19 @@
     <ProjectReference Include="..\Core.SimpleTemp.Service\Core.SimpleTemp.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Views\Department\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Menu\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\Role\Index.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Views\User\Index.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

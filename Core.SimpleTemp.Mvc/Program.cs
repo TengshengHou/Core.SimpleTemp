@@ -25,7 +25,7 @@ namespace Core.SimpleTemp.Mvc
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseUrls("http://*:8080")
                 .UseStartup<Startup>();
     }
 }
