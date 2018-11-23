@@ -38,7 +38,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">建议使用谷歌浏览器</p>
             @Html.ValidationMessage("LoginErr")
             <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />

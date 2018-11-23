@@ -124,7 +124,7 @@ function edit(id) {
         url: "/User/Get?id=" + id + "&_t=" + new Date().getTime(),
         success: function (data) {
             $("#Id").val(data.id);
-            $("#LoginName").val(data.loginName);
+            $("#LoginName").val(data.loginName).attr("disabled", "disabled");
             //$("#Password").val(data.Password);
             $("#Password").attr("disabled", "disabled");
             $("#Name").val(data.name);

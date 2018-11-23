@@ -35,8 +35,8 @@ namespace Core.SimpleTemp.Mvc
             //仓储相关
             services.AddDbContext<CoreDBContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             //认证相关
