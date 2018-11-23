@@ -13,3 +13,4 @@ Core.SimpleTemp.EntityFrameworkCore/Migrations/
 Core.SimpleTemp.EntityFrameworkCore/bin/
 Core.SimpleTemp.Domain/obj/
 Core.SimpleTemp.Mvc/appsettings.Production.json
+Core.SimpleTemp.Domain/bin/

@@ -17,24 +17,19 @@
 
     //菜单自动展开
     <script>
-        $('.sidebar-menu li:not(.treeview) > a').on('click', function () {
-            var $parent = $(this).parent().addClass('active');
-            $parent.siblings('.treeview.active').find('> a').trigger('click');
-            $parent.siblings().removeClass('active').find('li').removeClass('active');
-        });
         $(window).on('load', function () {
             $('.sidebar-menu a').each(function () {
                 var aHref = $(this).attr("href")
                 if (aHref != '#' && aHref != "") {
-                    console.log(this);
                     var cur = window.location.href;
                     var url = this.href;
-                    console.log("cur:" + cur);
-                    console.log("url:" + url);
+                    //console.log("cur:" + cur);
+                    //console.log("url:" + url);
                     if (cur == url) {
-                        $(this).parent().addClass('active')
-                            .closest('.treeview-menu').addClass('.menu-open')
-                            .closest('.treeview').addClass('active');
+                        console.log(this);
+                        $(this).parents(".treeview").each(function () {
+                            $(this).addClass('menu-open').addClass("active");
+                        });
                     }
                 }
             });
