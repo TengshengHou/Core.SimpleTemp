@@ -34,5 +34,16 @@ namespace Core.SimpleTemp.Service
             return viewPageModel;
         }
 
+        public async Task<bool> IsNoneChildren(List<Guid> ids)
+        {
+            foreach (var item in ids)
+            {
+                var delEntity = await FirstOrDefaultAsync(e => e.ParentId == item);
+                if (delEntity != null)
+                    return false;
+            }
+            return true;
+        }
+
     }
 }

@@ -21,6 +21,9 @@ namespace Core.SimpleTemp.Service.MenuApp
         Task<IPageModel<SysMenuDto>> GetMenusByParentAsync(Guid parentId, int startPage, int pageSize);
 
         Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto);
-     
+
+        Task<bool> IsNoneChildren(List<Guid> ids);
+
+
     }
 }

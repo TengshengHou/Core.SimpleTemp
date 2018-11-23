@@ -108,6 +108,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 {
                     delIds.Add(Guid.Parse(id));
                 }
+                var retbool = await _sysMenuAppService.IsNoneChildren(delIds);
+                //有子节点不能删除
+                if (!retbool)
+                {
+                    return Json(new
+                    {
+                        Result = "Faild",
+
+                        Message = "删除失败,不能删除带有子节点的数据"
+                    });
+                }
                 await _sysMenuAppService.DeleteBatchAsync(delIds);
                 return Json(new
                 {
@@ -130,6 +141,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             try
             {
+                var retbool = await _sysMenuAppService.IsNoneChildren(new List<Guid>() { id });
+                //有子节点不能删除
+                if (!retbool)
+                {
+                    return Json(new
+                    {
+                        Result = "Faild",
+
+                        Message = "删除失败,不能删除带有子节点的数据"
+                    });
+                }
                 await _sysMenuAppService.DeleteAsync(id);
                 return Json(new
                 {

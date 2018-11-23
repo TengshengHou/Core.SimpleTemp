@@ -37,36 +37,6 @@ namespace Core.SimpleTemp.Service.MenuApp
             return pageModel;
         }
 
-        ///// <summary>
-        ///// 根据用户获取功能菜单
-        ///// </summary>
-        ///// <param name="userId">用户ID</param>
-        ///// <returns></returns>
-        //public async Task<List<SysMenuDto>> GetMenusByUserAsync(SysUserDto sysUserDto)
-        //{
-        //    //查询出系统所有菜单
-        //    List<SysMenuDto> result = new List<SysMenuDto>();
-        //    var allMenus = await _sysMenuRepository.GetAllListAsync(it => it.Type == 0);
-        //    allMenus = allMenus.OrderBy(it => it.SerialNumber).ToList();
-
-        //    if (sysUserDto.LoginName == "admin") //超级管理员
-        //        return Mapper.Map<List<SysMenuDto>>(allMenus);
-
-        //    //查询当前用户角色
-        //    var userRoleIds = await _sysUserRepository.FindUserRoleAsync(sysUserDto.Id);
-        //    if (userRoleIds == null)
-        //        return result;
-
-        //    //根据角色查询角色拥有的菜单ID
-        //    List<Guid> menuIds = new List<Guid>();
-        //    foreach (var roleId in userRoleIds)
-        //    {
-        //        menuIds = menuIds.Union(await _sysRoleRepository.GetMenuListByRoleAsync(roleId)).ToList();
-        //    }
-        //    allMenus = allMenus.Where(it => menuIds.Contains(it.Id)).OrderBy(it => it.SerialNumber).ToList();
-        //    return Mapper.Map<List<SysMenuDto>>(allMenus);
-        //}
-
         /// <summary>
         /// 根据用户获取功能菜单
         /// </summary>
@@ -96,6 +66,15 @@ namespace Core.SimpleTemp.Service.MenuApp
             allMenus = allMenus.Where(it => menuIds.Contains(it.Id)).OrderBy(it => it.SerialNumber).ToList();
             return Mapper.Map<List<SysMenuDto>>(allMenus);
         }
-
+        public async Task<bool> IsNoneChildren(List<Guid> ids)
+        {
+            foreach (var item in ids)
+            {
+                var delEntity = await FirstOrDefaultAsync(e => e.ParentId == item);
+                if (delEntity != null)
+                    return false;
+            }
+            return true;
+        }
     }
 }

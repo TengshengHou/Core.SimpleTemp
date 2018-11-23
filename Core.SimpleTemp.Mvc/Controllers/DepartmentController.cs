@@ -108,6 +108,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 {
                     delIds.Add(Guid.Parse(id));
                 }
+                var retbool = await _service.IsNoneChildren(delIds);
+                //有子节点不能删除
+                if (!retbool)
+                {
+                    return Json(new
+                    {
+                        Result = "Faild",
+
+                        Message = "删除失败,不能删除带有子节点的数据"
+                    });
+                }
                 await _service.DeleteBatchAsync(delIds);
                 return Json(new
                 {
@@ -127,8 +138,21 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_Delete)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
+
             try
             {
+                var retbool = await _service.IsNoneChildren(new List<Guid>() { id });
+                //有子节点不能删除
+                if (!retbool)
+                {
+                    return Json(new
+                    {
+                        Result = "Faild",
+
+                        Message = "删除失败,不能删除带有子节点的数据"
+                    });
+                }
+
                 await _service.DeleteAsync(id);
                 return Json(new
                 {
@@ -162,6 +186,10 @@ namespace Core.SimpleTemp.Mvc.Controllers
             }
             return "";
         }
+
+
+
+
     }
 }
 
