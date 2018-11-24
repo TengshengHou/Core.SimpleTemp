@@ -16,7 +16,12 @@ namespace Core.SimpleTemp.Mvc
     {
         public static void Main(string[] args)
         {
-            var webHost = CreateWebHostBuilder(args).Build();
+            var webHost = CreateWebHostBuilder(args).ConfigureLogging(logging =>
+            {
+                //logging.ClearProviders();
+                logging.AddFile();
+            }).Build();
+
             //初始化DB
             DBInitializer.Initialize(webHost);
             //初始化AutoMapper
