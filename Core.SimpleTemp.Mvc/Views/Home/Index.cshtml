@@ -35,8 +35,34 @@
     </div>
 
     <div class="row">
+
+        <div class="col-xs-7">
+            <div class="box ">
+                <div class="box-header with-border">
+                    <h3 class="box-title">项目介绍</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    @Html.Raw(ViewData["ReadmeHtml"])
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    以上内容抓取至GitHub Readme
+                </div>
+                <!-- /.box-footer-->
+            </div>
+        </div>
+
         <div class="col-xs-5">
-            <div class="box box-danger">
+            <div class="box ">
                 <div class="box-header with-border">
                     <h3 class="box-title">当前系统进程占用内存资源使用情况</h3>
 
@@ -53,36 +79,12 @@
                 <!-- /.box-body -->
             </div>
         </div>
-
     </div>
-    <!-- Default box -->
 
-    <div class="box">
-        <div class="box-header with-border">
-            <h3 class="box-title">Title</h3>
-
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
-        </div>
-        <div class="box-body">
-
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            Footer
-        </div>
-        <!-- /.box-footer-->
-    </div>
     <!-- /.box -->
 </section>
 
-<script src="http://adminlte.la998.com/plugins/chartjs/Chart.min.js"></script>">
+<script src="http://adminlte.la998.com/plugins/chartjs/Chart.min.js"></script>
 
 <script>
 
