@@ -5,6 +5,67 @@
 
 
 <section class="content">
+
+    <div class="row">
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>Github</h3>
+                    <p>Core.SimpleTemp Github</p>
+                </div>
+                <div class="icon">
+                    <img style="width:45px;height:45px" src="~/images/github.png" />
+                </div>
+                <a href="https://github.com/TengshengHou/Core.SimpleTemp" class="small-box-footer">Core.SimpleTemp Github<i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>Jenkins</h3>
+                    <p>持续集成</p>
+                </div>
+                <div class="icon">
+                    <img style="width:45px;height:45px" src="~/images/headshot.png" />
+                </div>
+                <a href="http://132.232.18.92:9090" class="small-box-footer">Jenkins<i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>Supervisor</h3>
+                    <p>进程守护</p>
+                </div>
+                <div class="icon">
+                    <img style="width:45px;height:45px" src="~/images/supervisor.gif" />
+                </div>
+                <a href="http://132.232.18.92:9001" class="small-box-footer">Supervisor <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>待添加</h3>
+
+                    <p>Unique Visitors</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+
     <div class="callout callout-info">
         <h4>Tip!</h4>
 
@@ -50,8 +111,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="box-body">
-                    @Html.Raw(ViewData["ReadmeHtml"])
+                <div class="box-body readme">
+                    正在努力加载！
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
@@ -84,7 +145,11 @@
     <!-- /.box -->
 </section>
 
-<script src="http://adminlte.la998.com/plugins/chartjs/Chart.min.js"></script>
+
+@section scripts{
+    <script src="http://adminlte.la998.com/plugins/chartjs/Chart.min.js"></script>
+    <script src="~/Views/Home/Index.js"></script>
+}
 
 <script>
 

@@ -13,7 +13,6 @@ namespace Core.SimpleTemp.Mvc.ViewComponents
     public class NavigationViewComponent : ViewComponent
     {
         private readonly ISysLoginService _sysLoginService;
-        private readonly ISysUserAppService _userAppService;
         public NavigationViewComponent(ISysLoginService sysLoginService)
         {
             _sysLoginService = sysLoginService;
