@@ -1,7 +1,7 @@
-# Core.SimpleTemp
-<div class="myreadme">
+#标记开始
 
-Core.SimpleTemp
+#Core.SimpleTemp
+
 功能实现完全基于AspnetCore开发，个人学习AspNetcore 的Demo 项目 <br>
 <br>
 //Demo集成部署/环境<br>
@@ -27,8 +27,4 @@ Tree：JsTree<br>
 日志：采用基于队列的FileLog<br>
 数据访问：EFcore<br>
 
-
-
-
-
-</div>
+#标记结束
