@@ -2,8 +2,8 @@
 # Core.SimpleTemp
 #我是抓取开始标记#
 <br>
-功能实现完全基于AspnetCore开发，个人学习AspNetcore 的Demo 项目 <br>
-
+个人学习AspNetCore技术的Demo项目，地址：http://132.232.18.92:8080
+<br>  
 //Demo集成部署/环境<br>
 系统环境：Centos7.5 ; Cpu/1h ; 内存/1g  网络/1M （其实就是腾讯云10元/月）<br>
 数 据 库：PostgreSQL 9.5.15<br>
