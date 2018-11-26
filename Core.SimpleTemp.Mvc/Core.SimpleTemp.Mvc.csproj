@@ -25,7 +25,7 @@
     <None Update="Views\Department\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Views\Home\index.js">
+    <None Update="Views\Home\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Views\Menu\Index.js">
