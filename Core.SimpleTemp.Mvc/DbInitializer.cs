@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Domain.Authorization;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Domain.Authorization;
 using Core.SimpleTemp.Domain.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,8 +32,8 @@ namespace Core.SimpleTemp.Repository
             var dep = context.SysDepartment.FirstOrDefault();
 
             //添加系统默认管理员
-            context.SysUser.Add(new SysUser { LoginName = "admin", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
-            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = "admin", LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
+            context.SysUser.Add(new SysUser { LoginName = WebAppConfiguration.AdminLoginName, Password = WebAppConfiguration.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
+            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = WebAppConfiguration.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
 
 
             #region 增加四个基本功能菜单
