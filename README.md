@@ -1,4 +1,6 @@
 # Core.SimpleTemp
+<readme>
+
 Core.SimpleTemp
 功能实现完全基于AspnetCore开发，个人学习AspNetcore 的Demo 项目 <br>
 <br>
@@ -29,3 +31,4 @@ Tree：JsTree<br>
 
 
 
+</readme>
