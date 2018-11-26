@@ -7,6 +7,7 @@ using Core.SimpleTemp.Service.UserApp.Dto;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.Internal.Data;
+using Core.SimpleTemp.Common;
 
 namespace Core.SimpleTemp.Service.UserApp
 {
@@ -36,6 +37,13 @@ namespace Core.SimpleTemp.Service.UserApp
             userEntity.Password = dto.NewPwdTow;
             await UpdateAsync(userEntity, true);
             return true;
+        }
+
+        public async Task RestoreUserPwdAsync(string LoginName)
+        {
+            var entity = await FirstOrDefaultEntityAsync(u => u.LoginName == LoginName);
+            entity.Password = WebAppConfiguration.InitialPassword;
+            await UpdateAsync(entity, true);
         }
     }
 }

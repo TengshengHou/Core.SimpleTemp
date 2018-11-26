@@ -78,5 +78,7 @@ namespace Core.SimpleTemp.Service
         {
             return _sysMenuAppService.GetMenusAndFunctionByUserAsync(sysUserDto);
         }
+
+        
     }
 }

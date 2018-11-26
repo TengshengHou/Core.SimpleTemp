@@ -1,9 +1,10 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "登录";
     Layout = null;
 }
+@using Microsoft.AspNetCore.Hosting
 @model Core.SimpleTemp.Mvc.Models.LoginViewModel
+@inject IHostingEnvironment env
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,6 +31,7 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
 </head>
 <body class="hold-transition login-page">
     <div class="login-box">
@@ -38,7 +40,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">默认账号/密码 admin </p>
+            <p class="login-box-msg">默认账号/密码 admin/123456 </p>
             @Html.ValidationMessage("LoginErr")
             <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
@@ -54,11 +56,15 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
+                        @if (env.IsDevelopment())
+                        {
+                            <button type="button" id="RestoreAdminBtn" class="btn btn-primary btn-block btn-flat">重置测试账号密码</button>
+                        }
                         @*<div class="checkbox icheck">
-                            <label>
-                                <input type="checkbox"> 记住我
-                            </label>
-                        </div>*@
+                        <label>
+                            <input type="checkbox"> 记住我
+                        </label>
+                    </div>*@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
@@ -110,6 +116,18 @@
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' /* optional */
             });
+
+            //测试环境重置管理员密码
+            $("#RestoreAdminBtn").click(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Account/RestoreAdminPwd?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
+                    success: function (data) {
+                        $(".login-box-msg").html("重置密码成功！");
+                    }
+                });
+            });
+
         });
     </script>
 </body>

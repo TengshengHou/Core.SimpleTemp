@@ -1,6 +1,9 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Mvc.Models;
 using Core.SimpleTemp.Service;
+using Core.SimpleTemp.Service.UserApp;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
@@ -11,9 +14,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
     public class AccountController : Controller
     {
         private ISysLoginService _sysLoginService;
-        public AccountController(ISysLoginService sysLoginService)
+        private IHostingEnvironment _env;
+
+        public AccountController(ISysLoginService sysLoginService, IHostingEnvironment env)
         {
             _sysLoginService = sysLoginService;
+            _env = env;
         }
 
         [HttpGet("Login")]
@@ -66,6 +72,20 @@ namespace Core.SimpleTemp.Mvc.Controllers
         public IActionResult AccessDenied()
         {
             return new JsonResult(new { msg = "无权限访问" });
+        }
+
+        /// <summary>
+        /// 初始化admin密码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("RestoreAdminPwd")]
+        public async Task<IActionResult> RestoreAdminPwdAsync([FromServices] ISysUserAppService sysUserAppService)
+        {
+            if (_env.IsDevelopment())
+            {
+                await sysUserAppService.RestoreUserPwdAsync(WebAppConfiguration.AdminLoginName);
+            }
+            return Ok();
         }
 
     }

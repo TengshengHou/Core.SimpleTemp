@@ -11,5 +11,8 @@ namespace Core.SimpleTemp.Common
         //统一用此参数作为滑动时间单位分钟
         //1.票据 2.Cookie 3. SessionStore
         public static int TimeOutOfLogin = 1;
+
+        public static string AdminLoginName = "admin";
+        public static string InitialPassword = "123456";
     }
 }
