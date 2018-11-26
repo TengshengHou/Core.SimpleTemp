@@ -6,5 +6,5 @@
             $(".readme").html(response.data);
         }
     });
-
+     
 });
