@@ -40,7 +40,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">当前环境 = @env.EnvironmentName 默认账号/密码 admin/123456  </p>
+            <p class="login-box-msg">默认账号/密码 admin/123456  </p>
             @Html.ValidationMessage("LoginErr")
             <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
