@@ -38,7 +38,7 @@
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">建议使用谷歌浏览器</p>
+            <p class="login-box-msg">默认账号/密码 admin </p>
             @Html.ValidationMessage("LoginErr")
             <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
@@ -54,11 +54,11 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="checkbox icheck">
+                        @*<div class="checkbox icheck">
                             <label>
                                 <input type="checkbox"> 记住我
                             </label>
-                        </div>
+                        </div>*@
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
@@ -81,7 +81,6 @@
             </div>
             <!-- /.social-auth-links -->
             <a href="https://github.com/TengshengHou/Core.SimpleTemp.git">项目GitHub地址</a><br>
-
         </div>
         <!-- /.login-box-body -->
     </div>
@@ -100,6 +99,12 @@
 
     <script>
         $(function () {
+            var UA = navigator.userAgent.toLowerCase().toString();
+            //判断浏览器是否为QQ浏览器兼容模式
+            if (UA.indexOf("qqbrowser") > -1 && UA.indexOf("trident") > -1) {
+                $(".login-box-msg").html($(".login-box-msg").html() + "<br/> <font color='red'  >小弟不才，目前不支持QQ浏览器兼容模式，Ta真是个祖宗</font>")
+            }
+
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
@@ -109,3 +114,4 @@
     </script>
 </body>
 </html>
+

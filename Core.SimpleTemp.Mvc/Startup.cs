@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,7 @@ namespace Core.SimpleTemp.Mvc
 
             }).AddCookie(option =>
             {
+
                 //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
                 option.ExpireTimeSpan = TimeSpan.FromMinutes(WebAppConfiguration.TimeOutOfLogin);
 
@@ -66,6 +68,9 @@ namespace Core.SimpleTemp.Mvc
                 //};
 
             });
+
+          
+
 
             #region 仓储/Service Di
             //仓储DI
@@ -90,6 +95,8 @@ namespace Core.SimpleTemp.Mvc
             services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
 
             services.AddMvc();
+
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
