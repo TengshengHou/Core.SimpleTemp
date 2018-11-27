@@ -1,9 +1,8 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
-using Core.SimpleTemp.Service.UserApp.Dto;
+using Core.SimpleTemp.Service.UserApp;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Service.MenuApp

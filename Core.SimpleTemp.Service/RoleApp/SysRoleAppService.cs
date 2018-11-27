@@ -1,14 +1,8 @@
 ﻿using AutoMapper;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
-using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
-using Core.SimpleTemp.Repository.Internal.Data;
-using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.RoleApp.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Service.RoleApp

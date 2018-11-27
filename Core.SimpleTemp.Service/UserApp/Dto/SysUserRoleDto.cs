@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.SimpleTemp.Service.UserApp.Dto
+namespace Core.SimpleTemp.Service.UserApp
 {
     public class SysUserRoleDto
     {

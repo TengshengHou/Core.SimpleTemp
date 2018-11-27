@@ -2,9 +2,8 @@
 
 namespace Core.SimpleTemp.Service
 {
-    public class SysDepartmentDto
+    public class SysDepartmentDto:Dto
     {
-        public Guid Id { get; set; }
 
         /// <summary>
         /// 部门名称

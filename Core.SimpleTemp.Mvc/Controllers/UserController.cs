@@ -1,9 +1,8 @@
-﻿using Core.SimpleTemp.Common;
-using Core.SimpleTemp.Domain.Authorization;
+﻿using Core.SimpleTemp.Domain.Authorization;
+using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Service.Authorization;
 using Core.SimpleTemp.Service.RoleApp;
 using Core.SimpleTemp.Service.UserApp;
-using Core.SimpleTemp.Service.UserApp.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,11 +14,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
 {
     [Authorize]
     [Route("User")]
-    public class UserController : Controller
+    public class UserController : AjaxController<SysUserDto, SysUser, ISysUserAppService>
     {
         private readonly ISysUserAppService _service;
         private readonly ISysRoleAppService _roleService;
-        public UserController(ISysUserAppService service, ISysRoleAppService sysRoleAppService)
+        public UserController(ISysUserAppService service, ISysRoleAppService sysRoleAppService) : base(service)
         {
             _service = service;
             _roleService = sysRoleAppService;
@@ -27,7 +26,99 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         [HttpGet("Index")]
         [PermissionFilter(UserPermission.UserController_Index)]
-        public IActionResult Index()
+        public override IActionResult Index()
+        {
+            return base.Index();
+        }
+
+
+
+        [HttpPost("Edit")]
+        [PermissionFilter(UserPermission.UserController_Edit)]
+        public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(roles))
+                {
+                    var userRoles = new List<SysUserRoleDto>();
+                    foreach (var role in roles.Split(','))
+                    {
+                        userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
+                    }
+                    dto.UserRoles = userRoles;
+                }
+                return await base.EditAsync(dto);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "Faild", Message = ex.Message });
+
+            }
+        }
+
+        [HttpPost("DeleteMuti")]
+        [PermissionFilter(UserPermission.UserController_DeleteMuti)]
+        public override async Task<IActionResult> DeleteMutiAsync(string ids)
+        {
+            try
+            {
+                #region 验证是否是admin
+                string[] idArray = ids.Split(',');
+                List<Guid> delIds = new List<Guid>();
+                foreach (string id in idArray)
+                {
+                    delIds.Add(Guid.Parse(id));
+                }
+
+                var retDleteVerifyAdmin = await DleteVerifyAdmin(delIds);
+                if (retDleteVerifyAdmin != null)
+                    return retDleteVerifyAdmin;
+                #endregion
+                return await base.DeleteMutiAsync(ids);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    Result = "Faild",
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("Delete")]
+        [PermissionFilter(UserPermission.UserController_Delete)]
+        public override async Task<IActionResult> DeleteAsync(Guid id)
+        {
+            try
+            {
+                //验证是否是admin
+                var retDleteVerifyAdmin = await DleteVerifyAdmin(new List<Guid>() { id });
+                if (retDleteVerifyAdmin != null)
+                    return retDleteVerifyAdmin;
+                return await base.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    Result = "Faild",
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("Get")]
+        [PermissionFilter(UserPermission.UserController_Get)]
+        public override async Task<IActionResult> GetAsync(Guid id)
+        {
+            return await base.GetAsync(id);
+        }
+
+
+        [HttpGet("UpdatePwd")]
+        public IActionResult UpdatePwd()
         {
             return View();
         }
@@ -48,118 +139,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 rows = result.PageData,
                 roles = roles
             });
-        }
-
-        [HttpPost("Edit")]
-        [PermissionFilter(UserPermission.UserController_Edit)]
-        public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(roles))
-                {
-                    var userRoles = new List<SysUserRoleDto>();
-                    foreach (var role in roles.Split(','))
-                    {
-                        userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
-                    }
-                    dto.UserRoles = userRoles;
-                }
-
-                var model = await _service.GetAsync(dto.Id);
-                if (model == null)
-                {
-                    await _service.InsertAsync(dto);
-                    return Json(new { Result = "Success" });
-                }
-                else
-                {
-
-                    await _service.UpdateAsync(dto, noUpdateProperties: new List<string> { nameof(dto.Password), nameof(dto.LoginName) });
-                    return Json(new { Result = "Success" });
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Result = "Faild", Message = ex.Message });
-
-            }
-        }
-
-        [HttpPost("DeleteMuti")]
-        [PermissionFilter(UserPermission.UserController_DeleteMuti)]
-        public async Task<IActionResult> DeleteMutiAsync(string ids)
-        {
-            try
-            {
-                string[] idArray = ids.Split(',');
-                List<Guid> delIds = new List<Guid>();
-                foreach (string id in idArray)
-                {
-                    delIds.Add(Guid.Parse(id));
-                }
-
-                //验证是否是admin
-                var retDleteVerifyAdmin = await DleteVerifyAdmin(delIds);
-                if (retDleteVerifyAdmin != null)
-                    return retDleteVerifyAdmin;
-
-                await _service.DeleteBatchAsync(delIds);
-                return Json(new
-                {
-                    Result = "Success"
-                });
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    Result = "Faild",
-                    Message = ex.Message
-                });
-            }
-        }
-
-        [HttpPost("Delete")]
-        [PermissionFilter(UserPermission.UserController_Delete)]
-        public async Task<IActionResult> DeleteAsync(Guid id)
-        {
-            try
-            {
-                //验证是否是admin
-                var retDleteVerifyAdmin = await DleteVerifyAdmin(new List<Guid>() { id });
-                if (retDleteVerifyAdmin != null)
-                    return retDleteVerifyAdmin;
-
-                await _service.DeleteAsync(id);
-                return Json(new
-                {
-                    Result = "Success"
-                });
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    Result = "Faild",
-                    Message = ex.Message
-                });
-            }
-        }
-
-        [HttpGet("Get")]
-        [PermissionFilter(UserPermission.UserController_Get)]
-        public async Task<IActionResult> GetAsync(Guid id)
-        {
-            var dto = await _service.GetAsync(id);
-            return Json(dto);
-        }
-
-
-        [HttpGet("UpdatePwd")]
-        public IActionResult UpdatePwd()
-        {
-            return View();
         }
 
         [HttpPost("UpdatePwd")]
@@ -195,11 +174,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 adminId = (Guid)admin.FirstOrDefault()?.Id;
                 if (delIds.Contains(adminId))
                 {
-                    return Json(new
-                    {
-                        Result = "Faild",
-                        Message = "admin用户不能删除"
-                    });
+                    return JsonFaild("admin用户不能删除");
                 }
             }
             return null;

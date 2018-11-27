@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
-using Core.SimpleTemp.Service.UserApp.Dto;
-using System.Threading.Tasks;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.Internal.Data;
-using Core.SimpleTemp.Common;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Service.UserApp
 {

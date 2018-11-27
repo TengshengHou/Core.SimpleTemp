@@ -1,11 +1,8 @@
-﻿using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.RoleApp;
-using Core.SimpleTemp.Service.RoleApp.Dtos;
+﻿using Core.SimpleTemp.Service.RoleApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
@@ -22,7 +19,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         // GET: /<controller>/
         [HttpGet("Index")]
-        public IActionResult Index()
+        public  IActionResult Index()
         {
             return View();
         }

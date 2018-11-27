@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Core.SimpleTemp.Service.MenuApp
 {
-    public class SysMenuDto
+    public class SysMenuDto:Dto
     {
-        public Guid Id { get; set; }
 
         /// <summary>
         /// 父级ID

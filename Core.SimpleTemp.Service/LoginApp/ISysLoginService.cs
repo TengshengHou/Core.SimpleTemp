@@ -1,6 +1,6 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.UserApp.Dto;
+using Core.SimpleTemp.Service.UserApp;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;

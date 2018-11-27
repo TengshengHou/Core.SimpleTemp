@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.RoleApp.Dtos;
-using Core.SimpleTemp.Service.UserApp.Dto;
+using Core.SimpleTemp.Service.RoleApp;
+using Core.SimpleTemp.Service.UserApp;
 
 namespace Core.SimpleTemp.Service
 {

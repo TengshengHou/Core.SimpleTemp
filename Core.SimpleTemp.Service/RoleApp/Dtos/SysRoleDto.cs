@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.SimpleTemp.Service.MenuApp
+namespace Core.SimpleTemp.Service.RoleApp
 {
-    public class SysRoleDto
+    public class SysRoleDto : Dto
     {
-        public Guid Id { get; set; }
-
         public string Code { get; set; }
 
         [Required(ErrorMessage = "角色名称不能为空。")]

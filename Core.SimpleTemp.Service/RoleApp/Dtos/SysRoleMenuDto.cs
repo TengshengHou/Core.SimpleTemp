@@ -1,7 +1,7 @@
 ﻿using Core.SimpleTemp.Service.MenuApp;
 using System;
 
-namespace Core.SimpleTemp.Service.RoleApp.Dtos
+namespace Core.SimpleTemp.Service.RoleApp
 {
     public class SysRoleMenuDto
     {

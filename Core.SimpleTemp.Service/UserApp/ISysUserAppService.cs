@@ -1,6 +1,5 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
-using Core.SimpleTemp.Service.UserApp.Dto;
 using System;
 using System.Threading.Tasks;
 

@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.SimpleTemp.Service.UserApp.Dto
+namespace Core.SimpleTemp.Service.UserApp
 {
-    public class SysUserDto
+    public class SysUserDto : Dto
     {
-        public Guid Id { get; set; }
         [StringLength(30)]
         public string LoginName { get; set; }
         [StringLength(30)]

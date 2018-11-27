@@ -1,7 +1,5 @@
 ﻿using Core.SimpleTemp.Service;
-using Core.SimpleTemp.Service.MenuApp;
 using Core.SimpleTemp.Service.UserApp;
-using Core.SimpleTemp.Service.UserApp.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

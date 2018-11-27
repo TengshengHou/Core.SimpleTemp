@@ -1,8 +1,7 @@
 ﻿using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
-using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.UserApp.Dto;
+using Core.SimpleTemp.Service.UserApp;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;

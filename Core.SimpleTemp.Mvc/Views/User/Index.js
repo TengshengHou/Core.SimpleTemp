@@ -107,6 +107,7 @@ function loadRoles(data) {
 function add() {
     $("#Id").val("00000000-0000-0000-0000-000000000000");
     $("#LoginName").val("");
+    $("#LoginName").removeAttr("disabled", "disabled");
     $("#Password").val("");
     $("#Password").removeAttr("disabled", "disabled");
     $("#Name").val("");
