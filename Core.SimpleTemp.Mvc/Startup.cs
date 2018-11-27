@@ -1,17 +1,10 @@
-﻿using Core.SimpleTemp.Domain.IRepositories;
+﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Mvc.Common;
 using Core.SimpleTemp.Repository;
-using Core.SimpleTemp.Repository.Repository;
-using Core.SimpleTemp.Service;
-using Core.SimpleTemp.Service.Authorization;
-using Core.SimpleTemp.Service.MenuApp;
-using Core.SimpleTemp.Service.RoleApp;
-using Core.SimpleTemp.Service.UserApp;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,8 +29,8 @@ namespace Core.SimpleTemp.Mvc
             //仓储相关
             services.AddDbContext<CoreDBContext>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             //认证相关
@@ -69,23 +62,6 @@ namespace Core.SimpleTemp.Mvc
 
             });
 
-          
-
-
-            #region 仓储/Service Di
-            //仓储DI
-            services.AddTransient(typeof(ISysUserRepository), typeof(SysUserRepository));
-            services.AddTransient(typeof(ISysMenuRepository), typeof(SysMenuRepository));
-            services.AddTransient(typeof(ISysRoleRepository), typeof(SysRoleRepository));
-            services.AddTransient(typeof(ISysDepartmentRepository), typeof(SysDepartmentRepository));
-            services.AddTransient(typeof(ISysUserRepository), typeof(SysUserRepository));
-            //Service DI
-            services.AddTransient(typeof(ISysLoginService), typeof(SysLoginService));
-            services.AddTransient(typeof(ISysMenuAppService), typeof(SysMenuAppService));
-            services.AddTransient(typeof(ISysDepartmentAppService), typeof(SysDepartmentAppService));
-            services.AddTransient(typeof(ISysRoleAppService), typeof(SysRoleAppService));
-            services.AddTransient(typeof(ISysUserAppService), typeof(SysUserAppService));
-            #endregion
 
             //自定义授权处理
             services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();

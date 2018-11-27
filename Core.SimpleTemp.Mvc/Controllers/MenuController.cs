@@ -1,7 +1,7 @@
-﻿using Core.SimpleTemp.Domain.Authorization;
+﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service.Authorization;
-using Core.SimpleTemp.Service.MenuApp;
+using Core.SimpleTemp.Application.Authorization;
+using Core.SimpleTemp.Application.MenuApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

@@ -1,0 +1,12 @@
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\bin\Debug\netcoreapp2.1\Core.SimpleTemp.Service.deps.json
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\bin\Debug\netcoreapp2.1\Core.SimpleTemp.Service.dll
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\bin\Debug\netcoreapp2.1\Core.SimpleTemp.Service.pdb
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.csprojAssemblyReference.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.csproj.CoreCompileInputs.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.AssemblyInfoInputs.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.AssemblyInfo.cs
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.csproj.CopyComplete
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.dll
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Service.pdb
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Hosting.Abstractions.dll
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\bin\Debug\netcoreapp2.1\Microsoft.AspNetCore.Hosting.Abstractions.xml

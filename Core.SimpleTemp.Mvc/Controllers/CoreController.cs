@@ -1,5 +1,5 @@
 ﻿using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service.Common;
+using Core.SimpleTemp.Application.Common;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

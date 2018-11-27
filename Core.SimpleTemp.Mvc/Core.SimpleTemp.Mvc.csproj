@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="logs\**" />
+    <Content Remove="logs\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <None Remove="logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
@@ -16,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core.SimpleTemp.Application\Core.SimpleTemp.Application.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Domain\Core.SimpleTemp.Domain.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.EntityFrameworkCore\Core.SimpleTemp.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\Core.SimpleTemp.Service\Core.SimpleTemp.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

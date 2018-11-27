@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Core.SimpleTemp.Application;
+using Core.SimpleTemp.Application.HostingStartup;
 using Core.SimpleTemp.Repository;
-using Core.SimpleTemp.Service;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Core.SimpleTemp.Mvc
 {
@@ -16,21 +10,17 @@ namespace Core.SimpleTemp.Mvc
     {
         public static void Main(string[] args)
         {
-            var webHost = CreateWebHostBuilder(args).ConfigureLogging(logging =>
-            {
-                //logging.ClearProviders();
-                logging.AddFile();
-            }).Build();
-
-            //初始化DB
-            DBInitializer.Initialize(webHost);
-            //初始化AutoMapper
-            CoreMapper.Initialize();
+            var webHost = CreateWebHostBuilder(args).Build();
+            // 初始化DB
+            //DBInitializer.Initialize(webHost);
             webHost.Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseUrls("http://*:8080")
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            return WebHost.CreateDefaultBuilder(args).UseSetting(WebHostDefaults.HostingStartupAssembliesKey, "Core.SimpleTemp.Application");
+            //return WebHost.CreateDefaultBuilder(args)
+                 ;
+        }
     }
 }

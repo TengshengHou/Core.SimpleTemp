@@ -1,8 +1,8 @@
-﻿using Core.SimpleTemp.Domain.Authorization;
+﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Service.Authorization;
-using Core.SimpleTemp.Service.RoleApp;
-using Core.SimpleTemp.Service.UserApp;
+using Core.SimpleTemp.Application.Authorization;
+using Core.SimpleTemp.Application.RoleApp;
+using Core.SimpleTemp.Application.UserApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

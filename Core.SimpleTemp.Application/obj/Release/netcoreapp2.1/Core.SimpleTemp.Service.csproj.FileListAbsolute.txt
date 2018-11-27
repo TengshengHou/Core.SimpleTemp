@@ -1,0 +1,4 @@
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Release\netcoreapp2.1\Core.SimpleTemp.Service.csprojAssemblyReference.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Release\netcoreapp2.1\Core.SimpleTemp.Service.csproj.CoreCompileInputs.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Release\netcoreapp2.1\Core.SimpleTemp.Service.AssemblyInfoInputs.cache
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Service\obj\Release\netcoreapp2.1\Core.SimpleTemp.Service.AssemblyInfo.cs

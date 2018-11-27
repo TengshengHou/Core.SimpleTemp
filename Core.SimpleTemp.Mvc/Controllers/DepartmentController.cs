@@ -1,7 +1,6 @@
-﻿using Core.SimpleTemp.Domain.Authorization;
+﻿using Core.SimpleTemp.Application;
+using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service;
-using Core.SimpleTemp.Service.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

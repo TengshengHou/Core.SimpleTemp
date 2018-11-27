@@ -1,4 +1,4 @@
-﻿using Core.SimpleTemp.Service.RoleApp;
+﻿using Core.SimpleTemp.Application.RoleApp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

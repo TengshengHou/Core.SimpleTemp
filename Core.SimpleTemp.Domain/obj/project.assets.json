@@ -687,11 +687,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj",
+      "projectUniqueName": "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj",
       "projectName": "Core.SimpleTemp.Domain",
-      "projectPath": "D:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj",
+      "projectPath": "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "D:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\obj\\",
+      "outputPath": "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

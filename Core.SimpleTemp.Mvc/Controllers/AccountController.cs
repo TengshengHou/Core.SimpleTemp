@@ -1,8 +1,8 @@
 ﻿using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Service;
-using Core.SimpleTemp.Service.UserApp;
+using Core.SimpleTemp.Application;
+using Core.SimpleTemp.Application.UserApp;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
