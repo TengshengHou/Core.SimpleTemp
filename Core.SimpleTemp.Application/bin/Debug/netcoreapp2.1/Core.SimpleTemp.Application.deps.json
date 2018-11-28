@@ -9,6 +9,7 @@
       "Core.SimpleTemp.Application/1.0.0": {
         "dependencies": {
           "AutoMapper": "7.0.1",
+          "Core.SimpleTemp.Common": "1.0.0",
           "Core.SimpleTemp.Domain": "1.0.0",
           "Core.SimpleTemp.EntityFrameworkCore": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "2.1.1",
@@ -1472,6 +1473,15 @@
           }
         }
       },
+      "Core.SimpleTemp.Common/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "2.1.1",
+          "Microsoft.Extensions.Logging.Abstractions": "2.1.1"
+        },
+        "runtime": {
+          "Core.SimpleTemp.Common.dll": {}
+        }
+      },
       "Core.SimpleTemp.Domain/1.0.0": {
         "runtime": {
           "Core.SimpleTemp.Domain.dll": {}
@@ -1479,6 +1489,7 @@
       },
       "Core.SimpleTemp.EntityFrameworkCore/1.0.0": {
         "dependencies": {
+          "Core.SimpleTemp.Common": "1.0.0",
           "Core.SimpleTemp.Domain": "1.0.0",
           "Microsoft.AspNetCore": "2.1.6",
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.1.1",
@@ -2423,6 +2434,11 @@
       "sha512": "sha512-/gIAoONgBMtnhogZ8U1z+yoZFhNUfrH27Lpl6Rq0MVPJNi+J7aQk/GTijhsal/lo9W0VhX5q/k+JZYbyTI1c1A==",
       "path": "zero.logging.file/2.1.0",
       "hashPath": "zero.logging.file.2.1.0.nupkg.sha512"
+    },
+    "Core.SimpleTemp.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Core.SimpleTemp.Domain/1.0.0": {
       "type": "project",

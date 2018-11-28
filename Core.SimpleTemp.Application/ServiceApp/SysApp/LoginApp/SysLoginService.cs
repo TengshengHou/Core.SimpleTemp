@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Core.SimpleTemp.Common;
 
 namespace Core.SimpleTemp.Application
 {
     /// <summary>
     /// 系统登录服务
     /// </summary>
+    [AutoDi(typeof(ISysLoginService))]
     public class SysLoginService : ISysLoginService
     {
         ISysUserRepository _sysUserRepository;

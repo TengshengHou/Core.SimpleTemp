@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ServiceApp\LoginApp\Dtos\**" />
-    <EmbeddedResource Remove="ServiceApp\LoginApp\Dtos\**" />
-    <None Remove="ServiceApp\LoginApp\Dtos\**" />
+    <Compile Remove="ServiceApp\SysApp\LoginApp\Dtos\**" />
+    <EmbeddedResource Remove="ServiceApp\SysApp\LoginApp\Dtos\**" />
+    <None Remove="ServiceApp\SysApp\LoginApp\Dtos\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core.SimpleTemp.Common\Core.SimpleTemp.Common.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Domain\Core.SimpleTemp.Domain.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.EntityFrameworkCore\Core.SimpleTemp.EntityFrameworkCore.csproj" />
   </ItemGroup>

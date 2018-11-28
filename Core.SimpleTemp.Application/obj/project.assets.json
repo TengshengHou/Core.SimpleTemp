@@ -2027,6 +2027,20 @@
           "lib/netstandard2.0/Zero.Logging.File.dll": {}
         }
       },
+      "Core.SimpleTemp.Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "2.1.1",
+          "Microsoft.Extensions.Logging.Abstractions": "2.1.1"
+        },
+        "compile": {
+          "bin/placeholder/Core.SimpleTemp.Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Core.SimpleTemp.Common.dll": {}
+        }
+      },
       "Core.SimpleTemp.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
@@ -2041,6 +2055,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
         "dependencies": {
+          "Core.SimpleTemp.Common": "1.0.0",
           "Core.SimpleTemp.Domain": "1.0.0",
           "Microsoft.AspNetCore": "2.1.6",
           "Microsoft.AspNetCore.Hosting.Abstractions": "2.1.1",
@@ -6023,6 +6038,11 @@
         "zero.logging.file.nuspec"
       ]
     },
+    "Core.SimpleTemp.Common/1.0.0": {
+      "type": "project",
+      "path": "../Core.SimpleTemp.Common/Core.SimpleTemp.Common.csproj",
+      "msbuildProject": "../Core.SimpleTemp.Common/Core.SimpleTemp.Common.csproj"
+    },
     "Core.SimpleTemp.Domain/1.0.0": {
       "type": "project",
       "path": "../Core.SimpleTemp.Domain/Core.SimpleTemp.Domain.csproj",
@@ -6037,6 +6057,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
       "AutoMapper >= 7.0.1",
+      "Core.SimpleTemp.Common >= 1.0.0",
       "Core.SimpleTemp.Domain >= 1.0.0",
       "Core.SimpleTemp.EntityFrameworkCore >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.Abstractions >= 2.1.1",
@@ -6079,6 +6100,9 @@
       "frameworks": {
         "netcoreapp2.1": {
           "projectReferences": {
+            "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Common\\Core.SimpleTemp.Common.csproj": {
+              "projectPath": "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Common\\Core.SimpleTemp.Common.csproj"
+            },
             "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj": {
               "projectPath": "E:\\GitHome\\Core.SimpleTemp\\Core.SimpleTemp.Domain\\Core.SimpleTemp.Domain.csproj"
             },

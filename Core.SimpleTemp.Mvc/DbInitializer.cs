@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using Core.SimpleTemp.Repository;
 
-namespace Core.SimpleTemp.Application.HostingStartup
+namespace Core.SimpleTemp.Mvc
 {
     public class DBInitializer
     {

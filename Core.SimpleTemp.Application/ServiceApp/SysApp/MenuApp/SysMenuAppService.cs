@@ -11,9 +11,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.SimpleTemp.Common;
 
 namespace Core.SimpleTemp.Application.MenuApp
 {
+    [AutoDi(typeof(ISysMenuAppService))]
     public class SysMenuAppService : BaseAppService<SysMenuDto, SysMenu, ISysMenuRepository>, ISysMenuAppService
     {
         private readonly ISysMenuRepository _sysMenuRepository;

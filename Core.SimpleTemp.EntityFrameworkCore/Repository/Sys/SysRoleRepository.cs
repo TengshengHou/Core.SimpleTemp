@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Core.SimpleTemp.Repository.Repository
 {
+
+    [AutoDi(typeof(ISysRoleRepository))]
     public class SysRoleRepository : BaseRepository<SysRole>, ISysRoleRepository
     {
         public SysRoleRepository(CoreDBContext dbContext) : base(dbContext)

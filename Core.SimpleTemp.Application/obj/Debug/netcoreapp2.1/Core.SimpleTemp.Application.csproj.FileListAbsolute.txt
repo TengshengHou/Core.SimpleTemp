@@ -12,3 +12,5 @@ E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\obj\Debug\netcoreapp2.1\C
 E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Application.csproj.CopyComplete
 E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Application.dll
 E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\obj\Debug\netcoreapp2.1\Core.SimpleTemp.Application.pdb
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\bin\Debug\netcoreapp2.1\Core.SimpleTemp.Common.dll
+E:\GitHome\Core.SimpleTemp\Core.SimpleTemp.Application\bin\Debug\netcoreapp2.1\Core.SimpleTemp.Common.pdb

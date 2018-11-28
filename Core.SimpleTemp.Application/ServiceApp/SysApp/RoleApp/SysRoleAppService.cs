@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using System;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.RoleApp
 {
+    [AutoDi(typeof(ISysRoleAppService))]
     public class SysRoleAppService : BaseAppService<SysRoleDto, SysRole, ISysRoleRepository>, ISysRoleAppService
     {
         public SysRoleAppService(ISysRoleRepository repository) : base(repository)

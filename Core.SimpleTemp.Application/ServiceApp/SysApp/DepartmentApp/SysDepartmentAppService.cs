@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
@@ -10,6 +11,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 namespace Core.SimpleTemp.Application
 {
+    [AutoDi(typeof(ISysDepartmentAppService))]
     public class SysDepartmentAppService : BaseAppService<SysDepartmentDto, SysDepartment, ISysDepartmentRepository>, ISysDepartmentAppService
     {
         public SysDepartmentAppService(ISysDepartmentRepository repository) : base(repository)

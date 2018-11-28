@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.UserApp
 {
+
+    [AutoDi(typeof(ISysUserAppService))]
     public class SysUserAppService : BaseAppService<SysUserDto, SysUser, ISysUserRepository>, ISysUserAppService
     {
         public SysUserAppService(ISysUserRepository repository) : base(repository)

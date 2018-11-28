@@ -1,4 +1,5 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Domain.Entities;
 using Core.SimpleTemp.Domain.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository
 {
+    [AutoDi(typeof(ISysUserRepository))]
     public class SysUserRepository : BaseRepository<SysUser>, ISysUserRepository
     {
         public SysUserRepository(CoreDBContext dbContext) : base(dbContext)
