@@ -1,5 +1,5 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
-using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.RoleApp;
 using Core.SimpleTemp.Application.UserApp;

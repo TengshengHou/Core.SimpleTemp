@@ -134,7 +134,6 @@ function edit(id) {
             $("#Manager").val(data.manager);
             $("#ContactNumber").val(data.contactNumber);
             $("#Remarks").val(data.remarks);
-
             $("#Title").text("编辑功能")
             $("#addRootModal").modal("show");
         }

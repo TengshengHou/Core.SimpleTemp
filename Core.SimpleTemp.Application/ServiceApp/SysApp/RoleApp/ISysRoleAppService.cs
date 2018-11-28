@@ -1,10 +1,12 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Entitys;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.RoleApp
 {
+    [AutoDi(typeof(SysRoleAppService))]
     public interface ISysRoleAppService : IBaseAppService<SysRoleDto, SysRole>
     {
         /// <summary>

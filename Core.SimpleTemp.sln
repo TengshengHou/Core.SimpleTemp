@@ -5,13 +5,13 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Mvc", "Core.SimpleTemp.Mvc\Core.SimpleTemp.Mvc.csproj", "{F4E7CF39-F321-4B03-9EB8-58691DC2FBA4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.EntityFrameworkCore", "Core.SimpleTemp.EntityFrameworkCore\Core.SimpleTemp.EntityFrameworkCore.csproj", "{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Repositories", "Core.SimpleTemp.Repositories\Core.SimpleTemp.Repositories.csproj", "{B55571B5-5FE8-4ED7-A2D5-9EEB0214D9C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Domain", "Core.SimpleTemp.Domain\Core.SimpleTemp.Domain.csproj", "{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Entitys", "Core.SimpleTemp.Entitys\Core.SimpleTemp.Entitys.csproj", "{2AC9BBD0-C78D-4BA1-8D79-E08BF5F981FA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Application", "Core.SimpleTemp.Application\Core.SimpleTemp.Application.csproj", "{58B5A636-40D6-4FFD-BFF1-F69F32EC7281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SimpleTemp.Common", "Core.SimpleTemp.Common\Core.SimpleTemp.Common.csproj", "{7E9A701D-3CCC-43A7-9F16-4F96B9397025}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.SimpleTemp.Common", "Core.SimpleTemp.Common\Core.SimpleTemp.Common.csproj", "{7E9A701D-3CCC-43A7-9F16-4F96B9397025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

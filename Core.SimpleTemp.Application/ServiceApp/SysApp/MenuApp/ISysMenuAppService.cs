@@ -1,12 +1,14 @@
-﻿using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
+﻿using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using Core.SimpleTemp.Application.UserApp;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core.SimpleTemp.Common;
 
 namespace Core.SimpleTemp.Application.MenuApp
 {
+    [AutoDi(typeof(SysMenuAppService))]
     public interface ISysMenuAppService : IBaseAppService<SysMenuDto, SysMenu>
     {
         /// <summary>

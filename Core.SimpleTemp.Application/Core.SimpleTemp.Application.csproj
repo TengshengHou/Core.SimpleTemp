@@ -23,8 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core.SimpleTemp.Common\Core.SimpleTemp.Common.csproj" />
-    <ProjectReference Include="..\Core.SimpleTemp.Domain\Core.SimpleTemp.Domain.csproj" />
-    <ProjectReference Include="..\Core.SimpleTemp.EntityFrameworkCore\Core.SimpleTemp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Core.SimpleTemp.Entitys\Core.SimpleTemp.Entitys.csproj" />
+    <ProjectReference Include="..\Core.SimpleTemp.Repositories\Core.SimpleTemp.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

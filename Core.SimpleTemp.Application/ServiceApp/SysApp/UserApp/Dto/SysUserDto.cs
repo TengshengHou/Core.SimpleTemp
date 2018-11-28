@@ -1,4 +1,4 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Entitys;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

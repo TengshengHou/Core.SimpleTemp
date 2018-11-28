@@ -4,13 +4,19 @@ using System.Text;
 
 namespace Core.SimpleTemp.Common
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Interface)]
     public class AutoDiAttribute : Attribute
     {
-        public Type _interfaceType;
-        public AutoDiAttribute(Type interfaceType)
+        public Type ImplementationType { get; private set; }
+        public string DiType { get; private set; }
+        public AutoDiAttribute(Type implementationType, string diType = AutoDiAttribute.Transient)
         {
-            _interfaceType = interfaceType;
+            ImplementationType = implementationType;
+            DiType = diType;
         }
+
+        public const string Scoped = "Scoped";
+        public const string Transient = "Transient";
+        public const string Singleton = "Singleton";
     }
 }

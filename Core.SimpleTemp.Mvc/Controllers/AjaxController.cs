@@ -1,4 +1,4 @@
-﻿using Core.SimpleTemp.Domain.Entities;
+﻿using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Application;
 using Microsoft.AspNetCore.Mvc;
 using System;

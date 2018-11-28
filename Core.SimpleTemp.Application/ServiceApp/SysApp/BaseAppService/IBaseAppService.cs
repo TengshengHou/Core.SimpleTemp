@@ -1,4 +1,4 @@
-﻿using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
+﻿using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

@@ -1,5 +1,5 @@
-﻿using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Domain.IRepositories;
+﻿using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories;
 using Core.SimpleTemp.Application.MenuApp;
 using Core.SimpleTemp.Application.UserApp;
 using Microsoft.AspNetCore.Authentication;
@@ -14,7 +14,7 @@ namespace Core.SimpleTemp.Application
     /// <summary>
     /// 系统登录服务
     /// </summary>
-    [AutoDi(typeof(ISysLoginService))]
+    
     public class SysLoginService : ISysLoginService
     {
         ISysUserRepository _sysUserRepository;

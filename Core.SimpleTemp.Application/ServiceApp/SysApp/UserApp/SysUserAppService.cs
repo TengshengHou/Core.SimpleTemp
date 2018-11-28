@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Core.SimpleTemp.Common;
-using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Domain.IRepositories;
-using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
-using Core.SimpleTemp.Repository.Internal.Data;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories;
+using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
+using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Core.SimpleTemp.Application.UserApp
 {
 
-    [AutoDi(typeof(ISysUserAppService))]
+
     public class SysUserAppService : BaseAppService<SysUserDto, SysUser, ISysUserRepository>, ISysUserAppService
     {
         public SysUserAppService(ISysUserRepository repository) : base(repository)

@@ -1,10 +1,12 @@
-﻿using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using System;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.UserApp
 {
+    [AutoDi(typeof(SysUserAppService))]
     public interface ISysUserAppService : IBaseAppService<SysUserDto, SysUser>
     {
 

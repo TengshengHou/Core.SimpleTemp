@@ -1,12 +1,13 @@
 ﻿using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Application.Authorization;
-using Core.SimpleTemp.Domain.Entities;
+using Core.SimpleTemp.Entitys;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using Core.SimpleTemp.Repository;
+using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 
 namespace Core.SimpleTemp.Mvc
 {

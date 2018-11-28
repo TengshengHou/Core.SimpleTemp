@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Core.SimpleTemp.Domain.Entities;
-using Core.SimpleTemp.Domain.IRepositories;
-using Core.SimpleTemp.Domain.IRepositories.Internal.Data;
-using Core.SimpleTemp.Repository.Internal.Data;
 using Core.SimpleTemp.Application.UserApp;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories;
+using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
+using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using System;
@@ -11,11 +11,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.SimpleTemp.Common;
 
 namespace Core.SimpleTemp.Application.MenuApp
 {
-    [AutoDi(typeof(ISysMenuAppService))]
+
     public class SysMenuAppService : BaseAppService<SysMenuDto, SysMenu, ISysMenuRepository>, ISysMenuAppService
     {
         private readonly ISysMenuRepository _sysMenuRepository;

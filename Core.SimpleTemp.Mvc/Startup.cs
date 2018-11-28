@@ -1,6 +1,6 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Common;
-using Core.SimpleTemp.Repository;
+using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -34,8 +34,8 @@ namespace Core.SimpleTemp.Mvc
             //DbContext
             services.AddDbContext<CoreDBContext>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             #region 认证相关
