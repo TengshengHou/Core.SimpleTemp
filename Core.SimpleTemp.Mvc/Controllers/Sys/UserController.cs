@@ -37,76 +37,50 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(UserPermission.UserController_Edit)]
         public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
         {
-            try
-            {
-                if (!string.IsNullOrEmpty(roles))
-                {
-                    var userRoles = new List<SysUserRoleDto>();
-                    foreach (var role in roles.Split(','))
-                    {
-                        userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
-                    }
-                    dto.UserRoles = userRoles;
-                }
-                return await base.EditAsync(dto);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Result = "Faild", Message = ex.Message });
 
+            if (!string.IsNullOrEmpty(roles))
+            {
+                var userRoles = new List<SysUserRoleDto>();
+                foreach (var role in roles.Split(','))
+                {
+                    userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
+                }
+                dto.UserRoles = userRoles;
             }
+            return await base.EditAsync(dto);
         }
 
         [HttpPost("DeleteMuti")]
         [PermissionFilter(UserPermission.UserController_DeleteMuti)]
         public override async Task<IActionResult> DeleteMutiAsync(string ids)
         {
-            try
-            {
-                #region 验证是否是admin
-                string[] idArray = ids.Split(',');
-                List<Guid> delIds = new List<Guid>();
-                foreach (string id in idArray)
-                {
-                    delIds.Add(Guid.Parse(id));
-                }
 
-                var retDleteVerifyAdmin = await DleteVerifyAdmin(delIds);
-                if (retDleteVerifyAdmin != null)
-                    return retDleteVerifyAdmin;
-                #endregion
-                return await base.DeleteMutiAsync(ids);
-            }
-            catch (Exception ex)
+            #region 验证是否是admin
+            string[] idArray = ids.Split(',');
+            List<Guid> delIds = new List<Guid>();
+            foreach (string id in idArray)
             {
-                return Json(new
-                {
-                    Result = "Faild",
-                    Message = ex.Message
-                });
+                delIds.Add(Guid.Parse(id));
             }
+
+            var retDleteVerifyAdmin = await DleteVerifyAdmin(delIds);
+            if (retDleteVerifyAdmin != null)
+                return retDleteVerifyAdmin;
+            #endregion
+            return await base.DeleteMutiAsync(ids);
         }
 
         [HttpPost("Delete")]
         [PermissionFilter(UserPermission.UserController_Delete)]
         public override async Task<IActionResult> DeleteAsync(Guid id)
         {
-            try
-            {
-                //验证是否是admin
-                var retDleteVerifyAdmin = await DleteVerifyAdmin(new List<Guid>() { id });
-                if (retDleteVerifyAdmin != null)
-                    return retDleteVerifyAdmin;
-                return await base.DeleteAsync(id);
-            }
-            catch (Exception ex)
-            {
-                return Json(new
-                {
-                    Result = "Faild",
-                    Message = ex.Message
-                });
-            }
+
+            //验证是否是admin
+            var retDleteVerifyAdmin = await DleteVerifyAdmin(new List<Guid>() { id });
+            if (retDleteVerifyAdmin != null)
+                return retDleteVerifyAdmin;
+            return await base.DeleteAsync(id);
+
         }
 
         [HttpGet("Get")]
