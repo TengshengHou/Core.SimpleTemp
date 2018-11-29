@@ -86,7 +86,11 @@
     <script src="~/lib/select2/dist/js/select2.js"></script>
     <script src="~/lib/select2/dist/js/i18n/zh-CN.js"></script>
     <script src="~/js/Common.js"></script>
+
     @RenderSection("scripts", false)
+    <script>
+        var AuthorizeList=@Html.Raw(ViewBag.AuthorizeList?? "null;")
+    </script>
 
 </head>
 <body class="hold-transition skin-blue sidebar-mini">

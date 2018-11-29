@@ -46,7 +46,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 }
                 dto.UserRoles = userRoles;
             }
-            return await base.EditAsync(dto);
+            return await base.EditAsync(dto,new List<string>() { nameof(SysUser.Password)});
         }
 
         [HttpPost("DeleteMuti")]

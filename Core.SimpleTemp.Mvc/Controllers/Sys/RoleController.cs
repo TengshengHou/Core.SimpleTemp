@@ -34,7 +34,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         [HttpPost("Edit")]
         [PermissionFilter(RolePermission.Role_Edit)]
-        public override async Task<IActionResult> EditAsync(SysRoleDto dto)
+        public  async Task<IActionResult> EditAsync(SysRoleDto dto)
         {
 
             return await base.EditAsync(dto);

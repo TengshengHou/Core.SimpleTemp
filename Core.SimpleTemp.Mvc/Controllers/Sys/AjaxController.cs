@@ -21,7 +21,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             return View("Index");
         }
 
-        public virtual async Task<IActionResult> EditAsync(Tdto dto)
+        public virtual async Task<IActionResult> EditAsync(Tdto dto, List<string> noUpdateProperties = null)
         {
 
             if (!ModelState.IsValid)
@@ -38,7 +38,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             else
             {
 
-                await _service.UpdateAsync(dto);
+                await _service.UpdateAsync(dto, true, noUpdateProperties);
                 return JsonSuccess(string.Empty);
             }
         }

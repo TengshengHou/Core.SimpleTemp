@@ -26,8 +26,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [HttpGet("index")]
 
         [PermissionFilter(MenuPermission.Menu_Index)]
-        public override IActionResult Index()
+        public  async Task<IActionResult> IndexAsync()
         {
+            await AuthorizeListAsync(new string[] { MenuPermission.Menu_Delete, MenuPermission.Menu_Edit, MenuPermission.Menu_DeleteMuti });
             return base.Index();
         }
         /// <summary>
@@ -74,7 +75,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         [HttpPost("Edit")]
         [PermissionFilter(MenuPermission.Menu_Edit)]
-        public override async Task<IActionResult> EditAsync(SysMenuDto dto)
+        public async Task<IActionResult> EditAsync(SysMenuDto dto)
         {
             return await base.EditAsync(dto);
         }

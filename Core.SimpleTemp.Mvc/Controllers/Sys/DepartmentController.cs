@@ -25,7 +25,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_Index)]
         public async Task<IActionResult> IndexAsync()
         {
-            await AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit });
+            await AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit, DepartmentPermission.Department_DeleteMuti});
             return base.Index();
         }
 
@@ -36,7 +36,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         [HttpPost("Edit")]
         [PermissionFilter(DepartmentPermission.Department_Edit)]
-        public override async Task<IActionResult> EditAsync(SysDepartmentDto dto)
+        public  async Task<IActionResult> EditAsync(SysDepartmentDto dto)
         {
             return await base.EditAsync(dto);
         }
