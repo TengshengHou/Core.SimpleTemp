@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.SimpleTemp.Application.Common
+namespace Core.SimpleTemp.Common
 {
     public static class SysConsts
     {

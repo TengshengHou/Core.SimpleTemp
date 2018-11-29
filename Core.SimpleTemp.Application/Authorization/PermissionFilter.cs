@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.Authorization
 {
+    /// <summary>
+    /// 自定义授权过滤器
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class PermissionFilter : Attribute, IAsyncAuthorizationFilter
     {

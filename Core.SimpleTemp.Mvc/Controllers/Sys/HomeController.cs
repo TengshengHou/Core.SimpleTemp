@@ -38,32 +38,23 @@ namespace Core.SimpleTemp.Mvc.Controllers
         public async Task<IActionResult> GetReadmeAsync()
         {
             string readmeHtml = "GitHub ReadMe抓取失败";
-
-            try
+            if ((await _distributedCache.GetAsync(README_CACHE_KEY)) == null)
             {
-                if ((await _distributedCache.GetAsync(README_CACHE_KEY)) == null)
-                {
-                    var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/TengshengHou/Core.SimpleTemp/blob/master/README.md");
-                    request.Headers.Add("Accept", "application/vnd.github.v3+json");
-                    request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-                    var client = _httpClientFactory.CreateClient();
-                    var response = await client.SendAsync(request);
-                    var responseStr = await response.Content.ReadAsStringAsync();
-                    string expression = "#我是抓取开始标记#(.*?)#我是抓取标记结束#";
-                    var m = Regex.Match(responseStr, expression, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                    readmeHtml = m?.Value;
-                    await _distributedCache.SetStringAsync(README_CACHE_KEY, readmeHtml, new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(5) });
-                }
-                else
-                {
-                    readmeHtml = await _distributedCache.GetStringAsync(README_CACHE_KEY);
-                }
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://github.com/TengshengHou/Core.SimpleTemp/blob/master/README.md");
+                request.Headers.Add("Accept", "application/vnd.github.v3+json");
+                request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+                var client = _httpClientFactory.CreateClient();
+                var response = await client.SendAsync(request);
+                var responseStr = await response.Content.ReadAsStringAsync();
+                string expression = "#我是抓取开始标记#(.*?)#我是抓取标记结束#";
+                var m = Regex.Match(responseStr, expression, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                readmeHtml = m?.Value;
+                await _distributedCache.SetStringAsync(README_CACHE_KEY, readmeHtml, new DistributedCacheEntryOptions() { SlidingExpiration = TimeSpan.FromMinutes(5) });
             }
-            catch (Exception ex)
+            else
             {
-                return Json(new { Result = "Faild", Message = ex.Message });
+                readmeHtml = await _distributedCache.GetStringAsync(README_CACHE_KEY);
             }
-
             return Json(new { Result = "Success", Data = readmeHtml });
         }
     }

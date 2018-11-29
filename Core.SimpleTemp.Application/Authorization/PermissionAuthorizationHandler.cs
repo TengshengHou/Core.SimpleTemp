@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application.Authorization
 {
+    /// <summary>
+    /// 自定义授权验证Handel
+    /// </summary>
     public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionAuthorizationRequirement>
     {
 

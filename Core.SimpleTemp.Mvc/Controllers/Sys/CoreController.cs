@@ -1,10 +1,6 @@
-﻿using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Application.Common;
+﻿using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -42,7 +38,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public virtual JsonResult JsonFaild(string message)
+        public virtual JsonResult JsonFaild(string message = null)
         {
             var ajaxJsonModel = new AjaxJsonModel()
             {

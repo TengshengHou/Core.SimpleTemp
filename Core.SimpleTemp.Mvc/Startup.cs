@@ -1,9 +1,11 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Mvc.Filters;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +16,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
-
+using System.Text;
 namespace Core.SimpleTemp.Mvc
 {
     public class Startup
@@ -74,7 +76,10 @@ namespace Core.SimpleTemp.Mvc
             //services.AddAuthorization();
             //采用内存版分布缓存 方便以后切换Redis
             services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<HttpGlobalExceptionFilter>();
+            });
             services.AddHttpClient();
         }
 
@@ -87,7 +92,28 @@ namespace Core.SimpleTemp.Mvc
             else
             {
                 //生产环境异常处理
-                app.UseExceptionHandler("/Shared/Error");
+                //app.UseExceptionHandler("/Shared/Error");
+                app.UseExceptionHandler(new ExceptionHandlerOptions()
+                {
+                    ExceptionHandler = async context =>
+                    {
+                        if (context.Request.IsAjaxRequest())
+                        {
+                            context.Response.StatusCode = 200;
+                            context.Response.ContentType = "application/json;charset=utf-8";
+                            var err = context.Features.Get<IExceptionHandlerFeature>();
+                            var errStr = err.Error.Message;
+                            var sb = context.Response.CreateAjaxResponseExceptionJson(errStr);
+                            await context.Response.WriteAsync(sb.ToString());
+                        }
+                        else
+                        {
+                            context.Response.Redirect("/error");
+                        }
+
+                    }
+                });
+
             }
 
             #region 静态文件

@@ -250,6 +250,69 @@ namespace Core.SimpleTemp.Mvc
             #endregion
 
 
+
+            #region Role
+            parentMenu = context.SysMenu.SingleOrDefault(m => m.Name == "角色管理");
+            context.SysMenu.AddRange(new SysMenu
+            {
+                Name = "Edit",
+                Code = RolePermission.Role_Edit,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "DeleteMuti",
+                Code = RolePermission.Role_DeleteMuti,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Delete",
+                Code = RolePermission.Role_Delete,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "Get",
+                Code = RolePermission.Role_Get,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetAllPageList",
+                Code = RolePermission.Role_GetAllPageList,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetMenusByRole",
+                Code = RolePermission.Role_GetMenusByRole,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "SavePermission",
+                Code = RolePermission.Role_SavePermission,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
+            });
+            context.SaveChanges();
+            #endregion
+
             //角色
             context.SysRole.Add(new SysRole()
             {

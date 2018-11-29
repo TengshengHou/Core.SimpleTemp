@@ -45,12 +45,12 @@
             <form asp-controller="Account" asp-action="LoginAsync" method="post">
                 <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
                 <div class="form-group has-feedback">
-                    <input asp-for="LoginName" class="form-control" placeholder="账号">
+                    <input asp-for="LoginName" class="form-control" value="admin" placeholder="账号">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     <span asp-validation-for="LoginName" class="text-danger"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input type="password" asp-for="Password" class="form-control" placeholder="密码">
+                    <input type="password" asp-for="Password" class="form-control" value="123456" placeholder="密码">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>

@@ -19,21 +19,26 @@
                 <h3 class="box-title">组织机构</h3>
                 <div class="pull-right box-tools">
 
-                    <button id="btnAddRoot" class="btn btn-primary" type="button" data-original-title="新增顶级功能" data-toggle="tooltip" data-widget="">
-                        <i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增顶级
-                    </button>
-                    <button id="btnLoadRoot" title="" class="btn btn-success" type="button" data-original-title="加载顶级功能" data-toggle="tooltip" data-widget="">
-                        <i class="fa fa-list"></i>&nbsp;&nbsp;加载顶级
-                    </button>
                     @if (await authorizatio.AuthorizeAsync(DepartmentPermission.Department_Edit, User))
                     {
+                        <button id="btnAddRoot" class="btn btn-primary" type="button" data-original-title="新增顶级功能" data-toggle="tooltip" data-widget="">
+                            <i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增顶级
+                        </button>
                         <button id="btnAdd" title="" class="btn btn-primary" type="button" data-original-title="新增功能" data-toggle="tooltip" data-widget="">
                             <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;新增
                         </button>
                     }
-                    <button id="btnDelete" title="" class="btn btn-danger" type="button" data-original-title="删除功能" data-toggle="tooltip" data-widget="">
-                        <i class="fa fa-times"></i>&nbsp;&nbsp;删除
+
+
+                    <button id="btnLoadRoot" title="" class="btn btn-success" type="button" data-original-title="加载顶级功能" data-toggle="tooltip" data-widget="">
+                        <i class="fa fa-list"></i>&nbsp;&nbsp;加载顶级
                     </button>
+                    @if (await authorizatio.AuthorizeAsync(DepartmentPermission.Department_DeleteMuti, User))
+                    {
+                        <button id="btnDelete" title="" class="btn btn-danger" type="button" data-original-title="删除功能" data-toggle="tooltip" data-widget="">
+                            <i class="fa fa-times"></i>&nbsp;&nbsp;删除
+                        </button>
+                    }
                 </div>
             </div>
             <div class="box-body">
@@ -74,5 +79,8 @@
 </div>
 @Html.Partial("_Edit")
 @section scripts{
+    <script>
+        var AuthorizeList=@ViewBag.AuthorizeList;
+    </script>
     <script src="~/Views/Department/Index.js"></script>
 }
