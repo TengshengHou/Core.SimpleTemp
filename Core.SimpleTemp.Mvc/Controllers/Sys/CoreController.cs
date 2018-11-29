@@ -1,6 +1,9 @@
-﻿using Core.SimpleTemp.Common;
+﻿using Core.SimpleTemp.Application.Authorization;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Mvc.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -49,5 +52,14 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
         #endregion
 
+        public async System.Threading.Tasks.Task AuthorizeListAsync(string[] functionCodes)
+        {
+
+            var authorizationService = (IAuthorizationService)HttpContext.RequestServices.GetService(typeof(IAuthorizationService));
+            var dic = await authorizationService.AuthorizeListAsync(functionCodes, User);
+            JsonSerializer sj = new JsonSerializer();
+            var strJson = sj.Serialize(dic);
+            ViewBag.AuthorizeList = strJson;
+        }
     }
 }

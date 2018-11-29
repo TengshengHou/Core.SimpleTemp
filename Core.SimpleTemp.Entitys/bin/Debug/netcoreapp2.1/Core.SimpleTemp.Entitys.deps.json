@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "d18be3dba19a01f7ac071a7c1abea8674edb331d"
+    "signature": "92d88be0ce59beda92fc73f2999f553ebf7e1c56"
   },
   "compilationOptions": {},
   "targets": {
@@ -84,6 +84,14 @@
           }
         }
       },
+      "Newtonsoft.Json/12.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.1.22727"
+          }
+        }
+      },
       "System.Memory/4.5.1": {},
       "System.Runtime.CompilerServices.Unsafe/4.5.1": {
         "runtime": {
@@ -106,7 +114,8 @@
           "Microsoft.AspNetCore.Diagnostics.Abstractions": "2.1.1",
           "Microsoft.AspNetCore.Http.Abstractions": "2.1.1",
           "Microsoft.Extensions.DependencyInjection": "2.1.1",
-          "Microsoft.Extensions.Logging.Abstractions": "2.1.1"
+          "Microsoft.Extensions.Logging.Abstractions": "2.1.1",
+          "Newtonsoft.Json": "12.0.1"
         },
         "runtime": {
           "Core.SimpleTemp.Common.dll": {}
@@ -168,6 +177,13 @@
       "sha512": "sha512-jVkZs8NkUIhooFh8iJFIGJAJAeTrwORjM06i4sBw+/VVC8zcqduCIG1QCqjxbGACbR+GkLEnhZdxLjL8qHLHIg==",
       "path": "microsoft.extensions.primitives/2.1.1",
       "hashPath": "microsoft.extensions.primitives.2.1.1.nupkg.sha512"
+    },
+    "Newtonsoft.Json/12.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jmVyoEyk0In8r+AObYQyFKVFm7uSRzE0XSHSbEtBJcZDMV6DqJoyB4FLcHwprPVhAh826so0db3DIKXVnpGoPA==",
+      "path": "newtonsoft.json/12.0.1",
+      "hashPath": "newtonsoft.json.12.0.1.nupkg.sha512"
     },
     "System.Memory/4.5.1": {
       "type": "package",

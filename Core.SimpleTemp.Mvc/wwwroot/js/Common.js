@@ -1,4 +1,6 @@
 ﻿$(function () {
+
+    //Ajax 授权/认证失败后处理
     $(document).ajaxComplete(function (event, request, settings) {
         $(document).ajaxComplete(function (event, request, settings) {
             console.log(request.status);
@@ -17,4 +19,24 @@
             window.location.href = location.protocol + "//" + location.hostname + port + '/account/login?ReturnUrl=' + currHref;
         }
     });
+
+    Authorize();
+
 });
+
+//未授权按钮处理
+var Authorize = function () {
+    try {
+        jQuery.each(AuthorizeList, function (key, val) {
+            var classSelector = "." + key;
+
+            if ($(classSelector)) {
+                //$(classSelector).hide(!val);
+                if (!val) {
+                    $(classSelector).attr("disabled", "disabled");
+                }
+
+            }
+        });
+    }catch (err) {}
+}

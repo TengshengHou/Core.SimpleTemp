@@ -33,12 +33,9 @@
                     <button id="btnLoadRoot" title="" class="btn btn-success" type="button" data-original-title="加载顶级功能" data-toggle="tooltip" data-widget="">
                         <i class="fa fa-list"></i>&nbsp;&nbsp;加载顶级
                     </button>
-                    @if (await authorizatio.AuthorizeAsync(DepartmentPermission.Department_DeleteMuti, User))
-                    {
-                        <button id="btnDelete" title="" class="btn btn-danger" type="button" data-original-title="删除功能" data-toggle="tooltip" data-widget="">
-                            <i class="fa fa-times"></i>&nbsp;&nbsp;删除
-                        </button>
-                    }
+                    <button id="btnDelete" title="" class="btn btn-danger @DepartmentPermission.Department_DeleteMuti, User " type="button" data-original-title="删除功能" data-toggle="tooltip" data-widget="">
+                        <i class="fa fa-times"></i>&nbsp;&nbsp;删除
+                    </button>
                 </div>
             </div>
             <div class="box-body">
@@ -80,7 +77,7 @@
 @Html.Partial("_Edit")
 @section scripts{
     <script>
-        var AuthorizeList=@ViewBag.AuthorizeList;
+        var AuthorizeList=@Html.Raw(ViewBag.AuthorizeList);
     </script>
     <script src="~/Views/Department/Index.js"></script>
 }

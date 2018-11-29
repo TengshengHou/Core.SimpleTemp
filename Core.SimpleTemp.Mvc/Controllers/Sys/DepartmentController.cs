@@ -1,9 +1,11 @@
 ﻿using Core.SimpleTemp.Application;
 using Core.SimpleTemp.Application.Authorization;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,19 +16,16 @@ namespace Core.SimpleTemp.Mvc.Controllers
     public class DepartmentController : AjaxController<SysDepartmentDto, SysDepartment, ISysDepartmentAppService>
     {
         private readonly ISysDepartmentAppService _service;
-        private readonly IAuthorizationService _authorizationService;
-        public DepartmentController(ISysDepartmentAppService service, IAuthorizationService authorizationService) : base(service)
+        public DepartmentController(ISysDepartmentAppService service) : base(service)
         {
             _service = service;
-            _authorizationService = authorizationService;
         }
 
         [HttpGet("index")]
         [PermissionFilter(DepartmentPermission.Department_Index)]
         public async Task<IActionResult> IndexAsync()
         {
-            var dic = await _authorizationService.AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit }, User);
-            ViewBag.AuthorizeList = dic;
+            await AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit });
             return base.Index();
         }
 

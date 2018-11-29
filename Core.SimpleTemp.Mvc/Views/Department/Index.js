@@ -18,6 +18,9 @@ $(function () {
     });
     $("#checkAll").click(function () { checkAll(this) });
     initTree();
+
+
+
 });
 //加载功能树
 function initTree() {
@@ -67,10 +70,11 @@ function loadTables(startPage, pageSize) {
                 tr += "<td>" + (item.manager == null ? "" : item.manager) + "</td>";
                 tr += "<td>" + (item.contactNumber == null ? "" : item.contactNumber) + "</td>";
                 tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
-                tr += "<td><button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
+                tr += "<td><button class='btn btn-info btn-xs Department_Edit' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs Department_Delete' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
                 tr += "</tr>";
                 $("#tableBody").append(tr);
             })
+            Authorize();
             var elment = $("#grid_paging_part"); //分页插件的容器id
             if (data.rowCount > 0) {
                 var options = { //分页插件配置项

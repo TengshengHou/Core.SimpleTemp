@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -57,7 +58,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
             return View("Login");
         }
 
+
         [HttpGet("SignOut")]
+        [Authorize]
         public async Task<IActionResult> SignOutAsync()
         {
             await _sysLoginService.SignOutAsync(HttpContext);

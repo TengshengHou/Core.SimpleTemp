@@ -8,21 +8,24 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Common;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Core.SimpleTemp.Application
 {
     /// <summary>
     /// 系统登录服务
     /// </summary>
-    
+
     public class SysLoginService : ISysLoginService
     {
         ISysUserRepository _sysUserRepository;
         ISysMenuAppService _sysMenuAppService;
-        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService)
+        IDistributedCache _distributedCache;
+        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService, IDistributedCache distributedCache)
         {
             _sysUserRepository = sysUserRepository;
             _sysMenuAppService = sysMenuAppService;
+            _distributedCache = distributedCache;
         }
 
         /// <summary>
@@ -66,12 +69,20 @@ namespace Core.SimpleTemp.Application
         /// <param name="context"></param>
         /// <returns></returns>
 
-        public Task SignOutAsync(HttpContext context)
+        public async Task SignOutAsync(HttpContext context)
         {
+            var nameIdentifierClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
             //退出
-            context.SignOutAsync();
-            //清理内存缓存，待做
-            return Task.CompletedTask;
+            await context.SignOutAsync();
+
+            try
+            {
+                await _distributedCache.RemoveAsync(SysConsts.MENU_CACHEKEY_PREFIX + nameIdentifierClaim?.Value);
+                await _distributedCache.RemoveAsync(SysConsts.MENU_CACHEKEY_PREFIX + nameIdentifierClaim?.Value);
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
 
@@ -80,6 +91,6 @@ namespace Core.SimpleTemp.Application
             return _sysMenuAppService.GetMenusAndFunctionByUserAsync(sysUserDto);
         }
 
-        
+
     }
 }

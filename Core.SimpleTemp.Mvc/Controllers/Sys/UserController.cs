@@ -1,8 +1,7 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
-using Core.SimpleTemp.Entitys;
-using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.RoleApp;
 using Core.SimpleTemp.Application.UserApp;
+using Core.SimpleTemp.Entitys;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
