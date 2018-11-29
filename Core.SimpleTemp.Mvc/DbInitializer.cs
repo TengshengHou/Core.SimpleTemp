@@ -66,7 +66,7 @@ namespace Core.SimpleTemp.Mvc
              new SysMenu
              {
                  Name = "角色管理",
-                 Code = "Role",
+                 Code = "Role_Index",
                  SerialNumber = 1,
                  Icon = "fa fa-link",
                  Url = "/role/index",

@@ -22,8 +22,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
         // GET: /<controller>/
         [HttpGet("Index")]
         [PermissionFilter(RolePermission.Role_Index)]
-        public override IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            await AuthorizeListAsync(new string[] { RolePermission.Role_Edit, RolePermission.Role_Delete, RolePermission.Role_DeleteMuti, RolePermission.Role_SavePermission });
             return base.Index();
         }
 
@@ -34,7 +35,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         [HttpPost("Edit")]
         [PermissionFilter(RolePermission.Role_Edit)]
-        public  async Task<IActionResult> EditAsync(SysRoleDto dto)
+        public async Task<IActionResult> EditAsync(SysRoleDto dto)
         {
 
             return await base.EditAsync(dto);

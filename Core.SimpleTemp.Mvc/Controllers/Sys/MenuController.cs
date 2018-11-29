@@ -26,7 +26,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [HttpGet("index")]
 
         [PermissionFilter(MenuPermission.Menu_Index)]
-        public  async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> IndexAsync()
         {
             await AuthorizeListAsync(new string[] { MenuPermission.Menu_Delete, MenuPermission.Menu_Edit, MenuPermission.Menu_DeleteMuti });
             return base.Index();

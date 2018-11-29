@@ -25,7 +25,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         [HttpGet("Index")]
         [PermissionFilter(UserPermission.UserController_Index)]
-        public override IActionResult Index()
+        public IActionResult IndexAsync()
         {
             return base.Index();
         }
@@ -46,7 +46,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 }
                 dto.UserRoles = userRoles;
             }
-            return await base.EditAsync(dto,new List<string>() { nameof(SysUser.Password)});
+            return await base.EditAsync(dto, new List<string>() { nameof(SysUser.Password) });
         }
 
         [HttpPost("DeleteMuti")]
