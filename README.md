@@ -1,9 +1,12 @@
 
 # Core.SimpleTemp
 #我是抓取开始标记#
-<br>
 个人学习AspNetCore技术的Demo项目，地址：http://132.232.18.92:8080
 <br>  
+特点：票据认证、精确的授权控制、DI、全局异常处理、分布式内存缓存、静态文件缓存、以及基于队列的文件日志、基于EFCore的支持多种数据库（目前演示Demo使用-PostgreSQL， 本地开发使用-Sql Server）
+
+
+未来计划：
 //Demo集成部署/环境<br>
 系统环境：Centos7.5 ; Cpu/1h ; 内存/1g  网络/1M （其实就是腾讯云10元/月）<br>
 数 据 库：PostgreSQL 9.5.15<br>
