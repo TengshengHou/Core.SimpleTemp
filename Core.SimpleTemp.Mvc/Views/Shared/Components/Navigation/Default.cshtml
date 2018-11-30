@@ -6,36 +6,13 @@
 @{
     var menuList = Model.Where(a => a.Type == 0).ToList();
     var topMenuList = menuList.Where(a => a.ParentId == Guid.Empty);
-}
-
-@foreach (var topMenu in topMenuList)
-{
-    <li class="header">@topMenu.Name</li>
-    StringBuilder sb = new StringBuilder();
-    GetChild(ref sb, menuList.Where(a => a.ParentId == topMenu.Id).ToList(), menuList, true);
-    @Html.Raw(sb);
-
-    //菜单自动展开
-    <script>
-        $(window).on('load', function () {
-            $('.sidebar-menu a').each(function () {
-                var aHref = $(this).attr("href")
-                if (aHref != '#' && aHref != "") {
-                    var cur = window.location.href;
-                    var url = this.href;
-                    //console.log("cur:" + cur);
-                    //console.log("url:" + url);
-                    if (cur == url) {
-                        console.log(this);
-                        $(this).parents(".treeview").each(function () {
-                            $(this).addClass('menu-open').addClass("active");
-                        });
-                    }
-                }
-            });
-        });
-    </script>
-
+    foreach (var topMenu in topMenuList)
+    {
+        <li class="header">@topMenu.Name</li>
+        StringBuilder sb = new StringBuilder();
+        GetChild(ref sb, menuList.Where(a => a.ParentId == topMenu.Id).ToList(), menuList, true);
+        @Html.Raw(sb)
+    }
 }
 
 @functions{
@@ -62,3 +39,23 @@
 
     }
 }
+
+<script>
+    $(window).on('load', function () {
+        $('.sidebar-menu a').each(function () {
+            var aHref = $(this).attr("href")
+            if (aHref != '#' && aHref != "") {
+                var cur = window.location.href;
+                var url = this.href;
+                //console.log("cur:" + cur);
+                //console.log("url:" + url);
+                if (cur == url) {
+                    console.log(this);
+                    $(this).parents(".treeview").each(function () {
+                        $(this).addClass('menu-open').addClass("active");
+                    });
+                }
+            }
+        });
+    });
+</script>
