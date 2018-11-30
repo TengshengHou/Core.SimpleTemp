@@ -47,13 +47,16 @@
             if (aHref != '#' && aHref != "") {
                 var cur = window.location.href;
                 var url = this.href;
-                //console.log("cur:" + cur);
-                //console.log("url:" + url);
                 if (cur == url) {
-                    console.log(this);
-                    $(this).parents(".treeview").each(function () {
-                        $(this).addClass('menu-open').addClass("active");
-                    });
+                    //一级菜单
+                    if ($(this).parents(".treeview").length <= 0) {
+                        $(this).parent().addClass('active');
+                    } else {
+                        //二级/二级以上菜单
+                        $(this).parents(".treeview").each(function () {
+                            $(this).addClass('menu-open').addClass("active");
+                        });
+                    }
                 }
             }
         });
