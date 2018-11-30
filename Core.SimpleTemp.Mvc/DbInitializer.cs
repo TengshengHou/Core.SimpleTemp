@@ -84,7 +84,7 @@ namespace Core.SimpleTemp.Mvc
              new SysMenu
              {
                  Name = "功能管理",
-                 Code = "MenuPermission.Menu_Index",
+                 Code = "Menu_Index",
                  SerialNumber = 3,
                  Icon = "fa fa-link",
                  ParentId = topMenu.Id,
