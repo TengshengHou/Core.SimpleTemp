@@ -9,6 +9,7 @@ $(function () {
     }).ajaxStop(function () {
         layer.closeAll('loading');
     })
+    $("#Icon").iconPicker({ parentSelector: "#addRootModal" });
     $("#btnAddRoot").click(function () { add(0); });
     $("#btnAdd").click(function () { add(1); });
     $("#btnSave").click(function () { save(); });
@@ -32,7 +33,7 @@ function initTree() {
                     'data': data,        //绑定JsTree数据
                     "multiple": false    //是否多选
                 },
-                "plugins": [ "types", "wholerow"]  //配置信息
+                "plugins": ["types", "wholerow"]  //配置信息
             })
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点

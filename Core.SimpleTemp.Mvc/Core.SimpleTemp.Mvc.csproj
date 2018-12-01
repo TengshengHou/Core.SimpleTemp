@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="logs\**" />
+    <Compile Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
     <Content Remove="logs\**" />
+    <Content Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
     <EmbeddedResource Remove="logs\**" />
+    <EmbeddedResource Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
     <None Remove="logs\**" />
+    <None Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +32,18 @@
     <ProjectReference Include="..\Core.SimpleTemp.Application\Core.SimpleTemp.Application.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Common\Core.SimpleTemp.Common.csproj" />
     <ProjectReference Include="..\Core.SimpleTemp.Repositories\Core.SimpleTemp.Repositories.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\js\validate.unobtrusive.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\icon-picker\css\icon-picker.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\icon-picker\js\iconPicker.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
