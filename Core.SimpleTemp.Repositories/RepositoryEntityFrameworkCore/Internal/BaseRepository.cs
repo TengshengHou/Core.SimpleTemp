@@ -2,10 +2,12 @@
 using Core.SimpleTemp.Repositories.IRepositories;
 using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
@@ -15,11 +17,11 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public abstract partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
         //定义数据访问上下文对象
         public readonly CoreDBContext _dbContext;
-
+        public readonly IEnumerable<string> _properties;
         /// <summary>
         /// 通过构造函数注入得到数据上下文对象实例
         /// </summary>
@@ -27,15 +29,23 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         public BaseRepository(CoreDBContext dbContext)
         {
             _dbContext = dbContext;
+            //暂时不用Include
+            //_properties = EntityInfos.GetEntityInfo(typeof(TEntity).FullName)?.Select(c => c.Name);
+        }
+
+
+        public virtual IQueryable<TEntity> QueryBase()
+        {
+            return _dbContext.Set<TEntity>();
         }
 
         /// <summary>
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        public virtual Task<List<TEntity>> GetAllListAsync()
+        public virtual Task<List<TEntity>> GetAllListAsync(bool autoInclude = false)
         {
-            return _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+            return QueryBase().AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -43,9 +53,9 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public virtual Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false)
         {
-            return _dbContext.Set<TEntity>().Where(predicate).AsNoTracking().ToListAsync();
+            return QueryBase().Where(predicate).AsNoTracking().ToListAsync();
         }
 
         /// <summary>
@@ -53,9 +63,9 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <returns></returns>
-        public virtual Task<TEntity> GetAsync(TPrimaryKey id)
+        public virtual Task<TEntity> GetAsync(TPrimaryKey id, bool autoInclude = false)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
+            return QueryBase().FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
         }
 
         /// <summary>
@@ -63,9 +73,9 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false)
         {
-            return _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);
+            return QueryBase().FirstOrDefaultAsync(predicate);
         }
 
         /// <summary>
@@ -89,11 +99,11 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// <param name="autoSave">是否立即执行保存</param>
         public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
-            var obj = await GetAsync(entity.Id);
-
+            var obj = await GetAsync(entity.Id, true);
             EntityToEntity(entity, obj, noUpdateProperties);
-            return await UpdateAsync(entity, autoSave);
+            return await UpdateAsync(obj, autoSave);
         }
+
 
         /// <summary>
         /// 更新实体（需要先从EF中查询出来再做更新)

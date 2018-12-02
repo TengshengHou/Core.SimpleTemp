@@ -7,13 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="logs\**" />
-    <Compile Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
+    <Compile Remove="wwwroot\libcustom\icon-picker\Bootstrap-icon-picker-master\**" />
     <Content Remove="logs\**" />
-    <Content Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
+    <Content Remove="wwwroot\libcustom\icon-picker\Bootstrap-icon-picker-master\**" />
     <EmbeddedResource Remove="logs\**" />
-    <EmbeddedResource Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
+    <EmbeddedResource Remove="wwwroot\libcustom\icon-picker\Bootstrap-icon-picker-master\**" />
     <None Remove="logs\**" />
-    <None Remove="wwwroot\lib\icon-picker\Bootstrap-icon-picker-master\**" />
+    <None Remove="wwwroot\libcustom\icon-picker\Bootstrap-icon-picker-master\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,10 +38,10 @@
     <Content Update="wwwroot\js\validate.unobtrusive.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\lib\icon-picker\css\icon-picker.css">
+    <Content Update="wwwroot\libcustom\icon-picker\css\icon-picker.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\lib\icon-picker\js\iconPicker.js">
+    <Content Update="wwwroot\libcustom\icon-picker\js\iconPicker.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

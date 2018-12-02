@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace Core.SimpleTemp.Entitys
 {
-    public class SysUserRole
+    public class SysUserRole:Entity
     {
+        [NotMapped]
+        public override Guid Id { get; set; }
         public Guid SysUserId { get; set; }
         public SysUser SysUser { get; set; }
 

@@ -86,7 +86,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(UserPermission.UserController_Get)]
         public override async Task<IActionResult> GetAsync(Guid id)
         {
-            return await base.GetAsync(id);
+            var dto = await _service.IGetAsync(id, new string[] { nameof(SysUser.UserRoles) });
+            return Json(dto);
         }
 
 

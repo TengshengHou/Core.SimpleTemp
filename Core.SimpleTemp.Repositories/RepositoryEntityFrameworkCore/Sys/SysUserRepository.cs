@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore.Sys
@@ -29,9 +30,9 @@ namespace Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore.Sys
             return user;
         }
 
-        public override Task<SysUser> GetAsync(Guid id)
+        public override IQueryable<SysUser> QueryBase()
         {
-            return _dbContext.Set<SysUser>().Include(u => u.UserRoles).FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
+            return _dbContext.SysUser.Include(u => u.UserRoles);
         }
 
         public Task<List<Guid>> FindUserRoleAsync(Guid userId)

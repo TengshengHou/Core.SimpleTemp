@@ -11,9 +11,8 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
 {
-    public abstract partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
-
         /// <summary>
         /// 分页查询
         /// </summary>
@@ -22,10 +21,11 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// <param name="where">条件</param>
         /// <param name="order">排序</param>
         /// <returns></returns>
-        public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
+        public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null, bool autoInclude = false)
         {
-            var result = from p in _dbContext.Set<TEntity>()
-                         select p;
+
+            var result = QueryBase();
+
             if (where != null)
                 result = result.Where(where);
             if (order != null)

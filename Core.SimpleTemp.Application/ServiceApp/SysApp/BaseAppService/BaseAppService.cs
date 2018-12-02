@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application
 {
-    public class BaseAppService<TDto, TEntity, TRepository> : IBaseAppService<TDto, TEntity> where TEntity : Entity where TRepository : IRepository<TEntity>
+    public partial class BaseAppService<TDto, TEntity, TRepository> : IBaseAppService<TDto, TEntity> where TEntity : Entity where TRepository : IRepository<TEntity>
     {
         public TRepository _repository;
 
@@ -28,17 +28,17 @@ namespace Core.SimpleTemp.Application
             return this.DeleteAsync(it => ids.Contains(it.Id), autoSave);
         }
 
-        public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) => Mapper.Map<TDto>(await _repository.FirstOrDefaultAsync(predicate));
-        public async Task<TEntity> FirstOrDefaultEntityAsync(Expression<Func<TEntity, bool>> predicate) => await _repository.FirstOrDefaultAsync(predicate);
+        public async Task<TDto> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false) => Mapper.Map<TDto>(await _repository.FirstOrDefaultAsync(predicate, autoInclude));
+        public async Task<TEntity> FirstOrDefaultEntityAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false) => await _repository.FirstOrDefaultAsync(predicate, autoInclude);
 
-        public async Task<List<TDto>> GetAllListAsync() => Mapper.Map<List<TDto>>(await _repository.GetAllListAsync());
+        public async Task<List<TDto>> GetAllListAsync(bool autoInclude = false) => Mapper.Map<List<TDto>>(await _repository.GetAllListAsync(autoInclude));
 
-        public async Task<List<TDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate) => Mapper.Map<List<TDto>>(await _repository.GetAllListAsync(predicate));
+        public async Task<List<TDto>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false) => Mapper.Map<List<TDto>>(await _repository.GetAllListAsync(predicate, autoInclude));
 
-        public async Task<TDto> GetAsync(Guid id) => Mapper.Map<TDto>(await _repository.GetAsync(id));
-        public async Task<IPageModel<TDto>> GetAllPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
+        public async Task<TDto> GetAsync(Guid id, bool autoInclude = false) => Mapper.Map<TDto>(await _repository.GetAsync(id, autoInclude));
+        public async Task<IPageModel<TDto>> GetAllPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null, bool autoInclude = false)
         {
-            var pageData = await _repository.LoadPageListAsync(startPage, pageSize, where, order);
+            var pageData = await _repository.LoadPageListAsync(startPage, pageSize, where, order, autoInclude);
 
             IPageModel<TDto> pageModelDto = new PageModel<TDto>()
             {

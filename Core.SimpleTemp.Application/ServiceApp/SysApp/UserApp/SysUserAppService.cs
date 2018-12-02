@@ -40,6 +40,7 @@ namespace Core.SimpleTemp.Application.UserApp
             return true;
         }
 
+
         public async Task RestoreUserPwdAsync(string LoginName)
         {
             var entity = await FirstOrDefaultEntityAsync(u => u.LoginName == LoginName);

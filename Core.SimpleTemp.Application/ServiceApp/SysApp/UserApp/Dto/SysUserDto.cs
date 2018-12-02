@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Core.SimpleTemp.Application.UserApp
@@ -18,6 +19,7 @@ namespace Core.SimpleTemp.Application.UserApp
         public DateTime LastUpdate { get; set; }
 
         public Guid SysDepartmentId { get; set; }
+        
         public SysDepartment SysDepartment { get; set; }
 
         public virtual ICollection<SysUserRoleDto> UserRoles { get; set; }
