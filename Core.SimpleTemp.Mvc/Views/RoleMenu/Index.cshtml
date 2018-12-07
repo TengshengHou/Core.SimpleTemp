@@ -59,7 +59,6 @@
         , $btnScreen = $("#btnScreen")
         , $btnDele = $("#btnDele");
 
-    // your custom ajax request here
     function ajaxRequest(params) {
         $.ajax({
             type: "post",
@@ -76,23 +75,13 @@
         })
     }
     function GetQueryData(offset, limit) {
-        //var serializeJson = $("#searchForm").serializeArray();
-        //var filterList = PagingQuery($("#searchForm")[0]);
-        //var formData = []
-        //formData.push({ "name": "filterConditionList", "value": filterList })
-        //formData.push({ "name": "offset", "value": offset });
-        //formData.push({ "name": "limit", "value": limit });
-        //return formData;
-
         var filterList = PagingQuery($("#searchForm")[0]);
-
-        var filterObj = GetFilterObj($("sysRole_Id")[0])
-        filterObj.Value = $("#Role").val() ? $("#Role").val().toString() : "";
-        filterList.push()
+        //var filterObj = GetFilterObj($("sysRole_Id")[0])
+        //filterObj.Value = $("#Role").val() ? $("#Role").val().toString() : "";
+        //filterList.push()
         var filterListJson = JSON.stringify(filterList);
-        var v = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
-        console.log(v);
-        return v;
+        var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
+        return pagingQueryData;
     }
 
     window.operateEvents = {

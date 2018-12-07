@@ -41,6 +41,8 @@
     <!-- select2 -->
     <link href="~/lib/select2/dist/css/select2.css" rel="stylesheet" />
 
+    <link href="~/lib/bootstrap-table/dist/bootstrap-table.css" rel="stylesheet" />
+
 
 
     <!-- ./wrapper -->
@@ -85,9 +87,10 @@
     <script src="~/lib/layer/dist/layer.js"></script>
     <script src="~/lib/select2/dist/js/select2.js"></script>
     <script src="~/lib/select2/dist/js/i18n/zh-CN.js"></script>
+    <script src="~/lib/bootstrap-table/dist/bootstrap-table.js"></script>
     <script src="~/js/Common.js"></script>
+    <script src="~/js/PagingQuery.js"></script>
 
-    @RenderSection("scripts", false)
     <script>
         var AuthorizeList=@Html.Raw(ViewBag.AuthorizeList?? "null;")
     </script>
@@ -183,4 +186,5 @@
         <div class="control-sidebar-bg"></div>
     </div>
 </body>
+@RenderSection("scripts", false)
 </html>

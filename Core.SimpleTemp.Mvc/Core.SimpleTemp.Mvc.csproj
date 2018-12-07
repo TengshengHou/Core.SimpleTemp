@@ -47,6 +47,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Views\Department\IndexOld.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Views\Department\Index.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -1,6 +1,8 @@
 ﻿@{
     ViewBag.CurrentMenu = "Department";
 }
+@model Core.SimpleTemp.Application.SysDepartmentDto
+
 <div class="row">
     <div class="col-md-3">
         <div class="box box-primary">
@@ -14,6 +16,33 @@
         </div>
     </div>
     <div class="col-md-9">
+        <div id="toolbar">
+            <div class="">
+                <form role="form" id="searchForm" class="form-inline">
+                    <div class="form-group">
+                        <label for="Name">组织机构名称</label>
+                        <input type="text" asp-for="Name" data-filter="true" data-action="in" value="" />
+                    </div>
+
+                    <button id="btnScreen" type="button" class="btn btn-default">查询</button>
+                    <input type="submit" name="name" value="Submit" />
+                    <button id="btnDele" type="button" class="btn btn-default">删除</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="box box-primary  " style="padding-left:10px;padding-right:10px">
+            <table id="table"
+                   data-toolbar="#toolbar"
+                   data-toggle="table"
+                   data-height="660"
+                   data-ajax="ajaxRequest"
+                   data-side-pagination="server"
+                   data-pagination="true"></table>
+        </div>
+
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">组织机构</h3>
@@ -71,8 +100,14 @@
         </div>
     </div>
 </div>
+
+
+
+
 @Html.Partial("_Edit")
 @section scripts{
 
+    <script src="~/Views/Department/IndexOld.js"></script>
     <script src="~/Views/Department/Index.js"></script>
+
 }

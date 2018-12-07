@@ -109,20 +109,21 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// 获取子级列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetChildrenByParent")]
+        [HttpPost("GetChildrenByParent")]
         [PermissionFilter(DepartmentPermission.Department_GetChildrenByParent)]
-        public async Task<IActionResult> GetChildrenByParentAsync(Guid parentId, int startPage, int pageSize)
+        public async Task<IActionResult> GetChildrenByParentAsync(Guid parentId)
         {
-            int rowCount = 0;
-            var result = await _service.GetChildrenByParentAsync(parentId, startPage, pageSize);
-            rowCount = result.RowCount;
-            return Json(new
-            {
-                rowCount = rowCount,
-                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = result.PageData,
-            });
+            var pagingQueryModel = base.GetPagingQueryModel();
+            var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, model => model.ParentId == parentId, orderModel => orderModel.CreateTime);
+            return JsonSuccess(result);
         }
+
+
+
+
+
+
+
 
 
     }
