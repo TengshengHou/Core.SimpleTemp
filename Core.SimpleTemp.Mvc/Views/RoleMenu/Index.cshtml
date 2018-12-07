@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Core.SimpleTemp.Application.RoleApp.SysRoleMenuDto
+<div class="row">
+    <div class="container col-md-12">
+        <div class="box box-primary  " style="padding-left:10px;padding-right:10px">
+
+
+
+
+            <div id="toolbar">
+                <div class="">
+                    <form role="form" asp-action="GetList" asp-controller="RoleMenu" id="searchForm" class="form-inline">
+                        @*<div class="form-group">
+                                <label for="sysRole.name">角色名称</label>
+                                <select asp-for="SysRole.Id" asp-items="ViewBag.roleSelectList" data-filter="true" data-datatype="guid" class="form-control ">
+                                    <option value="">所有</option>
+                                </select>
+                            </div>*@
+                        <div class="form-group">
+                            <label for="SysRole_Name">角色名称</label>
+                            <input type="text" asp-for="SysRole.Name" data-filter="true" data-action="in" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label for="sysRole_Id">角色名称</label>
+                            <select asp-for="SysRole.Id" asp-items="ViewBag.roleSelectList" data-filter="true" data-logic="or" data-action="in" data-datatype="guid" multiple="multiple" class="form-control ">
+                                <option value="">所有</option>
+                            </select>
+                        </div>
+                        <button id="btnScreen" type="button" class="btn btn-default">查询</button>
+                        <input type="submit" name="name" value="Submit" />
+                        <button id="btnDele" type="button" class="btn btn-default">删除</button>
+                    </form>
+                </div>
+            </div>
+
+            <table id="table"
+                   data-toolbar="#toolbar"
+                   data-toggle="table"
+                   data-height="660"
+                   data-ajax="ajaxRequest"
+                   data-side-pagination="server"
+                   data-pagination="true"
+                   data-click-to-select="true"></table>
+        </div>
+    </div>
+
+</div>
+<link href="~/lib/bootstrap-table/dist/bootstrap-table.css" rel="stylesheet" />
+<script src="~/lib/bootstrap-table/dist/bootstrap-table.js"></script>
+
+<script src="~/js/PagingQuery.js"></script>
+<script>
+
+    var $table = $('#table')
+        , $btnScreen = $("#btnScreen")
+        , $btnDele = $("#btnDele");
+
+    // your custom ajax request here
+    function ajaxRequest(params) {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "/rolemenu/getlist",
+            data: GetQueryData(params.data.offset, params.data.limit),
+            success: function (ret) {
+                console.log(ret.data);
+                params.success({
+                    total: ret.data.rowCount,
+                    rows: ret.data.pageData
+                });
+            }
+        })
+    }
+    function GetQueryData(offset, limit) {
+        //var serializeJson = $("#searchForm").serializeArray();
+        //var filterList = PagingQuery($("#searchForm")[0]);
+        //var formData = []
+        //formData.push({ "name": "filterConditionList", "value": filterList })
+        //formData.push({ "name": "offset", "value": offset });
+        //formData.push({ "name": "limit", "value": limit });
+        //return formData;
+
+        var filterList = PagingQuery($("#searchForm")[0]);
+
+        var filterObj = GetFilterObj($("sysRole_Id")[0])
+        filterObj.Value = $("#Role").val() ? $("#Role").val().toString() : "";
+        filterList.push()
+        var filterListJson = JSON.stringify(filterList);
+        var v = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
+        console.log(v);
+        return v;
+    }
+
+    window.operateEvents = {
+
+        'click .like': function (e, value, row, index) {
+            alert('You click like action, row: ' + JSON.stringify(row));
+        },
+        'click .remove': function (e, value, row, index) {
+            console.log(row.sysRoleId);
+            console.log(row);
+            $table.bootstrapTable('remove', {
+                field: 'sysRoleId',
+                values: [row.sysRoleId]
+            });
+        }
+    };
+    $table.bootstrapTable({
+
+        columns: [
+            {
+                field: 'state',
+                align: 'center',
+                checkbox: true
+            },
+            {
+                field: 'sysMenu.name',
+                title: '功能名称',
+                align: 'center',
+            }, {
+                field: 'sysRole.code',
+                title: 'sysRole.code',
+                align: 'center',
+            }, {
+                field: 'sysRole.name',
+                title: 'sysRole.name',
+                align: 'center',
+            }, {
+                field: 'operate',
+                title: 'Item Operate',
+                align: 'center',
+                events: operateEvents,
+                formatter: operateFormatter
+            }
+        ]
+    });
+
+    $btnScreen.click(function () {
+        $table.bootstrapTable('refresh');
+    });
+
+
+    $btnDele.click(function () {
+        console.log($table.bootstrapTable('getSelections'));
+    });
+
+
+    function operateFormatter(value, row, index) {
+        var v = false ? 'disabled =disabled' : '';
+        var btnhml = '<button class="btn btn-info btn-xs Role_Edit like" href="javascript:" ' + v + '><i class="fa fa-edit"></i> 编辑 </button>'
+        return [btnhml,
+            '<a class="like" href="javascript:void(0)" ' + v + '  title="Like">',
+            '<i class="fa fa-heart-o"></i>收藏',
+            '</a>  ',
+            '<a class="remove" href="javascript:void(0)" title="Remove">',
+            '<i class="fa fa-trash"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    $(function () {
+        $("#SysRole_Id").select2({ multiple: true });
+
+    })
+
+</script>
+

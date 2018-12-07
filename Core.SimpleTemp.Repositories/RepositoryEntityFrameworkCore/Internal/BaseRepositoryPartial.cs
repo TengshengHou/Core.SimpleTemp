@@ -13,17 +13,33 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
 {
     public partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
     {
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <param name="startPage">页码</param>
-        /// <param name="pageSize">单页数据数</param>
-        /// <param name="where">条件</param>
-        /// <param name="order">排序</param>
-        /// <returns></returns>
-        public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null, bool autoInclude = false)
-        {
+        ///// <summary>
+        ///// 分页查询
+        ///// </summary>
+        ///// <param name="startPage">页码</param>
+        ///// <param name="pageSize">单页数据数</param>
+        ///// <param name="where">条件</param>
+        ///// <param name="order">排序</param>
+        ///// <returns></returns>
+        //public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null, bool autoInclude = false)
+        //{
 
+        //    //var result = QueryBase();
+
+        //    //if (where != null)
+        //    //    result = result.Where(where);
+        //    //if (order != null)
+        //    //    result = result.OrderBy(order);
+        //    //else
+        //    //    result = result.OrderBy(m => m.Id);
+        //    //int rowCount = await result.CountAsync();
+        //    //var pageData = await result.Skip((startPage - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        //    return await LoadPageOffsetAsync((startPage - 1) * pageSize, pageSize, where, order);
+        //}
+
+        public virtual async Task<IPageModel<TEntity>> LoadPageOffsetAsync(int offset, int limit, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
+        {
             var result = QueryBase();
 
             if (where != null)
@@ -33,7 +49,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
             else
                 result = result.OrderBy(m => m.Id);
             int rowCount = await result.CountAsync();
-            var pageData = await result.Skip((startPage - 1) * pageSize).Take(pageSize).ToListAsync();
+            var pageData = await result.Skip(offset).Take(limit).ToListAsync();
 
             var PageModel = new PageModel<TEntity>()
             {

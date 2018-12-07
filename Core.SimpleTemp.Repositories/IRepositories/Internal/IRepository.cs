@@ -25,28 +25,28 @@ namespace Core.SimpleTemp.Repositories.IRepositories
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        Task<List<TEntity>> GetAllListAsync(bool autoInclude = false);
+        Task<List<TEntity>> GetAllListAsync();
 
         /// <summary>
         /// 根据lambda表达式条件获取实体集合
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false);
+        Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 根据主键获取实体
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <returns></returns>
-        Task<TEntity> GetAsync(TPrimaryKey id, bool autoInclude = false);
+        Task<TEntity> GetAsync(TPrimaryKey id);
 
         /// <summary>
         /// 根据lambda表达式条件获取单个实体
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false);
+        Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 
         /// <summary>
         /// 新增实体

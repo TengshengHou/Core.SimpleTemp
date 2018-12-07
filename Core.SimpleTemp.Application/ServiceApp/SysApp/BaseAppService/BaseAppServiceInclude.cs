@@ -24,15 +24,20 @@ namespace Core.SimpleTemp.Application
         public async Task<TDto> IGetAsync(Guid id, string[] navigationproperty) => Mapper.Map<TDto>(await _repository.IGetAsync(id, navigationproperty));
         public async Task<IPageModel<TDto>> IGetAllPageListAsync(int startPage, int pageSize, string[] navigationproperty, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
         {
-            var pageData = await _repository.ILoadPageListAsync(startPage, pageSize, navigationproperty, where, order);
-
+            var pageModelDto = await ILoadPageOffsetAsync((startPage - 1) * pageSize, pageSize, navigationproperty, where, order);
+            return pageModelDto;
+        }
+        public async Task<IPageModel<TDto>> ILoadPageOffsetAsync(int offset, int limit, string[] navigationproperty, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
+        {
+            var pageModelEntity = await _repository.ILoadPageOffsetAsync(offset, limit, navigationproperty, where, order);
             IPageModel<TDto> pageModelDto = new PageModel<TDto>()
             {
-                PageData = Mapper.Map<List<TDto>>(pageData.PageData)
-                ,
-                RowCount = pageData.RowCount
+                PageData = Mapper.Map<List<TDto>>(pageModelEntity.PageData)
+               ,
+                RowCount = pageModelEntity.RowCount
             };
             return pageModelDto;
+
         }
     }
 }

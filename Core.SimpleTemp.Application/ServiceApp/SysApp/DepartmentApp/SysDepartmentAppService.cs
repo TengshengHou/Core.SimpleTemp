@@ -23,7 +23,7 @@ namespace Core.SimpleTemp.Application
         /// <returns></returns>
         public async Task<IPageModel<SysDepartmentDto>> GetChildrenByParentAsync(Guid parentId, int startPage, int pageSize)
         {
-            var pageModel = await _repository.LoadPageListAsync(startPage, pageSize, it => it.ParentId == parentId, it => it.Code);
+            var pageModel = await GetAllPageListAsync(startPage, pageSize, it => it.ParentId == parentId, it => it.Code);
             IPageModel<SysDepartmentDto> viewPageModel = new PageModel<SysDepartmentDto>
             {
                 PageData = Mapper.Map<List<SysDepartmentDto>>(pageModel.PageData),

@@ -20,7 +20,7 @@ namespace Core.SimpleTemp.Application.UserApp
 
         public async Task<IPageModel<SysUserDto>> GetUserByDepartmentAsync(Guid departmentId, int startPage, int pageSize)
         {
-            var pageModel = await _repository.LoadPageListAsync(startPage, pageSize, it => it.SysDepartmentId == departmentId);
+            var pageModel = await GetAllPageListAsync(startPage, pageSize, it => it.SysDepartmentId == departmentId);
             IPageModel<SysUserDto> pageModelDto = new PageModel<SysUserDto>()
             {
                 PageData = Mapper.Map<List<SysUserDto>>(pageModel.PageData),

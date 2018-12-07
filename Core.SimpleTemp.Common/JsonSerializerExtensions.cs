@@ -19,5 +19,18 @@ namespace Core.SimpleTemp.Common
                 }
             }
         }
+
+
+        public static T Deserialize<T>(this JsonSerializer jsonSerializer, string objJson)
+        {
+            using (var stringReader = new StringReader(objJson))
+            {
+                using (var jsonTextReader = new JsonTextReader(stringReader))
+                {
+                    return jsonSerializer.Deserialize<T>(jsonTextReader);
+
+                }
+            }
+        }
     }
 }

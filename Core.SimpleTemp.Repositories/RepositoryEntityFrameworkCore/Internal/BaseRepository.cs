@@ -43,7 +43,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// 获取实体集合
         /// </summary>
         /// <returns></returns>
-        public virtual Task<List<TEntity>> GetAllListAsync(bool autoInclude = false)
+        public virtual Task<List<TEntity>> GetAllListAsync()
         {
             return QueryBase().AsNoTracking().ToListAsync();
         }
@@ -53,7 +53,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public virtual Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false)
+        public virtual Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return QueryBase().Where(predicate).AsNoTracking().ToListAsync();
         }
@@ -63,7 +63,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="id">实体主键</param>
         /// <returns></returns>
-        public virtual Task<TEntity> GetAsync(TPrimaryKey id, bool autoInclude = false)
+        public virtual Task<TEntity> GetAsync(TPrimaryKey id)
         {
             return QueryBase().FirstOrDefaultAsync(CreateEqualityExpressionForId(id));
         }
@@ -73,7 +73,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// </summary>
         /// <param name="predicate">lambda表达式条件</param>
         /// <returns></returns>
-        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, bool autoInclude = false)
+        public virtual Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return QueryBase().FirstOrDefaultAsync(predicate);
         }
@@ -99,7 +99,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         /// <param name="autoSave">是否立即执行保存</param>
         public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
-            var obj = await GetAsync(entity.Id, true);
+            var obj = await GetAsync(entity.Id);
             EntityToEntity(entity, obj, noUpdateProperties);
             return await UpdateAsync(obj, autoSave);
         }

@@ -1,13 +1,17 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Common.PagingQuery;
 using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
-    public class CoreController : Controller
+    public class CoreController<TEntity> : Controller
     {
 
         #region JsonResult
@@ -61,5 +65,14 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var strJson = sj.Serialize(dic);
             ViewBag.AuthorizeList = strJson;
         }
+
+
+
+        public PagingQueryModel<TEntity> GetPagingQueryModel()
+        {
+            var pagingQueryModelBuild = new PagingQueryModelBuild<TEntity>(HttpContext);
+            return pagingQueryModelBuild.Build();
+        }
+
     }
 }

@@ -8,7 +8,6 @@ using System.Text;
 
 namespace Core.SimpleTemp.Entitys
 {
-    //public class EntityInfos : IEntityInfos
     public static class EntityInfos
     {
         const string assemblyNames = "Core.SimpleTemp.Entitys";
@@ -43,9 +42,5 @@ namespace Core.SimpleTemp.Entitys
             return _map[key] ?? null;
         }
     }
-
-    //public interface IEntityInfos
-    //{
-    //    List<PropertyInfo> GetEntityInfo(string key);
-    //}
+ 
 }

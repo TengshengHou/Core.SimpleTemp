@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
-    public class AjaxController<Tdto, TEntity, TService> : CoreController where TService : IBaseAppService<Tdto, TEntity> where Tdto : Dto
+    public class AjaxController<Tdto, TEntity, TService> : CoreController<TEntity> where TService : IBaseAppService<Tdto, TEntity> where Tdto : Dto
     {
         TService _service;
         public AjaxController(TService service)

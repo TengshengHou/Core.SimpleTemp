@@ -22,14 +22,9 @@ namespace Core.SimpleTemp.Application.ServiceApp.DemoApp.RoleMenu
         public async System.Threading.Tasks.Task<List<RoleMenuDto>> GetListAsync()
         {
 
-            var list = await _repository.GetAllListAsync(true);
+            var list = await _repository.GetAllListAsync();
             var ret = AutoMapper.Mapper.Map<List<RoleMenuDto>>(list);
-
             return ret;
-
-
-
-
         }
     }
 }

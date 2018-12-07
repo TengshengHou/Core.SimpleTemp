@@ -34,7 +34,7 @@ namespace Core.SimpleTemp.Application.MenuApp
 
         public async Task<IPageModel<SysMenuDto>> GetMenusByParentAsync(Guid parentId, int startPage, int pageSize)
         {
-            var pageMenu = await _sysMenuRepository.LoadPageListAsync(startPage, pageSize, it => it.ParentId == parentId, it => it.SerialNumber);
+            var pageMenu = await GetAllPageListAsync(startPage, pageSize, it => it.ParentId == parentId, it => it.SerialNumber);
             IPageModel<SysMenuDto> pageModel = new PageModel<SysMenuDto>()
             {
                 PageData = Mapper.Map<List<SysMenuDto>>(pageMenu.PageData),

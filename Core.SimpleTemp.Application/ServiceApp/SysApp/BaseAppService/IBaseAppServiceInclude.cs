@@ -18,5 +18,6 @@ namespace Core.SimpleTemp.Application
 
         Task<TDto> IGetAsync(Guid id, string[] navigationproperty);
         Task<IPageModel<TDto>> IGetAllPageListAsync(int startPage, int pageSize, string[] navigationproperty, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null);
+        Task<IPageModel<TDto>> ILoadPageOffsetAsync(int offset, int limit, string[] navigationproperty, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null);
     }
 }
