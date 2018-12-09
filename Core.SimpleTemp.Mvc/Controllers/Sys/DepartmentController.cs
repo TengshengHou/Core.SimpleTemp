@@ -111,10 +111,10 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         [HttpPost("GetChildrenByParent")]
         [PermissionFilter(DepartmentPermission.Department_GetChildrenByParent)]
-        public async Task<IActionResult> GetChildrenByParentAsync(Guid parentId)
+        public async Task<IActionResult> GetChildrenByParentAsync()
         {
             var pagingQueryModel = base.GetPagingQueryModel();
-            var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, model => model.ParentId == parentId, orderModel => orderModel.CreateTime);
+            var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
             return JsonSuccess(result);
         }
 

@@ -27,3 +27,7 @@ Core.SimpleTemp.Repositories/bin/
 Core.SimpleTemp.Repositories/Migrations/
 Core.SimpleTemp.Repositories/obj/
 Core.SimpleTemp.Entitys/obj/
+Core.SimpleTemp.Entitys/bin/
+Core.SimpleTemp.Application/bin/
+Core.SimpleTemp.Application/obj/
+Core.SimpleTemp.Common/bin/
