@@ -20,18 +20,16 @@ function save() {
                 parent.layer.msg(data.message);
             };
         }
-        //});
     });
 };
+
 $.validator.setDefaults({
     submitHandler: function (form) {
         save();
-
     },
 });
 
 var submit = function (index) {
     _index = index;
     $("#btnSave").click();
-
 }

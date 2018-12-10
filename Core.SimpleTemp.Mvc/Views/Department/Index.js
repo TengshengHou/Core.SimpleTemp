@@ -5,16 +5,17 @@ var ajaxCount = 0;
 //新增
 function add(type) {
     var parentId = guidEmpty;
-    if (type === 1) {
-        if (selectedId === guidEmpty) {
-            layer.alert("请选择部门。");
-            return;
-        }
-        parentId = selectedId;
-    } else {
-        SetTreeSelectEmpty()
-        parentId = guidEmpty;
-    }
+    //if (type === 1) {
+    //    if (selectedId === guidEmpty) {
+    //        layer.alert("请选择部门。");
+    //        return;
+    //    }
+    //    parentId = selectedId;
+    //} else {
+    //    SetTreeSelectEmpty()
+    //    parentId = guidEmpty;
+    //}
+    parentId = selectedId;
     EditWindow('edit?ParentId=' + parentId);
 
 };
@@ -25,7 +26,7 @@ function EditWindow(Url) {
         area: ['550px', '550px'],
         fixed: false, //不固定
         maxmin: true,
-        content: [Url,'no'],//禁止滚动条
+        content: [Url, 'no'],//禁止滚动条
         btn: ['保存', '取消'],
         btn1: function (index, layero) {
             $(layero).find("iframe")[0].contentWindow.submit(index);
@@ -177,13 +178,18 @@ function initTree() {
                     //var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
                     //inst.select_node(obj);
                 } else {
+
                     $('#treeDiv').jstree('select_node', selectedId);
                 }
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
+              
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
                 if (node) {
-                    selectedId = node.id;
+                    if (selectedId == node.id && data.event)
+                        SetTreeSelectEmpty();
+                    else
+                        selectedId = node.id;
                     $table.bootstrapTable('refresh');
                 };
             });
@@ -233,21 +239,19 @@ $(function () {
     }).ajaxStop(function () {
         layer.closeAll('loading');
     })
-    $("#btnAddRoot").click(function () { add(0); });
+    //$("#btnAddRoot").click(function () { add(0); });
     $("#btnAdd").click(function () { add(1); });
     $("#btnDelete").click(function () { deleteMulti(); });
     $btnScreen.click(function () {
-        if (selectedId == guidEmpty)
-        {
-            layer.alert("请选择部门。");
-            return;
+        if (selectedId == guidEmpty) {
+            //layer.alert("请选择部门。");
         }
         $table.bootstrapTable('refresh');
     });
-    $("#btnScreenTop").click(function () {
-        SetTreeSelectEmpty();
-        $table.bootstrapTable('refresh');
-    });
+    //$("#btnScreenTop").click(function () {
+    //    SetTreeSelectEmpty();
+    //    $table.bootstrapTable('refresh');
+    //});
     initTree();
 });
 
