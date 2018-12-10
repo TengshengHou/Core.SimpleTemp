@@ -1,67 +1,45 @@
 ﻿var $table = $('#table'), $btnScreen = $("#btnScreen"), $btnDele = $("#btnDele");
-var selectedId = "00000000-0000-0000-0000-000000000000";
+var guidEmpty = "00000000-0000-0000-0000-000000000000";
+var selectedId = guidEmpty;
 var ajaxCount = 0;
-
-
 //新增
 function add(type) {
+    var parentId = guidEmpty;
     if (type === 1) {
-        if (selectedId === "00000000-0000-0000-0000-000000000000") {
+        if (selectedId === guidEmpty) {
             layer.alert("请选择部门。");
             return;
         }
-        $("#ParentId").val(selectedId);
+        parentId = selectedId;
+    } else {
+        SetTreeSelectEmpty()
+        parentId = guidEmpty;
     }
-    else {
-        $("#ParentId").val("00000000-0000-0000-0000-000000000000");
-    }
-    $("#Id").val("00000000-0000-0000-0000-000000000000");
-    $("#Code").val("");
-    $("#Name").val("");
-    $("#Manager").val("");
-    $("#ContactNumber").val("");
-    $("#Remarks").val("");
-    $("#Title").text("新增顶级");
-    //弹出新增窗体
-    $("#addRootModal").modal("show");
+    EditWindow('edit?ParentId=' + parentId);
+
 };
-//编辑
-function edit(id) {
-    $.ajax({
-        type: "Get",
-        url: "/Department/Get?id=" + id + "&_t=" + new Date().getTime(),
-        success: function (data) {
-            $("#Id").val(data.id);
-            $("#ParentId").val(data.parentId);
-            $("#addForm [name='name']").val(data.name);
-            $("#Code").val(data.code);
-            $("#Manager").val(data.manager);
-            $("#ContactNumber").val(data.contactNumber);
-            $("#Remarks").val(data.remarks);
-            $("#Title").text("编辑功能")
-            $("#addRootModal").modal("show");
-        }
-    })
-};
-//保存
-function save() {
-    //var postData = { "dto": { "Id": $("#Id").val(), "ParentId": $("#ParentId").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Manager": $("#Manager").val(), "ContactNumber": $("#ContactNumber").val(), "Remarks": $("#Remarks").val() } };
-    var postData = $("#addForm").serializeArray();
-    $.ajax({
-        type: "Post",
-        url: "/Department/Edit",
-        data: postData,
-        success: function (data) {
-            debugger
-            if (data.result == "Success") {
-                initTree();
-                $("#addRootModal").modal("hide");
-            } else {
-                layer.tips(data.message, "#btnSave");
-            };
+
+function EditWindow(Url) {
+    var index = layer.open({
+        type: 2,
+        area: ['550px', '550px'],
+        fixed: false, //不固定
+        maxmin: true,
+        content: [Url,'no'],//禁止滚动条
+        btn: ['保存', '取消'],
+        btn1: function (index, layero) {
+            $(layero).find("iframe")[0].contentWindow.submit(index);
         }
     });
+    //layer.full(index);
+}
+
+//编辑
+function edit(id) {
+    EditWindow('edit?id=' + id);
 };
+
+
 //删除单条数据
 function deleteSingle(id) {
     layer.confirm("您确认删除选定的记录吗？", {
@@ -84,13 +62,7 @@ function deleteSingle(id) {
     });
 };
 
-
-
-
 function ajaxRequest(params) {
-
-
-
     $.ajax({
         type: "post",
         dataType: "json",
@@ -108,14 +80,7 @@ function ajaxRequest(params) {
 
 function GetQueryData(offset, limit) {
     var filterList = PagingQuery($("#searchForm")[0]);
-    if ($("#isTopQuery").get(0).checked) {
-        selectedId = "00000000-0000-0000-0000-000000000000";
-    } else {
-        if ($('#treeDiv').jstree()) {
-            console.log($('#treeDiv').jstree());
 
-        }
-    }
     var filterOjb = {};
     filterOjb.Field = "ParentId";
     filterOjb.Action = "=";
@@ -131,9 +96,8 @@ function GetQueryData(offset, limit) {
 window.operateEvents = {
 
     'click .edit': function (e, value, row, index) {
-
         edit(row.id);
-        alert('You click like action, row: ' + JSON.stringify(row));
+        //alert('You click like action, row: ' + JSON.stringify(row));
     },
     'click .delete': function (e, value, row, index) {
         deleteSingle(row.id);
@@ -143,8 +107,6 @@ window.operateEvents = {
         //});
     }
 };
-
-
 
 $table.bootstrapTable({
 
@@ -176,7 +138,7 @@ $table.bootstrapTable({
             align: 'remarks',
         }, {
             field: 'operate',
-            title: 'Item Operate',
+            title: '操作',
             align: 'center',
             events: operateEvents,
             formatter: operateFormatter
@@ -186,12 +148,12 @@ $table.bootstrapTable({
 
 function operateFormatter(value, row, index) {
     var v = false ? 'disabled =disabled' : '';
-    var editBtnHtml = '<button class="btn btn-info btn-xs Role_Edit edit" href="javascript:" ' + v + '><i class="fa fa-edit"></i> 编辑 </button>'
-    var delBtnHtml = '<button class="btn btn-danger btn-xs Menu_Delete" href="javascript:" ' + v + '><i class="fa fa-edit"></i> 删除 </button>'
-    return [editBtnHtml, delBtnHtml
+    var editBtnHtml = '<button class="btn btn-info btn-xs  edit" title="编辑" href="javascript:" ' + v + '><i class="glyphicon glyphicon-pencil"></i>  </button> '
+    var delBtnHtml = '<button class="btn btn-danger btn-xs delete" title="删除"  href="javascript:" ' + v + '><i class="glyphicon glyphicon-remove"></i>  </button>'
+    var detailsBtnHtml = "";
+    return [editBtnHtml, delBtnHtml, detailsBtnHtml
     ].join('');
 }
-
 
 //加载功能树
 function initTree() {
@@ -210,9 +172,13 @@ function initTree() {
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
                 //默认选中根节点
-                var inst = data.instance;
-                var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
-                inst.select_node(obj);
+                if (selectedId == guidEmpty) {
+                    //var inst = data.instance;
+                    //var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
+                    //inst.select_node(obj);
+                } else {
+                    $('#treeDiv').jstree('select_node', selectedId);
+                }
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
@@ -223,10 +189,7 @@ function initTree() {
             });
         }
     });
-
 }
-
-
 
 //批量删除
 function deleteMulti() {
@@ -262,7 +225,6 @@ function deleteMulti() {
     });
 };
 
-
 $(function () {
     $(document).ajaxStart(function () {
         if (ajaxCount != 0)
@@ -271,20 +233,26 @@ $(function () {
     }).ajaxStop(function () {
         layer.closeAll('loading');
     })
-
     $("#btnAddRoot").click(function () { add(0); });
     $("#btnAdd").click(function () { add(1); });
-    $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
-    $("#btnLoadRoot").click(function () {
-        selectedId = "00000000-0000-0000-0000-000000000000";
+    $btnScreen.click(function () {
+        if (selectedId == guidEmpty)
+        {
+            layer.alert("请选择部门。");
+            return;
+        }
         $table.bootstrapTable('refresh');
     });
-    $btnScreen.click(function () { $table.bootstrapTable('refresh'); });
-    //$btnDele.click(function () {
-    //    deleteMulti
-    //});
-
-    $("#checkAll").click(function () { checkAll(this) });
+    $("#btnScreenTop").click(function () {
+        SetTreeSelectEmpty();
+        $table.bootstrapTable('refresh');
+    });
     initTree();
 });
+
+var SetTreeSelectEmpty = function () {
+    //取消当前选择
+    $('#treeDiv').jstree('deselect_node', selectedId);
+    selectedId = guidEmpty;
+}

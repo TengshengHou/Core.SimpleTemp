@@ -1,13 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.SimpleTemp.Application
 {
-    public class SysDepartmentDto:Dto
+    public class SysDepartmentDto : Dto
     {
 
         /// <summary>
         /// 部门名称
         /// </summary>
+        [Required(ErrorMessage = "必须得给写点啥吧")]
         public string Name { get; set; }
 
         /// <summary>

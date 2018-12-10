@@ -41,6 +41,22 @@ namespace Core.SimpleTemp.Mvc.Controllers
             return await base.EditAsync(dto);
         }
 
+        [HttpGet("Edit")]
+        [PermissionFilter(DepartmentPermission.Department_Edit)]
+        public async Task<IActionResult> Edit(Guid id, Guid ParentId)
+        {
+            SysDepartmentDto model = new SysDepartmentDto();
+            if (id != Guid.Empty)
+            {
+                model = await _service.GetAsync(id);
+            }
+            else
+            {
+                model.ParentId = ParentId;
+            }
+            return View(model); ;
+        }
+
         [HttpPost("DeleteMuti")]
         [PermissionFilter(DepartmentPermission.Department_DeleteMuti)]
         public override async Task<IActionResult> DeleteMutiAsync(string ids)
@@ -117,14 +133,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
             return JsonSuccess(result);
         }
-
-
-
-
-
-
-
-
 
     }
 }

@@ -20,27 +20,22 @@
             <div class="">
                 <form role="form" id="searchForm" class="form-inline">
                     <div class="form-group">
-                        <label for="Name">组织机构名称</label>
+                        <label for="Name">组织机构名称&nbsp;&nbsp;</label>
                         <input type="text" asp-for="Name" class="form-control" data-filter="true" data-action="in" value="" />
                     </div>
-                    <div class="form-group">
-                        <label for="Name">顶级查询</label>
-                        <input type="checkbox" id="isTopQuery" />
-                    </div>
+                    &nbsp;&nbsp;
                     <button id="btnScreen" type="button" class="btn btn-default">查询</button>
-                    <button id="btnAddRoot" class="btn btn-primary @DepartmentPermission.Department_Edit" type="button" data-original-title="新增顶级功能" data-toggle="tooltip" data-widget="">
-                        <i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增顶级
-                    </button>
+
                     <button id="btnAdd" title="" class="btn btn-primary @DepartmentPermission.Department_Edit" type="button" data-original-title="新增功能" data-toggle="tooltip" data-widget="">
                         <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;新增
                     </button>
-
-
-                    @*<button id="btnLoadRoot" title="" class="btn btn-success @DepartmentPermission.Department_GetChildrenByParent" type="button" data-original-title="加载顶级功能" data-toggle="tooltip" data-widget="">
-                            <i class="fa fa-list"></i>&nbsp;&nbsp;加载顶级
-                        </button>*@
                     <button id="btnDelete" title="" class="btn btn-danger @DepartmentPermission.Department_DeleteMuti " type="button" data-original-title="删除功能" data-toggle="tooltip" data-widget="">
                         <i class="fa fa-times"></i>&nbsp;&nbsp;删除
+                    </button>
+
+                    <button id="btnScreenTop" type="button" class="btn btn-default">顶级查询</button>
+                    <button id="btnAddRoot" class="btn btn-primary @DepartmentPermission.Department_Edit" type="button" data-original-title="新增顶级功能" data-toggle="tooltip" data-widget="">
+                        <i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增顶级
                     </button>
                 </form>
             </div>
@@ -57,10 +52,9 @@
 
     </div>
 </div>
-
+@*@Html.Partial("_Edit")*@
 @section scripts{
 
-    <script src="~/Views/Department/IndexOld.js"></script>
     <script src="~/Views/Department/Index.js"></script>
 
 }
