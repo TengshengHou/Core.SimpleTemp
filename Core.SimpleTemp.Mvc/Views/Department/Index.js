@@ -5,21 +5,11 @@ var ajaxCount = 0;
 //新增
 function add(type) {
     var parentId = guidEmpty;
-    //if (type === 1) {
-    //    if (selectedId === guidEmpty) {
-    //        layer.alert("请选择部门。");
-    //        return;
-    //    }
-    //    parentId = selectedId;
-    //} else {
-    //    SetTreeSelectEmpty()
-    //    parentId = guidEmpty;
-    //}
     parentId = selectedId;
     EditWindow('edit?ParentId=' + parentId);
 
 };
-
+//新增/编辑 弹窗
 function EditWindow(Url) {
     var index = layer.open({
         type: 2,
@@ -63,6 +53,41 @@ function deleteSingle(id) {
     });
 };
 
+//批量删除
+function deleteMulti() {
+    var ids = "";
+    var list = $table.bootstrapTable('getSelections');
+    $.each(list, function () {
+        ids += this.id + ","
+    })
+    ids = ids.substring(0, ids.length - 1);
+    if (ids.length == 0) {
+        layer.alert("请选择要删除的记录。");
+        return;
+    };
+    //询问框
+    layer.confirm("您确认删除选定的记录吗？", {
+        btn: ["确定", "取消"]
+    }, function () {
+        var sendData = { "ids": ids };
+        $.ajax({
+            type: "Post",
+            url: "/Department/DeleteMuti",
+            data: sendData,
+            success: function (data) {
+                if (data.result == "Success") {
+                    initTree();
+                    layer.closeAll();
+                }
+                else {
+                    layer.alert(data.message);
+                }
+            }
+        });
+    });
+};
+
+//获取数据
 function ajaxRequest(params) {
     $.ajax({
         type: "post",
@@ -78,7 +103,7 @@ function ajaxRequest(params) {
         }
     })
 }
-
+//生成查询条件
 function GetQueryData(offset, limit) {
     var filterList = PagingQuery($("#searchForm")[0]);
 
@@ -94,6 +119,7 @@ function GetQueryData(offset, limit) {
     return pagingQueryData;
 }
 
+//Table行内事件
 window.operateEvents = {
 
     'click .edit': function (e, value, row, index) {
@@ -109,6 +135,7 @@ window.operateEvents = {
     }
 };
 
+//设置Table
 $table.bootstrapTable({
 
     columns: [
@@ -147,6 +174,7 @@ $table.bootstrapTable({
     ]
 });
 
+//行内样式
 function operateFormatter(value, row, index) {
     var v = false ? 'disabled =disabled' : '';
     var editBtnHtml = '<button class="btn btn-info btn-xs  edit" title="编辑" href="javascript:" ' + v + '><i class="glyphicon glyphicon-pencil"></i>  </button> '
@@ -183,7 +211,7 @@ function initTree() {
                 }
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
-              
+
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
                 if (node) {
                     if (selectedId == node.id && data.event)
@@ -197,40 +225,6 @@ function initTree() {
     });
 }
 
-//批量删除
-function deleteMulti() {
-    var ids = "";
-    var list = $table.bootstrapTable('getSelections');
-    $.each(list, function () {
-        ids += this.id + ","
-    })
-    ids = ids.substring(0, ids.length - 1);
-    if (ids.length == 0) {
-        layer.alert("请选择要删除的记录。");
-        return;
-    };
-    //询问框
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        var sendData = { "ids": ids };
-        $.ajax({
-            type: "Post",
-            url: "/Department/DeleteMuti",
-            data: sendData,
-            success: function (data) {
-                if (data.result == "Success") {
-                    initTree();
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert(data.message);
-                }
-            }
-        });
-    });
-};
-
 $(function () {
     $(document).ajaxStart(function () {
         if (ajaxCount != 0)
@@ -238,23 +232,18 @@ $(function () {
         ajaxCount++;
     }).ajaxStop(function () {
         layer.closeAll('loading');
-    })
-    //$("#btnAddRoot").click(function () { add(0); });
+        })
+
     $("#btnAdd").click(function () { add(1); });
     $("#btnDelete").click(function () { deleteMulti(); });
     $btnScreen.click(function () {
-        if (selectedId == guidEmpty) {
-            //layer.alert("请选择部门。");
-        }
         $table.bootstrapTable('refresh');
     });
-    //$("#btnScreenTop").click(function () {
-    //    SetTreeSelectEmpty();
-    //    $table.bootstrapTable('refresh');
-    //});
+
     initTree();
 });
 
+//取消当前选中，并设置选中节点为GuidEmpty
 var SetTreeSelectEmpty = function () {
     //取消当前选择
     $('#treeDiv').jstree('deselect_node', selectedId);
