@@ -41,6 +41,12 @@
     <Content Update="wwwroot\js\bootstrap-paginator.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\js\CommonList.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\CommonEdit.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\js\Common.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

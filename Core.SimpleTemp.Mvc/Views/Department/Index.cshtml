@@ -2,7 +2,6 @@
     ViewBag.CurrentMenu = "Department";
 }
 @model Core.SimpleTemp.Application.SysDepartmentDto
-
 <div class="row">
     <div class="col-md-3">
         <div class="box box-primary">
@@ -33,10 +32,6 @@
                         <i class="fa fa-times"></i>&nbsp;&nbsp;删除
                     </button>
 
-                    @*<button id="btnScreenTop" type="button" class="btn btn-default">顶级查询</button>
-                    <button id="btnAddRoot" class="btn btn-primary @DepartmentPermission.Department_Edit" type="button" data-original-title="新增顶级功能" data-toggle="tooltip" data-widget="">
-                        <i class="fa fa-plus-square"></i>&nbsp;&nbsp;新增顶级
-                    </button>*@
                 </form>
             </div>
         </div>
@@ -52,9 +47,7 @@
 
     </div>
 </div>
-@*@Html.Partial("_Edit")*@
 @section scripts{
-
+    <script src="~/js/CommonList.js"></script>
     <script src="~/Views/Department/Index.js"></script>
-
 }

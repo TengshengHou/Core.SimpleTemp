@@ -17,13 +17,14 @@
                 var port = location.port == 80 ? "" : ":" + location.port
                 window.location.href = location.protocol + "//" + location.hostname + port + '/account/login?ReturnUrl=' + currHref;
             }
+            Authorize();
         });
 
         Authorize();
 
     })
 
-   
+
 });
 
 //未授权按钮处理
@@ -42,3 +43,21 @@ var Authorize = function () {
         });
     } catch (err) { }
 };
+
+
+//判断是否是详情页面 
+
+function isDetails() {
+    return window.frames.location.search.indexOf("isDetails") > 0;
+}
+
+
+
+//判断字符是否为空的方法
+function isEmpty(obj) {
+    if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+    } else {
+        return false;
+    }
+}

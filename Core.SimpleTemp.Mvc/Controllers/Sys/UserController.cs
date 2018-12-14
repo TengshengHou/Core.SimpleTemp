@@ -32,9 +32,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
 
 
-        [HttpPost("Edit")]
+        [HttpPost("Save")]
         [PermissionFilter(UserPermission.UserController_Edit)]
-        public async Task<IActionResult> EditAsync(SysUserDto dto, string roles)
+        public async Task<IActionResult> SaveAsync(SysUserDto dto, string roles)
         {
 
             if (!string.IsNullOrEmpty(roles))
@@ -46,7 +46,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 }
                 dto.UserRoles = userRoles;
             }
-            return await base.EditAsync(dto, new List<string>() { nameof(SysUser.Password) });
+            return await base.SaveAsync(dto, new List<string>() { nameof(SysUser.Password) });
         }
 
         [HttpPost("DeleteMuti")]

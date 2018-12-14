@@ -21,16 +21,13 @@ namespace Core.SimpleTemp.Mvc.Controllers
             return View("Index");
         }
 
-        public virtual async Task<IActionResult> EditAsync(Tdto dto, List<string> noUpdateProperties = null)
+        public virtual async Task<IActionResult> SaveAsync(Tdto dto, List<string> noUpdateProperties = null)
         {
-
             if (!ModelState.IsValid)
             {
                 return JsonFaild(GetModelStateError());
             }
-
-            var model = await _service.GetAsync(dto.Id);
-            if (model == null)
+            if (object.Equals(dto.Id, Guid.Empty))
             {
                 await _service.InsertAsync(dto);
                 return JsonSuccess(string.Empty);

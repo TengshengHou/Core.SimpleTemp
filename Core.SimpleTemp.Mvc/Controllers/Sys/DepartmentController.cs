@@ -25,7 +25,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_Index)]
         public async Task<IActionResult> IndexAsync()
         {
-            await AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit, DepartmentPermission.Department_DeleteMuti });
+            await AuthorizeListAsync(new string[] { DepartmentPermission.Department_Delete, DepartmentPermission.Department_Edit, DepartmentPermission.Department_DeleteMuti, DepartmentPermission.Department_details });
             return base.Index();
         }
 
@@ -34,16 +34,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPost("Edit")]
+        [HttpPost("Save")]
         [PermissionFilter(DepartmentPermission.Department_Edit)]
-        public async Task<IActionResult> EditAsync(SysDepartmentDto dto)
+        public async Task<IActionResult> SaveAsync(SysDepartmentDto dto)
         {
-            return await base.EditAsync(dto);
+            return await base.SaveAsync(dto);
         }
 
         [HttpGet("Edit")]
         [PermissionFilter(DepartmentPermission.Department_Edit)]
-        public async Task<IActionResult> Edit(Guid id, Guid ParentId)
+
+        public async Task<IActionResult> EditAsync(Guid id, Guid ParentId)
         {
             SysDepartmentDto model = new SysDepartmentDto();
             if (id != Guid.Empty)
@@ -54,7 +55,15 @@ namespace Core.SimpleTemp.Mvc.Controllers
             {
                 model.ParentId = ParentId;
             }
-            return View(model); ;
+            return View("Edit", model);
+        }
+
+        [HttpGet("details")]
+        [PermissionFilter(DepartmentPermission.Department_details)]
+
+        public async Task<IActionResult> Details(Guid id)
+        {
+            return await this.EditAsync(id, Guid.Empty);
         }
 
         [HttpPost("DeleteMuti")]
@@ -71,12 +80,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             //有子节点不能删除
             if (!retbool)
             {
-                return Json(new
-                {
-                    Result = "Faild",
-
-                    Message = "删除失败,不能删除带有子节点的数据"
-                });
+                return JsonFaild("删除失败,不能删除带有子节点的数据");
             }
             return await base.DeleteMutiAsync(ids);
         }

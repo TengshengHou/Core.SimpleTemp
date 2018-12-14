@@ -152,7 +152,7 @@ function save() {
     var postData = { "dto": { "Id": $("#Id").val(), "ParentId": $("#ParentId").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Type": $("#Type").val(), "Url": $("#Url").val(), "Icon": $("#Icon").val(), "SerialNumber": $("#SerialNumber").val(), "Remarks": $("#Remarks").val() } };
     $.ajax({
         type: "Post",
-        url: "/Menu/Edit",
+        url: "/Menu/Save",
         data: postData,
         success: function (data) {
             debugger

@@ -33,12 +33,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPost("Edit")]
+        [HttpPost("Save")]
         [PermissionFilter(RolePermission.Role_Edit)]
-        public async Task<IActionResult> EditAsync(SysRoleDto dto)
+        public async Task<IActionResult> SaveAsync(SysRoleDto dto)
         {
 
-            return await base.EditAsync(dto);
+            return await base.SaveAsync(dto);
         }
 
         [HttpPost("DeleteMuti")]

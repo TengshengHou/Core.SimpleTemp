@@ -27,6 +27,7 @@ namespace Core.SimpleTemp.Application.Authorization
         public const string Department_DeleteMuti = "Department_DeleteMuti";
         public const string Department_Delete = "Department_Delete";
         public const string Department_Get = "Department_Get";
+        public const string Department_details = "Department_details";
 
         public const string Department_GetTreeData = "Department_GetTreeData";
         public const string Department_GetChildrenByParent = "Department_GetChildrenByParent";

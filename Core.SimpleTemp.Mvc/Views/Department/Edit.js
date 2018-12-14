@@ -1,13 +1,9 @@
 ﻿var _index;
-
 function save() {
-    console.log("1111");
-    console.log("12312312");
     var postData = $("#addForm").serializeArray();
-    console.log(postData);
     $.ajax({
         type: "Post",
-        url: "/Department/Edit",
+        url: "/Department/Save",
         data: postData,
         success: function (data) {
             if (data.result == "Success") {
@@ -22,7 +18,6 @@ function save() {
         }
     });
 };
-
 $.validator.setDefaults({
     submitHandler: function (form) {
         save();
@@ -31,5 +26,18 @@ $.validator.setDefaults({
 
 var submit = function (index) {
     _index = index;
-    $("#btnSave").click();
+    if (!isDetails()) {
+        $("#btnSave").click();
+    } else {
+        parent.layer.close(_index);//需要手动关闭窗口
+    }
 }
+
+$(function () {
+    if (isDetails()) {
+        var formElem = document.getElementById("addForm");
+        if (formElem) {
+            $(formElem).find('input,textarea,select').attr("disabled", "disabled");
+        }
+    }
+})

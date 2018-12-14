@@ -73,11 +73,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPost("Edit")]
+        [HttpPost("Save")]
         [PermissionFilter(MenuPermission.Menu_Edit)]
-        public async Task<IActionResult> EditAsync(SysMenuDto dto)
+        public async Task<IActionResult> SaveAsync(SysMenuDto dto)
         {
-            return await base.EditAsync(dto);
+            return await base.SaveAsync(dto);
         }
 
         [HttpPost("DeleteMuti")]

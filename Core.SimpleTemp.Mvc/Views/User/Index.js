@@ -150,7 +150,7 @@ function save() {
     $.ajax({
         type: "Post",
         async: false,
-        url: "/User/Edit",
+        url: "/User/Save",
         data: postData,
         success: function (data) {
             if (data.result == "Success") {

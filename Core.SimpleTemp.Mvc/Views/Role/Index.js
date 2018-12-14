@@ -125,7 +125,7 @@ function save() {
     var postData = { "dto": { "Id": $("#Id").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Remarks": $("#Remarks").val() } };
     $.ajax({
         type: "Post",
-        url: "/Role/Edit",
+        url: "/Role/Save",
         data: postData,
         success: function (data) {
             if (data.result == "Success") {

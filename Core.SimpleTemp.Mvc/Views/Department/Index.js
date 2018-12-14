@@ -2,33 +2,28 @@
 var guidEmpty = "00000000-0000-0000-0000-000000000000";
 var selectedId = guidEmpty;
 var ajaxCount = 0;
-//新增
-function add(type) {
-    var parentId = guidEmpty;
-    parentId = selectedId;
-    EditWindow('edit?ParentId=' + parentId);
 
+
+//新增
+function add() {
+    EditWindow('edit?ParentId=' + selectedId);
 };
 //新增/编辑 弹窗
-function EditWindow(Url) {
+function EditWindow(Url, btn1Text) {
+    var btntext = btn1Text ? btn1Text : "保存";
     var index = layer.open({
         type: 2,
         area: ['550px', '550px'],
         fixed: false, //不固定
         maxmin: true,
         content: [Url, 'no'],//禁止滚动条
-        btn: ['保存', '取消'],
+        btn: [btntext, '取消'],
         btn1: function (index, layero) {
             $(layero).find("iframe")[0].contentWindow.submit(index);
         }
     });
     //layer.full(index);
 }
-
-//编辑
-function edit(id) {
-    EditWindow('edit?id=' + id);
-};
 
 
 //删除单条数据
@@ -52,7 +47,6 @@ function deleteSingle(id) {
         })
     });
 };
-
 //批量删除
 function deleteMulti() {
     var ids = "";
@@ -87,26 +81,9 @@ function deleteMulti() {
     });
 };
 
-//获取数据
-function ajaxRequest(params) {
-    $.ajax({
-        type: "post",
-        dataType: "json",
-        url: "/Department/GetChildrenByParent?_t=" + new Date().getTime(),
-        data: GetQueryData(params.data.offset, params.data.limit),
-        success: function (ret) {
-            console.log(ret.data);
-            params.success({
-                total: ret.data.rowCount,
-                rows: ret.data.pageData
-            });
-        }
-    })
-}
 //生成查询条件
 function GetQueryData(offset, limit) {
     var filterList = PagingQuery($("#searchForm")[0]);
-
     var filterOjb = {};
     filterOjb.Field = "ParentId";
     filterOjb.Action = "=";
@@ -118,22 +95,41 @@ function GetQueryData(offset, limit) {
     var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
     return pagingQueryData;
 }
+//获取数据
+function ajaxRequest(params) {
+    $.ajax({
+        type: "post",
+        dataType: "json",
+        url: "/Department/GetChildrenByParent?_t=" + new Date().getTime(),
+        data: GetQueryData(params.data.offset, params.data.limit),
+        success: function (ret) {
+            params.success({
+                total: ret.data.rowCount,
+                rows: ret.data.pageData
+            });
+        }
+    })
+}
 
 //Table行内事件
 window.operateEvents = {
-
     'click .edit': function (e, value, row, index) {
-        edit(row.id);
-        //alert('You click like action, row: ' + JSON.stringify(row));
+        EditWindow('edit?id=' + row.id);
     },
     'click .delete': function (e, value, row, index) {
         deleteSingle(row.id);
-        //$table.bootstrapTable('remove', {
-        //    field: 'sysRoleId',
-        //    values: [row.sysRoleId]
-        //});
+    },
+    'click .details': function (e, value, row, index) {
+        var url = 'details?id=' + row.id + '&isDetails=true';
+        EditWindow(url, "确定");
     }
 };
+
+//行内样式
+function operateFormatter(value, row, index) {
+    var btnList = GetBaseOperateHtml('Department_Edit', 'Department_details', 'Department_Delete')
+    return btnList.join('');
+}
 
 //设置Table
 $table.bootstrapTable({
@@ -173,16 +169,6 @@ $table.bootstrapTable({
         }
     ]
 });
-
-//行内样式
-function operateFormatter(value, row, index) {
-    var v = false ? 'disabled =disabled' : '';
-    var editBtnHtml = '<button class="btn btn-info btn-xs  edit" title="编辑" href="javascript:" ' + v + '><i class="glyphicon glyphicon-pencil"></i>  </button> '
-    var delBtnHtml = '<button class="btn btn-danger btn-xs delete" title="删除"  href="javascript:" ' + v + '><i class="glyphicon glyphicon-remove"></i>  </button>'
-    var detailsBtnHtml = "";
-    return [editBtnHtml, delBtnHtml, detailsBtnHtml
-    ].join('');
-}
 
 //加载功能树
 function initTree() {
@@ -232,9 +218,9 @@ $(function () {
         ajaxCount++;
     }).ajaxStop(function () {
         layer.closeAll('loading');
-        })
+    })
 
-    $("#btnAdd").click(function () { add(1); });
+    $("#btnAdd").click(function () { add(); });
     $("#btnDelete").click(function () { deleteMulti(); });
     $btnScreen.click(function () {
         $table.bootstrapTable('refresh');
