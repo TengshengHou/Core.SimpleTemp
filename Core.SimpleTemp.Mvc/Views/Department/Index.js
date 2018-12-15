@@ -130,8 +130,9 @@ function initTree() {
                         SetTreeSelectEmpty();
                     else {
                         selectedId = node.id;
-                        $table.bootstrapTable('refresh');
+                        
                     }
+                    $table.bootstrapTable('refresh');
                 };
             });
         }
