@@ -1,91 +1,50 @@
 ﻿@{
-    Layout = null;
+    Layout = "_EditView";
 }
 @model Core.SimpleTemp.Application.SysDepartmentDto
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>&#x767B;&#x5F55;</title>
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="/css/AdminLTE.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="/lib/iCheck/skins/square/blue.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <!-- /.login-box -->
-    <!-- jQuery 3 -->
-    <script src="/lib/jquery/dist/jquery.js"></script>
-    <!-- Bootstrap 3.3.7 -->
-    <script src="/lib//bootstrap/dist/js/bootstrap.js"></script>
-    <!-- iCheck -->
-    <script src="/lib//iCheck/icheck.js"></script>
-    <!-- 客户验证 -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/lib/layer/dist/layer.js"></script>
-    <script src="~/js/Common.js"></script>
+@section scripts{
     <script src="~/Views/Department/Edit.js"></script>
-</head>
-<body class="modal-dialog">
-    <form id="addForm" onsubmit="return false" class="form-horizontal">
-        <input type="hidden" asp-for="Id" value="@Model.Id" />
-        <input type="hidden" asp-for="ParentId" value="@Model.ParentId" id="ParentId" />
-        <div class="box-body">
-            <span asp-validation-for="Name" class="text-danger"></span>
-            <div class="form-group">
+}
+<form id="addForm" onsubmit="return false" class="form-horizontal">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <input type="hidden" asp-for="ParentId" value="@Model.ParentId" id="ParentId" />
+    <div class="box-body">
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <div class="form-group">
 
-                <label class="col-sm-2 control-label" for="">部门名称</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Name" value="@Model.Name" autocomplete="off" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <span asp-validation-for="Code" class="text-danger"></span>
-                <label class="col-sm-2 control-label" for="inputPassword3">部门编码</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Code" value="@Model.Code" autocomplete="off" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <span asp-validation-for="Manager" class="text-danger"></span>
-                <label class="col-sm-2 control-label" for="">负责人</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="Manager" value="@Model.Manager" autocomplete="off" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <span asp-validation-for="ContactNumber" class="text-danger" autocomplete="off" ></span>
-                <label class="col-sm-2 control-label" for="">联系电话</label>
-                <div class="col-sm-10">
-                    <input class="form-control" asp-for="ContactNumber" value="@Model.ContactNumber" type="text" autocomplete="off" >
-                </div>
-            </div>
-            <div class="form-group">
-                <span asp-validation-for="Remarks" class="text-danger"></span>
-                <label class="col-sm-2 control-label" for="">部门描述</label>
-                <div class="col-sm-10">
-                    <textarea asp-for="Remarks" value="@Model.Remarks" placeholder="部门描述" class="form-control" rows="3"></textarea>
-                </div>
+            <label class="col-sm-2 control-label" for="">部门名称</label>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Name" value="@Model.Name" autocomplete="off" type="text">
             </div>
         </div>
-        <input id="btnSave" class="btn btn-primary" type="submit" style="display:none" value="保存" />
-    </form>
-</body>
-</html>
-
-
-
+        <div class="form-group">
+            <span asp-validation-for="Code" class="text-danger"></span>
+            <label class="col-sm-2 control-label" for="inputPassword3">部门编码</label>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Code" value="@Model.Code" autocomplete="off" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="Manager" class="text-danger"></span>
+            <label class="col-sm-2 control-label" for="">负责人</label>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Manager" value="@Model.Manager" autocomplete="off" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="ContactNumber" class="text-danger" autocomplete="off"></span>
+            <label class="col-sm-2 control-label" for="">联系电话</label>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="ContactNumber" value="@Model.ContactNumber" type="text" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group">
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+            <label class="col-sm-2 control-label" for="">部门描述</label>
+            <div class="col-sm-10">
+                <textarea asp-for="Remarks" value="@Model.Remarks" placeholder="部门描述" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+    <input id="btnSave" class="btn btn-primary" type="submit" style="display:none" value="保存" />
+</form>

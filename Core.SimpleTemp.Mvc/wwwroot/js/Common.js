@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿var AuthorizeList = [];
+$(function () {
 
     //Ajax 授权/认证失败后处理
     $(document).ajaxComplete(function (event, request, settings) {

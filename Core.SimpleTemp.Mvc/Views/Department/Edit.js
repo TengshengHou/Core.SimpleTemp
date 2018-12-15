@@ -33,11 +33,3 @@ var submit = function (index) {
     }
 }
 
-$(function () {
-    if (isDetails()) {
-        var formElem = document.getElementById("addForm");
-        if (formElem) {
-            $(formElem).find('input,textarea,select').attr("disabled", "disabled");
-        }
-    }
-})

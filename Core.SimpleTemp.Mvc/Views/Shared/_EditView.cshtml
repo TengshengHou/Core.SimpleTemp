@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+@model Core.SimpleTemp.Application.SysDepartmentDto
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>&#x767B;&#x5F55;</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/css/AdminLTE.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- /.login-box -->
+    <!-- jQuery 3 -->
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/lib//bootstrap/dist/js/bootstrap.js"></script>
+    <!-- 客户验证 -->
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/layer/dist/layer.js"></script>
+    <script src="~/js/Common.js"></script>
+    <script src="~/js/CommonEdit.js"></script>
+    <script>
+        AuthorizeList=@Html.Raw(ViewBag.AuthorizeList?? "null;")
+    </script>
+
+    @RenderSection("scripts", false)
+</head>
+<body class="modal-dialog">
+    @RenderBody()
+</body>
+</html>
+
+
+
+
+
+

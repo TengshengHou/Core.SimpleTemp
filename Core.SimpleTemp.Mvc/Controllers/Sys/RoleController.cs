@@ -37,7 +37,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(RolePermission.Role_Edit)]
         public async Task<IActionResult> SaveAsync(SysRoleDto dto)
         {
-
             return await base.SaveAsync(dto);
         }
 
@@ -77,6 +76,10 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 rows = result.PageData,
             });
         }
+
+
+
+
 
         /// <summary>
         /// 根据角色获取权限

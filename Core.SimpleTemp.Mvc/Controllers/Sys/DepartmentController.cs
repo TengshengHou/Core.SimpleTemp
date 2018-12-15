@@ -98,7 +98,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
             }
 
             return await base.DeleteAsync(id);
-
         }
         [HttpGet("Get")]
         [PermissionFilter(DepartmentPermission.Department_Get)]
