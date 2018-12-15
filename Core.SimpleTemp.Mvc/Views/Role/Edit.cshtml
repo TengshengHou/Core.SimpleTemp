@@ -1,0 +1,42 @@
+﻿@model Core.SimpleTemp.Application.RoleApp.SysRoleDto
+@{
+    Layout = "_EditView";
+}
+@section scripts{
+
+    <script src="~/Views/Role/Edit.js"></script>
+}
+<form id="addForm" onsubmit="return false" class="form-horizontal">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">角色名称</label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Name" value="@Model.Name" autocomplete="off" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">角色编号</label>
+            <span asp-validation-for="Code" class="text-danger"></span>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Code" value="@Model.Code" autocomplete="off" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">角色描述</label>
+            <span asp-validation-for="Remarks" class="text-danger"></span>
+            <div class="col-sm-10">
+                <textarea class="form-control" asp-for="Remarks" value="@Model.Remarks" autocomplete="off" rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <input id="btnSave" class="btn btn-primary" type="submit" style="display:none" value="保存" />
+</form>

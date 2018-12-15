@@ -1,22 +1,124 @@
-﻿var selectedRole = 0;
-var ajaxCount = 0;
-$(function () {
+﻿var $table = $('#table'), $btnScreen = $("#btnScreen"), $btnDele = $("#btnDele");
 
-    $(document).ajaxStart(function () {
-        if (ajaxCount != 0)
-            layer.load(1);
-        ajaxCount++;
-    }).ajaxStop(function () {
-        layer.closeAll('loading');
+
+var selectedRole = 0;
+var ajaxCount = 0;
+var delOjb = new Delete($table);
+
+//基础页面需要用到的Url
+var defajaxRequestUrl = "/Role/GetAllPageList";
+var editUrl = "edit";
+var detailsUrl = "details";
+var deleteMultiUrl = "/Role/DeleteMuti";
+var deleteSingleUrl = "/Role/Delete";
+
+
+
+
+
+
+
+
+
+//生成查询条件
+function GetQueryData(offset, limit) {
+    var filterList = PagingQuery($("#searchForm")[0]);
+    //var filterOjb = {};
+    //filterOjb.Field = "ParentId";
+    //filterOjb.Action = "=";
+    //filterOjb.Logic = "and";
+    //filterOjb.Value = selectedId;
+    //filterOjb.DataType = "guid";
+    //filterList.push(filterOjb);
+    var filterListJson = JSON.stringify(filterList);
+    var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
+    return pagingQueryData;
+}
+
+//获取数据
+function ajaxRequest(params) {
+    $.ajax({
+        type: "post",
+        dataType: "json",
+        url: defajaxRequestUrl + "?_t=" + new Date().getTime(),
+        data: GetQueryData(params.data.offset, params.data.limit),
+        success: function (ret) {
+            params.success({
+                total: ret.data.rowCount,
+                rows: ret.data.pageData
+            });
+        }
     })
-    $("#btnAdd").click(function () { add(); });
-    $("#btnDelete").click(function () { deleteMulti(); });
-    $("#btnSave").click(function () { save(); });
-    $("#btnSavePermission").click(function () { savePermission(); });
-    $("#checkAll").click(function () { checkAll(this) });
-    initTree();
-    loadTables(1, 10);
+}
+
+//Table行内事件
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+        EditWindow('edit?id=' + row.id);
+    },
+    'click .delete': function (e, value, row, index) {
+        delOjb.deleteSingle(deleteSingleUrl, row.id, function () {
+            initTree();
+        });
+    },
+    'click .details': function (e, value, row, index) {
+        var url = detailsUrl + '?id=' + row.id + '&isDetails=true';
+        EditWindow(url, "确定");
+    }
+};
+
+//行内样式
+function operateFormatter(value, row, index) {
+    var btnList = GetBaseOperateHtml('Role_Edit', 'Role_details', 'Role_Delete')
+    return btnList.join('');
+}
+
+//设置Table
+$table.bootstrapTable({
+
+    columns: [
+        {
+            field: 'state',
+            align: 'center',
+            checkbox: true
+        },
+        {
+            field: 'name',
+            title: '角色编号',
+            align: 'center',
+        }, {
+            field: 'code',
+            title: '角色名称',
+            align: 'center',
+        }, {
+            field: 'remarks',
+            title: '角色描述',
+            align: 'center',
+        }, {
+            field: 'operate',
+            title: '操作',
+            align: 'center',
+            events: operateEvents,
+            formatter: operateFormatter
+        }
+    ]
+    , onClickRow: function (row, $element) {
+        $('.info').removeClass('info');
+        $($element).addClass('info');
+        selectedRole = row.id;
+        loadPermissionByRole(selectedRole);
+    }
 });
+
+
+
+
+
+
+
+
+
+
 //加载树
 function initTree() {
     $.jstree.destroy();
@@ -41,157 +143,8 @@ function initTree() {
     });
 
 }
-//加载列表数据
-function loadTables(startPage, pageSize) {
-    $("#tableBody").html("");
-    $("#checkAll").prop("checked", false);
-    $.ajax({
-        type: "GET",
-        url: "/Role/GetAllPageList?startPage=" + startPage + "&pageSize=" + pageSize + "&_t=" + new Date().getTime(),
-        success: function (data) {
-            $.each(data.rows, function (i, item) {
-                var tr = "<tr>";
-                tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
-                tr += "<td>" + (item.code == null ? "" : item.code) + "</td>";
-                tr += "<td>" + item.name + "</td>";
-                tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
-                tr += "<td><button class='btn btn-info btn-xs Role_Edit' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs Role_Delete' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
-                tr += "</tr>";
-                $("#tableBody").append(tr);
-            })
-            Authorize();
-            var elment = $("#grid_paging_part"); //分页插件的容器id
-            if (data.rowCount > 0) {
-                var options = { //分页插件配置项
-                    bootstrapMajorVersion: 3,
-                    currentPage: startPage, //当前页
-                    numberOfPages: data.rowsCount, //总数
-                    totalPages: data.pageCount, //总页数
-                    onPageChanged: function (event, oldPage, newPage) { //页面切换事件
-                        loadTables(newPage, pageSize);
-                    }
-                }
-                elment.bootstrapPaginator(options); //分页插件初始化
-            }
-            $("table > tbody > tr").click(function () {
-                $("table > tbody > tr").removeAttr("style")
-                $(this).attr("style", "background-color:#beebff");
-                selectedRole = $(this).find("input").val();
-                loadPermissionByRole(selectedRole);
-            });
-        }
-    })
-}
-//全选
-function checkAll(obj) {
-    $(".checkboxs").each(function () {
-        if (obj.checked == true) {
-            $(this).prop("checked", true)
 
-        }
-        if (obj.checked == false) {
-            $(this).prop("checked", false)
-        }
-    });
-};
-//新增
-function add() {
-    $("#Id").val("00000000-0000-0000-0000-000000000000");
-    $("#Code").val("");
-    $("#Name").val("");
-    $("#Remarks").val("");
-    $("#Title").text("新增角色");
-    //弹出新增窗体
-    $("#editModal").modal("show");
-};
-//编辑
-function edit(id) {
-    $.ajax({
-        type: "Get",
-        url: "/Role/Get?id=" + id + "&_t=" + new Date().getTime(),
-        success: function (data) {
-            $("#Id").val(data.id);
-            $("#Name").val(data.name);
-            $("#Code").val(data.code);
-            $("#Remarks").val(data.remarks);
 
-            $("#Title").text("编辑角色")
-            $("#editModal").modal("show");
-        }
-    })
-};
-//保存
-function save() {
-    var postData = { "dto": { "Id": $("#Id").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Remarks": $("#Remarks").val() } };
-    $.ajax({
-        type: "Post",
-        url: "/Role/Save",
-        data: postData,
-        success: function (data) {
-            if (data.result == "Success") {
-                loadTables(1, 10)
-                $("#editModal").modal("hide");
-            } else {
-                layer.tips(data.message, "#btnSave");
-            };
-        }
-    });
-};
-//批量删除
-function deleteMulti() {
-    var ids = "";
-    $(".checkboxs").each(function () {
-        if ($(this).prop("checked") == true) {
-            ids += $(this).val() + ","
-        }
-    });
-    ids = ids.substring(0, ids.length - 1);
-    if (ids.length == 0) {
-        layer.alert("请选择要删除的记录。");
-        return;
-    };
-    //询问框
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        var sendData = { "ids": ids };
-        $.ajax({
-            type: "Post",
-            url: "/Role/DeleteMuti",
-            data: sendData,
-            success: function (data) {
-                if (data.result == "Success") {
-                    loadTables(1, 10)
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert("删除失败！");
-                }
-            }
-        });
-    });
-};
-//删除单条数据
-function deleteSingle(id) {
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        $.ajax({
-            type: "POST",
-            url: "/Role/Delete",
-            data: { "id": id },
-            success: function (data) {
-                if (data.result == "Success") {
-                    loadTables(1, 10)
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert("删除失败！");
-                }
-            }
-        })
-    });
-};
 //保存角色权限关联关系
 function savePermission() {
     if (selectedRole == 0) {
@@ -237,3 +190,34 @@ function loadPermissionByRole(selectedRole) {
         }
     });
 };
+
+
+
+$(function () {
+
+    $(document).ajaxStart(function () {
+        if (ajaxCount != 0)
+            layer.load(1);
+        ajaxCount++;
+    }).ajaxStop(function () {
+        layer.closeAll('loading');
+    })
+    initTree();
+
+
+    $("#btnSavePermission").click(function () { savePermission(); });
+
+
+    //页面基础按钮
+    $("#btnAdd").click(function () {
+        EditWindow(editUrl);
+    });
+    $("#btnDelete").click(function () {
+        delOjb.deleteMulti(deleteMultiUrl, function () {
+            initTree();
+        });
+    });
+    $btnScreen.click(function () {
+        $table.bootstrapTable('refresh');
+    });
+});

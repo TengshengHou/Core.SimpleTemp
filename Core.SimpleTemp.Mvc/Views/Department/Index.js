@@ -1,85 +1,9 @@
 ﻿var $table = $('#table'), $btnScreen = $("#btnScreen"), $btnDele = $("#btnDele");
-var guidEmpty = "00000000-0000-0000-0000-000000000000";
 var selectedId = guidEmpty;
 var ajaxCount = 0;
+var delOjb = new Delete($table);
 
 
-//新增
-function add() {
-    EditWindow('edit?ParentId=' + selectedId);
-};
-//新增/编辑 弹窗
-function EditWindow(Url, btn1Text) {
-    var btntext = btn1Text ? btn1Text : "保存";
-    var index = layer.open({
-        type: 2,
-        area: ['550px', '550px'],
-        fixed: false, //不固定
-        maxmin: true,
-        content: [Url, 'no'],//禁止滚动条
-        btn: [btntext, '取消'],
-        btn1: function (index, layero) {
-            $(layero).find("iframe")[0].contentWindow.submit(index);
-        }
-    });
-    //layer.full(index);
-}
-
-
-//删除单条数据
-function deleteSingle(id) {
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        $.ajax({
-            type: "POST",
-            url: "/Department/Delete",
-            data: { "id": id },
-            success: function (data) {
-                if (data.result == "Success") {
-                    initTree();
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert(data.message);
-                }
-            }
-        })
-    });
-};
-//批量删除
-function deleteMulti() {
-    var ids = "";
-    var list = $table.bootstrapTable('getSelections');
-    $.each(list, function () {
-        ids += this.id + ","
-    })
-    ids = ids.substring(0, ids.length - 1);
-    if (ids.length == 0) {
-        layer.alert("请选择要删除的记录。");
-        return;
-    };
-    //询问框
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        var sendData = { "ids": ids };
-        $.ajax({
-            type: "Post",
-            url: "/Department/DeleteMuti",
-            data: sendData,
-            success: function (data) {
-                if (data.result == "Success") {
-                    initTree();
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert(data.message);
-                }
-            }
-        });
-    });
-};
 
 //生成查询条件
 function GetQueryData(offset, limit) {
@@ -117,7 +41,9 @@ window.operateEvents = {
         EditWindow('edit?id=' + row.id);
     },
     'click .delete': function (e, value, row, index) {
-        deleteSingle(row.id);
+        delOjb.deleteSingle("/Department/Delete", row.id, function () {
+            initTree();
+        });
     },
     'click .details': function (e, value, row, index) {
         var url = 'details?id=' + row.id + '&isDetails=true';
@@ -202,9 +128,10 @@ function initTree() {
                 if (node) {
                     if (selectedId == node.id && data.event)
                         SetTreeSelectEmpty();
-                    else
+                    else {
                         selectedId = node.id;
-                    $table.bootstrapTable('refresh');
+                        $table.bootstrapTable('refresh');
+                    }
                 };
             });
         }
@@ -220,8 +147,14 @@ $(function () {
         layer.closeAll('loading');
     })
 
-    $("#btnAdd").click(function () { add(); });
-    $("#btnDelete").click(function () { deleteMulti(); });
+    $("#btnAdd").click(function () {
+        EditWindow('edit?ParentId=' + selectedId);
+    });
+    $("#btnDelete").click(function () {
+        delOjb.deleteMulti("/Department/DeleteMuti", function () {
+            initTree();
+        });
+    });
     $btnScreen.click(function () {
         $table.bootstrapTable('refresh');
     });

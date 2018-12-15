@@ -56,6 +56,7 @@ namespace Core.SimpleTemp.Application.Authorization
         public const string Role_DeleteMuti = "Role_DeleteMuti";
         public const string Role_Delete = "Role_Delete";
         public const string Role_Get = "Role_Get";
+        public const string Role_details = "Role_details";
 
         public const string Role_GetAllPageList = "Role_GetAllPageList";
         public const string Role_GetMenusByRole = "Role_GetMenusByRole";

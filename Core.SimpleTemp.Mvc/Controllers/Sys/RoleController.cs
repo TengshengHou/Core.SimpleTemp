@@ -24,7 +24,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(RolePermission.Role_Index)]
         public async Task<IActionResult> IndexAsync()
         {
-            await AuthorizeListAsync(new string[] { RolePermission.Role_Edit, RolePermission.Role_Delete, RolePermission.Role_DeleteMuti, RolePermission.Role_SavePermission });
+            await AuthorizeListAsync(new string[] { RolePermission.Role_Edit, RolePermission.Role_Delete, RolePermission.Role_DeleteMuti, RolePermission.Role_details, RolePermission.Role_SavePermission });
             return base.Index();
         }
 
@@ -39,6 +39,28 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             return await base.SaveAsync(dto);
         }
+
+        [HttpGet("Edit")]
+        [PermissionFilter(RolePermission.Role_Edit)]
+
+        public async Task<IActionResult> EditAsync(Guid id)
+        {
+            SysRoleDto model = new SysRoleDto();
+            if (id != Guid.Empty)
+            {
+                model = await _service.GetAsync(id);
+            }
+            return View("Edit", model);
+        }
+
+        [HttpGet("details")]
+        [PermissionFilter(RolePermission.Role_details)]
+
+        public async Task<IActionResult> Details(Guid id)
+        {
+            return await this.EditAsync(id);
+        }
+
 
         [HttpPost("DeleteMuti")]
         [PermissionFilter(RolePermission.Role_DeleteMuti)]
@@ -62,19 +84,13 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
 
-        [HttpGet("GetAllPageList")]
+        [HttpPost("GetAllPageList")]
         [PermissionFilter(RolePermission.Role_GetAllPageList)]
-        public async Task<IActionResult> GetAllPageListAsync(int startPage, int pageSize)
+        public async Task<IActionResult> GetAllPageListAsync()
         {
-            int rowCount = 0;
-            var result = await _service.GetAllPageListAsync(startPage, pageSize);
-            rowCount = result.RowCount;
-            return Json(new
-            {
-                rowCount = rowCount,
-                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = result.PageData,
-            });
+            var pagingQueryModel = base.GetPagingQueryModel();
+            var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
+            return JsonSuccess(result);
         }
 
 

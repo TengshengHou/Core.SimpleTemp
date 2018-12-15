@@ -3,12 +3,11 @@ function save() {
     var postData = $("#addForm").serializeArray();
     $.ajax({
         type: "Post",
-        url: "/Department/Save",
+        url: "/Role/Save",
         data: postData,
         success: function (data) {
             if (data.result == "Success") {
                 parent.layer.msg("数据保存成功");
-                parent.initTree();
                 parent.$table.bootstrapTable('refresh');
                 parent.layer.close(_index);//需要手动关闭窗口
 
