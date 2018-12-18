@@ -10,10 +10,13 @@ namespace Core.SimpleTemp.Application.UserApp
     public class SysUserDto : Dto
     {
         [StringLength(30)]
+        [Required]
         public string LoginName { get; set; }
         [StringLength(30)]
+        [Required]
         public string Password { get; set; }
         [StringLength(20)]
+        [Required]
         public string Name { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime LastUpdate { get; set; }
