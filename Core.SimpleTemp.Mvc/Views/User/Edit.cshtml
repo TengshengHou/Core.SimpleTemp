@@ -1,0 +1,69 @@
+﻿@model Core.SimpleTemp.Application.UserApp.SysUserDto
+@{
+    Layout = "_EditView";
+}
+<script>
+        var userRoleList =@Html.Raw(ViewBag.userRoleList ?? "null");
+        var SysDepartmentId =@Html.Raw(string.Concat("'",Model.SysDepartmentId.ToString(),"'") ?? "null")
+</script>
+<script src="~/Views/User/Edit.js"></script>
+
+<form id="addForm" onsubmit="return false" class="form-horizontal">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">账号</label>
+            <span asp-validation-for="LoginName" class="text-danger"></span>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="LoginName" value="@Model.LoginName" autocomplete="off" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">密码</label>
+            <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Password" value="@Model.Password" autocomplete="off" type="text">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">用户名称</label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="col-sm-10">
+                <input class="form-control" asp-for="Name" value="@Model.Name" autocomplete="off" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">所在部门</label>
+            <span asp-validation-for="SysDepartmentId" class="text-danger"></span>
+            <div class="col-sm-10">
+                <select asp-for="SysDepartmentId" class="form-control">
+                    @if (Model.SysDepartment != null)
+                    {
+                        <option value="@Model.SysDepartment.Id">@Model.SysDepartment.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="">所属角色</label>
+            <div class="col-sm-10">
+                <select id="roles" name="roles" asp-items="ViewBag.roleSelectList" class="form-control" style="padding:0px" multiple="multiple"></select>
+            </div>
+        </div>
+    </div>
+
+    <input id="btnSave" class="btn btn-primary" type="submit" style="display:none" value="保存" />
+</form>

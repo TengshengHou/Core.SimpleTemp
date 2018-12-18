@@ -14,6 +14,8 @@ namespace Core.SimpleTemp.Application.Authorization
         public const string UserController_DeleteMuti = "UserController_DeleteMuti";
         public const string UserController_Delete = "UserController_Delete";
         public const string UserController_Get = "UserController_Get";
+        public const string UserController_GetList = "UserController_GetList";
+        public const string UserController_details = "UserController_details";
 
         public const string UserController_GetUserByDepartment = "UserController_GetUserByDepartment";
     }

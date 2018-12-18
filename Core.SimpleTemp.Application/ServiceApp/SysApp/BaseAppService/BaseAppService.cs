@@ -38,6 +38,8 @@ namespace Core.SimpleTemp.Application
         public async Task<TDto> GetAsync(Guid id) => Mapper.Map<TDto>(await _repository.GetAsync(id));
         public async Task<IPageModel<TDto>> GetAllPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
         {
+            if (startPage == 0)
+                startPage = 1;
             var pageModelDto = await LoadPageOffsetAsync((startPage - 1) * pageSize, pageSize, where, order);
             return pageModelDto;
         }

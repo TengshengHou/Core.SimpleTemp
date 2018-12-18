@@ -19,17 +19,14 @@ var deleteSingleUrl = "/Role/Delete";
 
 
 
-
+var tableRefresh = function () {
+    $table.bootstrapTable('refresh');
+    selectedRole = 0;
+    $("#treeDiv").jstree("deselect_all", false);
+}
 //生成查询条件
 function GetQueryData(offset, limit) {
     var filterList = PagingQuery($("#searchForm")[0]);
-    //var filterOjb = {};
-    //filterOjb.Field = "ParentId";
-    //filterOjb.Action = "=";
-    //filterOjb.Logic = "and";
-    //filterOjb.Value = selectedId;
-    //filterOjb.DataType = "guid";
-    //filterList.push(filterOjb);
     var filterListJson = JSON.stringify(filterList);
     var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
     return pagingQueryData;
@@ -58,7 +55,7 @@ window.operateEvents = {
     },
     'click .delete': function (e, value, row, index) {
         delOjb.deleteSingle(deleteSingleUrl, row.id, function () {
-            initTree();
+            tableRefresh();
         });
     },
     'click .details': function (e, value, row, index) {
@@ -193,6 +190,7 @@ function loadPermissionByRole(selectedRole) {
 
 
 
+
 $(function () {
 
     $(document).ajaxStart(function () {
@@ -214,10 +212,10 @@ $(function () {
     });
     $("#btnDelete").click(function () {
         delOjb.deleteMulti(deleteMultiUrl, function () {
-            initTree();
+            tableRefresh();
         });
     });
     $btnScreen.click(function () {
-        $table.bootstrapTable('refresh');
+        tableRefresh();
     });
 });

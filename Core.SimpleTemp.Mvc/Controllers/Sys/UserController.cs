@@ -1,9 +1,12 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.RoleApp;
 using Core.SimpleTemp.Application.UserApp;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Entitys;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,22 +28,60 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         [HttpGet("Index")]
         [PermissionFilter(UserPermission.UserController_Index)]
-        public IActionResult IndexAsync()
+        public async Task<IActionResult> IndexAsync()
         {
+            await base.AuthorizeListAsync(new string[] { UserPermission.UserController_Edit, UserPermission.UserController_DeleteMuti, UserPermission.UserController_Delete });
+
             return base.Index();
         }
 
+        [HttpPost("GetList")]
+        [PermissionFilter(UserPermission.UserController_GetList)]
+        public async Task<IActionResult> GetList()
+        {
+            var pagingQueryModel = base.GetPagingQueryModel();
+            var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.LastUpdate);
+            result.PageData.ForEach(u => u.Password = string.Empty);
+            return JsonSuccess(result);
+        }
 
+        [HttpGet("Edit")]
+        [PermissionFilter(UserPermission.UserController_Edit)]
+        public async Task<IActionResult> EditAsync(Guid id)
+        {
+            SysUserDto model = new SysUserDto();
+
+            var allRoleList = await _roleService.GetAllListAsync();
+            var roleSelectList = allRoleList.Select(role => (new SelectListItem() { Text = role.Name, Value = role.Id.ToString() }));
+            ViewBag.roleSelectList = roleSelectList;
+
+
+
+            if (id != Guid.Empty)
+            {
+                model = await _service.IGetAsync(id, new string[] { nameof(SysUserDto.SysDepartment), nameof(SysUserDto.UserRoles) });
+                JsonSerializer sj = new JsonSerializer();
+                var userRoleList = sj.Serialize(model.UserRoles?.Select(a => a.SysRoleId).ToList());
+                ViewBag.userRoleList = userRoleList;
+            }
+            return View("Edit", model);
+        }
+
+        [HttpGet("details")]
+        [PermissionFilter(UserPermission.UserController_details)]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            return await this.EditAsync(id);
+        }
 
         [HttpPost("Save")]
         [PermissionFilter(UserPermission.UserController_Edit)]
-        public async Task<IActionResult> SaveAsync(SysUserDto dto, string roles)
+        public async Task<IActionResult> SaveAsync(SysUserDto dto, string[] roles)
         {
-
-            if (!string.IsNullOrEmpty(roles))
+            if (!object.Equals(roles, null))
             {
                 var userRoles = new List<SysUserRoleDto>();
-                foreach (var role in roles.Split(','))
+                foreach (var role in roles)
                 {
                     userRoles.Add(new SysUserRoleDto() { SysUserId = dto.Id, SysRoleId = Guid.Parse(role) });
                 }
@@ -82,37 +123,18 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         }
 
-        [HttpGet("Get")]
-        [PermissionFilter(UserPermission.UserController_Get)]
-        public override async Task<IActionResult> GetAsync(Guid id)
-        {
-            var dto = await _service.IGetAsync(id, new string[] { nameof(SysUser.UserRoles) });
-            return Json(dto);
-        }
+
+
+
+
+
+
 
 
         [HttpGet("UpdatePwd")]
         public IActionResult UpdatePwd()
         {
             return View();
-        }
-
-        [HttpGet("GetUserByDepartment")]
-        [PermissionFilter(UserPermission.UserController_GetUserByDepartment)]
-        public async Task<IActionResult> GetUserByDepartmentAsync(Guid departmentId, int startPage, int pageSize)
-        {
-            int rowCount = 0;
-            var result = await _service.GetUserByDepartmentAsync(departmentId, startPage, pageSize);
-            rowCount = result.RowCount;
-            result?.PageData?.ForEach(r => r.Password = null);
-            var roles = await _roleService.GetAllListAsync();
-            return Json(new
-            {
-                rowCount = rowCount,
-                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = result.PageData,
-                roles = roles
-            });
         }
 
         [HttpPost("UpdatePwd")]
@@ -153,5 +175,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
             }
             return null;
         }
+
     }
 }

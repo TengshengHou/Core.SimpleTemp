@@ -137,6 +137,14 @@ namespace Core.SimpleTemp.Mvc
                 Icon = "fa-circle-o",
                 Type = 1,
                 ParentId = parentMenu.Id
+            }, new SysMenu
+            {
+                Name = "GetList",
+                Code = UserPermission.UserController_GetList,
+                SerialNumber = 0,
+                Icon = "fa-circle-o",
+                Type = 1,
+                ParentId = parentMenu.Id
             });
             context.SaveChanges();
             #endregion

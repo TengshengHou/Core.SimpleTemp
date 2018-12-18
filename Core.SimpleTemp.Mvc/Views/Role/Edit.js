@@ -8,7 +8,7 @@ function save() {
         success: function (data) {
             if (data.result == "Success") {
                 parent.layer.msg("数据保存成功");
-                parent.$table.bootstrapTable('refresh');
+                parent.tableRefresh();
                 parent.layer.close(_index);//需要手动关闭窗口
 
             } else {

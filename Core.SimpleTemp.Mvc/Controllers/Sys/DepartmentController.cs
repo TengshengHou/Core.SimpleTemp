@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -99,12 +100,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
             return await base.DeleteAsync(id);
         }
-        [HttpGet("Get")]
-        [PermissionFilter(DepartmentPermission.Department_Get)]
-        public override async Task<IActionResult> GetAsync(Guid id)
-        {
-            return await base.GetAsync(id);
-        }
+
 
         /// <summary>
         /// 获取功能树JSON数据
@@ -134,6 +130,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             var pagingQueryModel = base.GetPagingQueryModel();
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
+            return JsonSuccess(result);
+        }
+
+
+        [HttpGet("SelcetTwoAsync")]
+        public async Task<JsonResult> SelcetTwoAsync(string q, int page, int pageSize)
+        {
+            var trueExp = ExpressionExtension.True<SysDepartment>();
+            if (!Equals(q, null))
+                trueExp = trueExp.And(d => d.Name.Contains(q));
+            var result = await _service.GetAllPageListAsync(page, pageSize, trueExp, d => d.Name);
             return JsonSuccess(result);
         }
 
