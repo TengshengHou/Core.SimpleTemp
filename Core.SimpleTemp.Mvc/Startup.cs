@@ -3,6 +3,7 @@ using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Mvc.Filters;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
 using System.Linq;
@@ -59,12 +61,25 @@ namespace Core.SimpleTemp.Mvc
               //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
               option.SlidingExpiration = true;
 
-              //SessionStore 待实现功能
+              //SessionStore 暂时放弃现功能
 
               //第一版不支持ValidatePrincipal 以后再说
               //option.Events = new CookieAuthenticationEvents() {
               //    OnValidatePrincipal
               //};
+          }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, JwtOption =>
+          {
+              JwtOption.RequireHttpsMetadata = false;//禁用Https模式
+              JwtOption.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateAudience = true,
+                  ValidAudience = WebAppConfiguration.JwtValidAudience,
+                  ValidateIssuer = true,
+                  ValidIssuer = WebAppConfiguration.JwtValidIssuer,
+                  ValidateLifetime = true,//是否验证失效时间
+
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(WebAppConfiguration.JwtIssuerSigningKey))
+              };
           });
             #endregion
 
