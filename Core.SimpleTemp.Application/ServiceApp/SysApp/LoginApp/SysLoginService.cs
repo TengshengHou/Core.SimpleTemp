@@ -9,6 +9,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Common;
 using Microsoft.Extensions.Caching.Distributed;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Core.SimpleTemp.Application
 {
@@ -43,14 +47,7 @@ namespace Core.SimpleTemp.Application
             }
 
             //颁发用户票据
-            var claimIdentity = new ClaimsIdentity("Cookie");
-            claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-            claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.LoginName));
-            var roleIds = await _sysUserRepository.FindUserRoleAsync(user.Id);
-            foreach (var roleId in roleIds)
-            {
-                claimIdentity.AddClaim(new Claim(ClaimTypes.Role, roleId.ToString()));
-            }
+            var claimIdentity = this.CreateClaimsIdentity(user);
             var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
             await context.SignInAsync(claimsPrincipal, new AuthenticationProperties()
             {
@@ -64,6 +61,45 @@ namespace Core.SimpleTemp.Application
         }
 
         /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="sysUser"></param>
+        /// <returns></returns>
+        public async Task<string> JwtAuthenticate(string userName, string pwd)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(WebAppConfiguration.JwtIssuerSigningKey);//Jwt秘钥
+            var authTime = DateTime.UtcNow;
+            var expiresAt = authTime.AddMinutes(WebAppConfiguration.TimeOutOfLogin);//过期时间
+
+            //验证账号&密码信息
+            var user = await _sysUserRepository.FindUserForLoginAsync(userName, pwd);
+            if (user == null)
+            {
+                return "用户密码信息验证失败";
+            }
+
+            #region 构建票据基础信息
+            //创建用户claimIdentity
+            var claimIdentity = this.CreateClaimsIdentity(user);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = claimIdentity,
+                Issuer = WebAppConfiguration.JwtValidIssuer,
+                Audience=WebAppConfiguration.JwtValidAudience,
+                Expires = expiresAt,
+
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            #endregion
+            //生成票据
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+            return tokenString;
+        }
+
+        /// <summary>
         /// 退出登录
         /// </summary>
         /// <param name="context"></param>
@@ -74,10 +110,9 @@ namespace Core.SimpleTemp.Application
             var nameIdentifierClaim = context.User.FindFirst(ClaimTypes.NameIdentifier);
             //退出
             await context.SignOutAsync();
-
             try
             {
-                await _distributedCache.RemoveAsync(SysConsts.MENU_CACHEKEY_PREFIX + nameIdentifierClaim?.Value);
+                //删除权限缓存
                 await _distributedCache.RemoveAsync(SysConsts.MENU_CACHEKEY_PREFIX + nameIdentifierClaim?.Value);
             }
             catch (System.Exception)
@@ -85,7 +120,28 @@ namespace Core.SimpleTemp.Application
             }
         }
 
+        /// <summary>
+        /// 创建用户ClaimsIdentity
+        /// </summary>
+        /// <returns></returns>
+        private ClaimsIdentity CreateClaimsIdentity(SysUser user)
+        {
+            var claimIdentity = new ClaimsIdentity("Cookie");
+            claimIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+            claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.LoginName));
+            //var roleIds = await _sysUserRepository.FindUserRoleAsync(user.Id);
+            //foreach (var roleId in roleIds)
+            //{
+            //    claimIdentity.AddClaim(new Claim(ClaimTypes.Role, roleId.ToString()));
+            //}
+            return claimIdentity;
+        }
 
+        /// <summary>
+        /// 根据用户ID以及用户名
+        /// </summary>
+        /// <param name="sysUserDto"></param>
+        /// <returns></returns>
         public Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto)
         {
             return _sysMenuAppService.GetMenusAndFunctionByUserAsync(sysUserDto);

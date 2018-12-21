@@ -48,7 +48,7 @@ window.operateEvents = {
     }
 };
 
-//行内样式
+//操作列行内样式
 function operateFormatter(value, row, index) {
     var btnList = GetBaseOperateHtml('UserController_Edit', 'UserController_details', 'UserController_Delete')
     return btnList.join('');

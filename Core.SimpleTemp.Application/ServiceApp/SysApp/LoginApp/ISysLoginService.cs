@@ -14,5 +14,7 @@ namespace Core.SimpleTemp.Application
         Task<bool> LoginAsync(HttpContext context, SysUser sysUser);
         Task SignOutAsync(HttpContext context);
         Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto);
+
+        Task<string> JwtAuthenticate(string userName, string pwd);
     }
 }

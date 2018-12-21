@@ -19,5 +19,12 @@ namespace Core.SimpleTemp.Common
         /// 用户初始化密码
         /// </summary>
         public static string InitialPassword = "123456";
+
+
+        #region Jwt
+        public static string JwtValidAudience = "api";
+        public static string JwtValidIssuer = "http://hts92.com";
+        public static string JwtIssuerSigningKey = "I Love Net Core I Love Net Core I Love Net Core ";
+        #endregion
     }
 }

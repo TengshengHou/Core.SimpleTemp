@@ -44,7 +44,7 @@ namespace Core.SimpleTemp.Application.MenuApp
         }
 
         /// <summary>
-        /// 根据用户获取功能菜单
+        /// 根据用户获取功能菜单并缓存
         /// </summary>
         /// <param name="userId">用户ID</param>
         /// <returns></returns>
@@ -56,7 +56,7 @@ namespace Core.SimpleTemp.Application.MenuApp
             //缓存
             if ((await _distributedCache.GetAsync(checheKey)) == null)
             {
-                ret = await GetMenusAsync(sysUserDto);
+                ret = await this.GetMenusAsync(sysUserDto);
                 //序列化好麻烦
                 var stringWriter = new StringWriter();
                 var jsonWriter = new JsonTextWriter(stringWriter);
@@ -76,14 +76,19 @@ namespace Core.SimpleTemp.Application.MenuApp
             return ret;
         }
 
-        public async Task<List<SysMenuDto>> GetMenusAsync(SysUserDto sysUserDto)
+        /// <summary>
+        /// 根据用户获取功能菜单
+        /// </summary>
+        /// <param name="sysUserDto"></param>
+        /// <returns></returns>
+        private async Task<List<SysMenuDto>> GetMenusAsync(SysUserDto sysUserDto)
         {
             //查询出系统所有菜单
             List<SysMenuDto> result = new List<SysMenuDto>();
             var allMenus = await _sysMenuRepository.GetAllListAsync();
             allMenus = allMenus.OrderBy(it => it.SerialNumber).ToList();
 
-            if (sysUserDto.LoginName == "admin") //超级管理员
+            if (sysUserDto.LoginName == WebAppConfiguration.AdminLoginName) //超级管理员
                 return Mapper.Map<List<SysMenuDto>>(allMenus);
 
             //查询当前用户角色
@@ -100,6 +105,7 @@ namespace Core.SimpleTemp.Application.MenuApp
             allMenus = allMenus.Where(it => menuIds.Contains(it.Id)).OrderBy(it => it.SerialNumber).ToList();
             return Mapper.Map<List<SysMenuDto>>(allMenus);
         }
+
         public async Task<bool> IsNoneChildren(List<Guid> ids)
         {
             foreach (var item in ids)
