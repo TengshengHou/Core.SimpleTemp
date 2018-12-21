@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,18 +17,21 @@ namespace Core.SimpleTemp.Mvc.Api
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        public ValuesController()
+        {
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return "Hello Core.SimpleTemp";
+            return $"Hello Core.SimpleTemp Ip {Request.GetIp()}";
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
-            return "value";
+            return "";
         }
 
         // POST api/values

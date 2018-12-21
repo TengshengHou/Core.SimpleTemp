@@ -9,8 +9,13 @@ namespace Core.SimpleTemp.Mvc.Filters
 {
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {
+        /// <summary>
+        /// 异常处理
+        /// </summary>
+        /// <param name="context"></param>
         public void OnException(ExceptionContext context)
         {
+            //只处理Ajax 其他交给 异常中间件处理
             if (context.HttpContext.Request.IsAjaxRequest())
             {
                 context.HttpContext.Response.StatusCode = 200;

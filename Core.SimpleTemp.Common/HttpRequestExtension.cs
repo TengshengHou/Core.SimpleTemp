@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Core.SimpleTemp.Common
@@ -19,6 +20,20 @@ namespace Core.SimpleTemp.Common
                 string.Equals(request.Headers["X-Requested-With"], "XMLHttpRequest", StringComparison.Ordinal);
         }
 
-        
+        /// <summary>
+        /// 获取客户Ip
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetIp(this HttpRequest request)
+        {
+            var ip = request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = request.HttpContext.Connection.RemoteIpAddress.ToString();
+            }
+            return ip;
+        }
+
     }
 }
