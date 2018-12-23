@@ -1,4 +1,5 @@
 ﻿using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Entitys.Sys;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
@@ -22,6 +23,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         public DbSet<SysRoleMenu> SysRoleMenu { get; set; }
         public DbSet<SysUser> SysUser { get; set; }
         public DbSet<SysUserRole> SysUserRole { get; set; }
+        public DbSet<SysLoginLog> SysLoginLog { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

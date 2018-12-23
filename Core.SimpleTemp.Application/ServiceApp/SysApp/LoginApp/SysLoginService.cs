@@ -1,18 +1,19 @@
-﻿using Core.SimpleTemp.Entitys;
-using Core.SimpleTemp.Repositories.IRepositories;
-using Core.SimpleTemp.Application.MenuApp;
+﻿using Core.SimpleTemp.Application.MenuApp;
+using Core.SimpleTemp.Application.ServiceApp.SysApp.LoginLogApp;
 using Core.SimpleTemp.Application.UserApp;
+using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Core.SimpleTemp.Common;
 using Microsoft.Extensions.Caching.Distributed;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using System;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Application
 {
@@ -25,12 +26,15 @@ namespace Core.SimpleTemp.Application
         ISysUserRepository _sysUserRepository;
         ISysMenuAppService _sysMenuAppService;
         IDistributedCache _distributedCache;
-        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService, IDistributedCache distributedCache)
+        ISysLoginLogAppService _sysLoginLogAppService;
+        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService, IDistributedCache distributedCache, ISysLoginLogAppService sysLoginLogAppService)
         {
             _sysUserRepository = sysUserRepository;
             _sysMenuAppService = sysMenuAppService;
             _distributedCache = distributedCache;
+            _sysLoginLogAppService = sysLoginLogAppService;
         }
+
 
         /// <summary>
         /// 登录
@@ -45,7 +49,8 @@ namespace Core.SimpleTemp.Application
             {
                 return false;
             }
-
+            //登录日志
+            await _sysLoginLogAppService.InsertLogAsync(new SysLoginLogDto { LoginName = user.LoginName, Name = user.Name, LoginType = LoginType.Cookie });
             //颁发用户票据
             var claimIdentity = this.CreateClaimsIdentity(user);
             var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
@@ -79,7 +84,8 @@ namespace Core.SimpleTemp.Application
             {
                 return "用户密码信息验证失败";
             }
-
+            //登录日志
+            await _sysLoginLogAppService.InsertLogAsync(new SysLoginLogDto { LoginName = user.LoginName, Name = user.Name ,LoginType = LoginType.Cookie });
             #region 构建票据基础信息
             //创建用户claimIdentity
             var claimIdentity = this.CreateClaimsIdentity(user);
@@ -87,7 +93,7 @@ namespace Core.SimpleTemp.Application
             {
                 Subject = claimIdentity,
                 Issuer = WebAppConfiguration.JwtValidIssuer,
-                Audience=WebAppConfiguration.JwtValidAudience,
+                Audience = WebAppConfiguration.JwtValidAudience,
                 Expires = expiresAt,
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

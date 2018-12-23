@@ -1,13 +1,12 @@
-﻿using Core.SimpleTemp.Common;
+﻿using Core.SimpleTemp.Application;
+using Core.SimpleTemp.Application.UserApp;
+using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Application;
-using Core.SimpleTemp.Application.UserApp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -16,6 +15,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
     {
         private ISysLoginService _sysLoginService;
         private IHostingEnvironment _env;
+
 
         public AccountController(ISysLoginService sysLoginService, IHostingEnvironment env)
         {
@@ -46,6 +46,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                     //登录成功
                     if (!string.IsNullOrEmpty(returnUrl))
                     {
+                    
                         return Redirect(returnUrl);
                     }
                     return RedirectToAction("index", "Home");

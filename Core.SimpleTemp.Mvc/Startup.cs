@@ -35,18 +35,27 @@ namespace Core.SimpleTemp.Mvc
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //DbContext
+
+            #region 数据仓储链接设置 DbContext
             services.AddDbContext<CoreDBContext>(options =>
-            {
-                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
-            });
+               {
+                   //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                   options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+               });
+
+            //多Db链接实例
+            //services.AddDbContext<PostgresCoreDBContext>(options =>
+            //{
+            //    options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection"));
+
+            //}); 
+            #endregion
 
             #region 认证相关
             services.AddAuthentication(option =>
           {
               option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-              //只设置一个DeafultScheme即可，一下均为重复设置。为方便以后更换Scheme 思路清晰
+              //只设置上面一个DeafultScheme即可，一下均为重复设置。为方便以后更换Scheme 思路清晰
               option.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
               option.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
               option.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -69,14 +78,16 @@ namespace Core.SimpleTemp.Mvc
               //};
           }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, JwtOption =>
           {
-              JwtOption.RequireHttpsMetadata = false;//禁用Https模式
+              //禁用Https模式
+              JwtOption.RequireHttpsMetadata = false;
               JwtOption.TokenValidationParameters = new TokenValidationParameters
               {
                   ValidateAudience = true,
                   ValidAudience = WebAppConfiguration.JwtValidAudience,
                   ValidateIssuer = true,
                   ValidIssuer = WebAppConfiguration.JwtValidIssuer,
-                  ValidateLifetime = true,//是否验证失效时间
+                  //是否验证失效时间
+                  ValidateLifetime = true,
 
                   IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(WebAppConfiguration.JwtIssuerSigningKey))
               };
@@ -86,16 +97,19 @@ namespace Core.SimpleTemp.Mvc
             //AutoDI
             services.AutoDi(_logger);
 
-            //自定义授权处理
+            //自定义授权
             services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
             //services.AddAuthorization();
             //采用内存版分布缓存 方便以后切换Redis
             services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
+            services.AddHttpClient();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc(options =>
             {
+                //自定义全局异常过滤器
                 options.Filters.Add<HttpGlobalExceptionFilter>();
             });
-            services.AddHttpClient();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -112,6 +126,7 @@ namespace Core.SimpleTemp.Mvc
                 {
                     ExceptionHandler = async context =>
                     {
+                        //Ajax处理
                         if (context.Request.IsAjaxRequest())
                         {
                             context.Response.StatusCode = 200;
@@ -151,7 +166,6 @@ namespace Core.SimpleTemp.Mvc
             #endregion
 
             app.UseAuthentication();
-
             app.UseMvcWithDefaultRoute();
 
         }
