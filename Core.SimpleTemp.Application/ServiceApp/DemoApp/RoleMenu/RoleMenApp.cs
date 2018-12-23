@@ -14,6 +14,7 @@ namespace Core.SimpleTemp.Application.ServiceApp.DemoApp.RoleMenu
     {
         System.Threading.Tasks.Task<List<RoleMenuDto>> GetListAsync();
     }
+
     public class RoleMenApp : BaseAppService<RoleMenuDto, SysRoleMenu, IRoleMenuRepository>, IRoleMenApp
     {
         public RoleMenApp(IRoleMenuRepository roleMenuRepository) : base(roleMenuRepository)

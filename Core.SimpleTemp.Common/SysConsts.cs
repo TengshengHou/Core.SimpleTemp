@@ -4,6 +4,11 @@ using System.Text;
 
 namespace Core.SimpleTemp.Common
 {
+    /// <summary>
+    /// 常量定义 
+    /// *注意 更新常量请重新编译整个 解决方案。
+    /// 不喜欢此类规则请定义为readonly 
+    /// </summary>
     public static class SysConsts
     {
         public const string AJAX_RESULT_SUCCESS = "Success";

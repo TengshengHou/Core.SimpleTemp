@@ -12,7 +12,7 @@ namespace Core.SimpleTemp.Common.FilterExpression
     public static class FilterModelDataTypeHelp
     {
         /// <summary>
-        /// 根据DataType 转换为实际类型
+        /// 根据DataType 转换为实际类型 
         /// </summary>
         /// <param name="filterModel"></param>
         /// <returns></returns>

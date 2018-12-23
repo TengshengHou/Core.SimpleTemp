@@ -9,7 +9,7 @@ using System.Text;
 namespace Core.SimpleTemp.Common
 {
     /// <summary>
-    /// 分页过来查询对应
+    /// 分页条件查询Model
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public class PagingQueryModel<TEntity>
