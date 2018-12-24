@@ -40,7 +40,7 @@ namespace Core.SimpleTemp.Mvc
             services.AddDbContext<CoreDBContext>(options =>
                {
                   // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                  /options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                  options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
                });
 
             //多Db链接实例
