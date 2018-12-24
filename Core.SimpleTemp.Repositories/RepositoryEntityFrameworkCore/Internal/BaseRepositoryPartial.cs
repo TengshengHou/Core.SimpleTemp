@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
 {
-    public partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public partial class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey> where TDbContext : DbContext
     {
         ///// <summary>
         ///// 分页查询

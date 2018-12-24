@@ -13,9 +13,10 @@ namespace Core.SimpleTemp.Mvc
 {
     public class DBInitializer
     {
-        private static void Initialize(CoreDBContext context)
+        private static void Initialize(CoreDBContext context, LogDBContext logDBContexc)
         {
             context.Database.EnsureCreated();
+            logDBContexc.Database.EnsureCreated();
 
             //检查是否需要初始化数据
             if (context.SysUser.Any())
@@ -357,7 +358,8 @@ namespace Core.SimpleTemp.Mvc
                 try
                 {
                     var context = services.GetRequiredService<CoreDBContext>();
-                    DBInitializer.Initialize(context);
+                    var logDBContext = services.GetRequiredService<LogDBContext>();
+                    DBInitializer.Initialize(context, logDBContext);
                 }
                 catch (Exception ex)
                 {

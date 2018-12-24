@@ -17,16 +17,16 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
     /// <typeparam name="TPrimaryKey">主键类型</typeparam>
-    public partial class BaseRepository<TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey>
+    public partial class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey> where TDbContext : DbContext
     {
         //定义数据访问上下文对象
-        public readonly CoreDBContext _dbContext;
+        public readonly TDbContext _dbContext;
         public readonly IEnumerable<string> _properties;
         /// <summary>
         /// 通过构造函数注入得到数据上下文对象实例
         /// </summary>
         /// <param name="dbContext"></param>
-        public BaseRepository(CoreDBContext dbContext)
+        public BaseRepository(TDbContext dbContext)
         {
             _dbContext = dbContext;
             //暂时不用Include
@@ -162,12 +162,24 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
             return _dbContext.SaveChangesAsync();
         }
     }
+   
+    /// <summary>
+    /// 主键为Guid 的指定仓储
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    public abstract class BaseRepository<TDbContext, TEntity> : BaseRepository<TDbContext, TEntity, Guid> where TEntity : Entity where TDbContext : DbContext
+    {
+        public BaseRepository(TDbContext dbContext) : base(dbContext)
+        {
+        }
+    }
+
 
     /// <summary>
-    /// 主键为int类型的仓储基类
+    /// 主键为Guid 的默认仓储库
     /// </summary>
     /// <typeparam name="TEntity">实体类型</typeparam>
-    public abstract class BaseRepository<TEntity> : BaseRepository<TEntity, Guid> where TEntity : Entity
+    public abstract class BaseRepository<TEntity> : BaseRepository<CoreDBContext, TEntity> where TEntity : Entity
     {
         public BaseRepository(CoreDBContext dbContext) : base(dbContext)
         {

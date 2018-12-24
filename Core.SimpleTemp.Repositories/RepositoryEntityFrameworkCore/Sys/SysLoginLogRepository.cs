@@ -11,9 +11,13 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore.Sys
 {
-    public class SysLoginLogRepository : BaseRepository<SysLoginLog>, ISysLoginLogRepository
+    /// <summary>
+    /// 登录日志记录仓储
+    /// *此类为演示支持多DB
+    /// </summary>
+    public class SysLoginLogRepository : BaseRepository<LogDBContext,SysLoginLog>, ISysLoginLogRepository
     {
-        public SysLoginLogRepository(CoreDBContext dbContext) : base(dbContext)
+        public SysLoginLogRepository(LogDBContext dbContext) : base(dbContext)
         {
         }
     }
