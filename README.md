@@ -5,11 +5,12 @@ Demo地址：http://132.232.18.92:8080
 <br>  
 主题：简单，实用、高效，基于NetCore官方
 
-目前进行中：列表页更换为bootstrap-table , 
-近 期 计划：JwtBearer完善、多库、  
+目前进行中：列表页更换为bootstrap-table、优化已有功能。JwtBearer完善
+近 期 计划：写几个页面Demo
+后 期 计划：页面批量生成。
 
-特点：自动生成查询表达式树,同时支持两种认证(WebCookie/Api JwtBearer)、 精确的授权控制、自动DI、全局异常处理、分布式内存缓存、静态文件缓存、以及基于队列的文件日志、基于EFCore的支持多种数据库（目前演示Demo使用-PostgreSQL， 本地开发使用-Sql Server）
-
+特点：自动生成查询表达式树,同时支持两种认证(CookieAuthentication/Api JwtBearer)、 精确的授权控制、自动DI、全局异常处理、分布式内存缓存、静态文件缓存、以及基于队列的文件日志、同时支持多数据库 ,可采用不同类型数据库、（目前演示Demo使用-PostgreSQL， 本地开发使用-Sql Server）
+DB导航属性自动Include、
 
 
 //Demo集成部署/环境<br>
@@ -33,5 +34,8 @@ bootstrap-Table<br>
 缓存：Distributed （目测服务器资源有限采用DistributedMemoryCache）<br>
 日志：采用基于队列的FileLog<br>
 数据访问：EFcore<br>
+
+
+
 
 #我是抓取标记结束#
