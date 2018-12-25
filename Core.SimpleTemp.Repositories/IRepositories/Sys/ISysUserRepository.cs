@@ -14,5 +14,7 @@ namespace Core.SimpleTemp.Repositories.IRepositories
         Task<SysUser> FindUserForLoginAsync(string userName, string Pwd);
 
         Task<List<Guid>> FindUserRoleAsync(Guid userId);
+
+        Task<SysUserRole> FindFirstUserRoleByRoleIdsAsync(Guid[] roleIds);
     }
 }

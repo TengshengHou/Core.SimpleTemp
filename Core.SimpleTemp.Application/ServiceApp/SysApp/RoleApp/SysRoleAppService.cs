@@ -34,6 +34,6 @@ namespace Core.SimpleTemp.Application.RoleApp
         {
             return await _repository.UpdateRoleMenuAsync(roleId, Mapper.Map<List<SysRoleMenu>>(roleMenus));
         }
-
+        
     }
 }

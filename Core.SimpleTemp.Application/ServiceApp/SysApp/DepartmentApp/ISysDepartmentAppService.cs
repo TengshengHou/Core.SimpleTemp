@@ -27,6 +27,6 @@ namespace Core.SimpleTemp.Application
         /// <param name="ids"></param>
         /// <param name="autoSave"></param>
         /// <returns></returns>
-        Task<bool> IsNoneChildren(List<Guid> ids);
+        Task<bool> IsNoneChildren(Guid[] ids);
     }
 }

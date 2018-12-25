@@ -106,14 +106,12 @@ namespace Core.SimpleTemp.Application.MenuApp
             return Mapper.Map<List<SysMenuDto>>(allMenus);
         }
 
-        public async Task<bool> IsNoneChildren(List<Guid> ids)
+        public async Task<bool> IsNoneChildren(Guid[] ids)
         {
-            foreach (var item in ids)
-            {
-                var delEntity = await FirstOrDefaultAsync(e => e.ParentId == item);
-                if (delEntity != null)
-                    return false;
-            }
+            //var delEntity = await FirstOrDefaultAsync(e => e.ParentId == item);
+            var delEntity = await _sysMenuRepository.FirstOrDefaultAsync(menu => ids.Contains(menu.ParentId));
+            if (delEntity != null)
+                return false;
             return true;
         }
     }

@@ -66,7 +66,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
             ViewBag.AuthorizeList = strJson;
         }
 
-
+        public Guid[] Str2GuidArray(string strGuids)
+        {
+            string[] idArray = strGuids.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            var idCount = idArray.Length;
+            Guid[] guidArray = new Guid[idArray.Length];
+            for (int i = 0; i < idCount; i++)
+            {
+                guidArray[i] = Guid.Parse(idArray[i]);
+            }
+            return guidArray;
+        }
 
         public PagingQueryModel<TEntity> GetPagingQueryModel()
         {

@@ -6,6 +6,7 @@ using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Core.SimpleTemp.Application
 
         public Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true) => _repository.DeleteAsync(where, autoSave);
 
-        public Task DeleteBatchAsync(List<Guid> ids, bool autoSave = true)
+        public Task DeleteBatchAsync(Guid[] ids, bool autoSave = true)
         {
             return this.DeleteAsync(it => ids.Contains(it.Id), autoSave);
         }

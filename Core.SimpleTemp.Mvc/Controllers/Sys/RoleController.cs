@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.RoleApp;
+using Core.SimpleTemp.Application.UserApp;
 using Core.SimpleTemp.Entitys;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
     public class RoleController : AjaxController<SysRoleDto, SysRole, ISysRoleAppService>
     {
         private readonly ISysRoleAppService _service;
-        public RoleController(ISysRoleAppService service) : base(service)
+        private readonly ISysUserAppService _sysUserAppService;
+        public RoleController(ISysRoleAppService service, ISysUserAppService sysUserAppService) : base(service)
         {
             _service = service;
+            _sysUserAppService = sysUserAppService;
         }
 
         // GET: /<controller>/
@@ -66,6 +69,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(RolePermission.Role_DeleteMuti)]
         public override async Task<IActionResult> DeleteMutiAsync(string ids)
         {
+            var user = await _sysUserAppService.FindFirstUserRoleByRoleIdsAsync(base.Str2GuidArray(ids));
+            if (!object.Equals(user, null))
+            {
+                return JsonFaild("删除失败,此角色下还存在用户数据");
+            }
             return await base.DeleteMutiAsync(ids);
         }
 
@@ -73,6 +81,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(RolePermission.Role_Delete)]
         public override async Task<IActionResult> DeleteAsync(Guid id)
         {
+            var user = await _sysUserAppService.FindFirstUserRoleByRoleIdsAsync(new Guid[1] { id });
+            if (!object.Equals(user, null))
+            {
+                return JsonFaild("删除失败,此角色下还存在用户数据");
+            }
             return await base.DeleteAsync(id);
         }
 

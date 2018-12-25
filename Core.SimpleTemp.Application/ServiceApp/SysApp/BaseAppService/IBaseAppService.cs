@@ -24,7 +24,7 @@ namespace Core.SimpleTemp.Application
         Task DeleteAsync(TEntity entity, bool autoSave = true);
         Task DeleteAsync(TPrimaryKey id, bool autoSave = true);
         Task DeleteAsync(Expression<Func<TEntity, bool>> where, bool autoSave = true);
-        Task DeleteBatchAsync(List<Guid> ids, bool autoSave = true);
+        Task DeleteBatchAsync(Guid[] ids, bool autoSave = true);
 
         Task<IPageModel<TDto>> GetAllPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null);
         Task<IPageModel<TDto>> LoadPageOffsetAsync(int offset, int limit, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null);

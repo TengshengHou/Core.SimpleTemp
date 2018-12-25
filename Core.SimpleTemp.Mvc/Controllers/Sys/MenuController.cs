@@ -1,14 +1,12 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
-using Core.SimpleTemp.Mvc.Models;
-using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.MenuApp;
+using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Core.SimpleTemp.Entitys;
 
 namespace Core.SimpleTemp.Mvc.Controllers
 {
@@ -84,20 +82,13 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(MenuPermission.Menu_DeleteMuti)]
         public override async Task<IActionResult> DeleteMutiAsync(string ids)
         {
-            string[] idArray = ids.Split(',');
-            List<Guid> delIds = new List<Guid>();
-            foreach (string id in idArray)
-            {
-                delIds.Add(Guid.Parse(id));
-            }
-            var retbool = await _sysMenuAppService.IsNoneChildren(delIds);
+
+            var retbool = await _sysMenuAppService.IsNoneChildren(base.Str2GuidArray(ids));
             //有子节点不能删除
             if (!retbool)
             {
                 return JsonFaild("删除失败,不能删除带有子节点的数据");
             }
-            await _sysMenuAppService.DeleteBatchAsync(delIds);
-
             return await base.DeleteMutiAsync(ids);
         }
 
@@ -106,7 +97,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         public override async Task<IActionResult> DeleteAsync(Guid id)
         {
 
-            var retbool = await _sysMenuAppService.IsNoneChildren(new List<Guid>() { id });
+            var retbool = await _sysMenuAppService.IsNoneChildren(new Guid[1] { id });
             //有子节点不能删除
             if (!retbool)
             {

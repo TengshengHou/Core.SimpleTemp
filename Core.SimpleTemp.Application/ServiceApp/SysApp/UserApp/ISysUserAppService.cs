@@ -20,5 +20,7 @@ namespace Core.SimpleTemp.Application.UserApp
         /// <param name="LoginName"></param>
         /// <returns></returns>
         Task RestoreUserPwdAsync(string LoginName);
+
+        Task<SysUserRole> FindFirstUserRoleByRoleIdsAsync(Guid[] roleIds);
     }
 }

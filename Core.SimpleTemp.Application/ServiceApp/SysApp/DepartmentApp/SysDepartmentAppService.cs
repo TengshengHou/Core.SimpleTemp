@@ -6,6 +6,7 @@ using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 namespace Core.SimpleTemp.Application
 {
     public class SysDepartmentAppService : BaseAppService<SysDepartmentDto, SysDepartment, ISysDepartmentRepository>, ISysDepartmentAppService
@@ -34,14 +35,11 @@ namespace Core.SimpleTemp.Application
             return viewPageModel;
         }
 
-        public async Task<bool> IsNoneChildren(List<Guid> ids)
+        public async Task<bool> IsNoneChildren(Guid[] ids)
         {
-            foreach (var item in ids)
-            {
-                var delEntity = await FirstOrDefaultAsync(e => e.ParentId == item);
-                if (delEntity != null)
-                    return false;
-            }
+            var delEntity = await _repository.FirstOrDefaultAsync(dep => ids.Contains(dep.ParentId));
+            if (delEntity != null)
+                return false;
             return true;
         }
 

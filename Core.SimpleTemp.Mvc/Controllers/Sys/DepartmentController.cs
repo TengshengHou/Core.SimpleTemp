@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Application;
 using Core.SimpleTemp.Application.Authorization;
+using Core.SimpleTemp.Application.UserApp;
 using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Mvc.Models;
@@ -17,9 +18,11 @@ namespace Core.SimpleTemp.Mvc.Controllers
     public class DepartmentController : AjaxController<SysDepartmentDto, SysDepartment, ISysDepartmentAppService>
     {
         private readonly ISysDepartmentAppService _service;
-        public DepartmentController(ISysDepartmentAppService service) : base(service)
+        private readonly ISysUserAppService _sysUserAppService;
+        public DepartmentController(ISysDepartmentAppService service, ISysUserAppService sysUserAppService) : base(service)
         {
             _service = service;
+            _sysUserAppService = sysUserAppService;
         }
 
         [HttpGet("index")]
@@ -71,17 +74,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_DeleteMuti)]
         public override async Task<IActionResult> DeleteMutiAsync(string ids)
         {
-            string[] idArray = ids.Split(',');
-            List<Guid> delIds = new List<Guid>();
-            foreach (string id in idArray)
-            {
-                delIds.Add(Guid.Parse(id));
-            }
-            var retbool = await _service.IsNoneChildren(delIds);
+            Guid[] idArray = base.Str2GuidArray(ids);
             //有子节点不能删除
+            var retbool = await _service.IsNoneChildren(idArray);
             if (!retbool)
             {
                 return JsonFaild("删除失败,不能删除带有子节点的数据");
+            }
+            var user = await _sysUserAppService.FirstOrDefaultAsync(u => idArray.Contains(u.SysDepartmentId));
+            if (!object.Equals(user, null))
+            {
+                return JsonFaild("删除失败,此部门下还存在用户数据");
             }
             return await base.DeleteMutiAsync(ids);
         }
@@ -90,14 +93,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_Delete)]
         public override async Task<IActionResult> DeleteAsync(Guid id)
         {
-
-            var retbool = await _service.IsNoneChildren(new List<Guid>() { id });
             //有子节点不能删除
+            var retbool = await _service.IsNoneChildren(new Guid[] { id });
             if (!retbool)
             {
                 return JsonFaild("删除失败,不能删除带有子节点的数据");
             }
-
+            var user = await _sysUserAppService.FirstOrDefaultAsync(u => u.SysDepartmentId == id);
+            if (!object.Equals(user, null))
+            {
+                return JsonFaild("删除失败,此部门下还存在用户数据");
+            }
             return await base.DeleteAsync(id);
         }
 
@@ -110,7 +116,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(DepartmentPermission.Department_GetTreeData)]
         public async Task<IActionResult> GetTreeDataAsync()
         {
-
             var dtos = await _service.GetAllListAsync();
             List<TreeModel> treeModels = new List<TreeModel>();
             foreach (var dto in dtos)

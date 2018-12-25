@@ -42,15 +42,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         public virtual async Task<IActionResult> DeleteMutiAsync(string ids)
         {
-
-            string[] idArray = ids.Split(',');
-            List<Guid> delIds = new List<Guid>();
-            foreach (string id in idArray)
-            {
-                delIds.Add(Guid.Parse(id));
-            }
-
-            await _service.DeleteBatchAsync(delIds);
+            await _service.DeleteBatchAsync(base.Str2GuidArray(ids));
             return JsonSuccess();
         }
 

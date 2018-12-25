@@ -23,7 +23,7 @@ namespace Core.SimpleTemp.Application.MenuApp
 
         Task<List<SysMenuDto>> GetMenusAndFunctionByUserAsync(SysUserDto sysUserDto);
 
-        Task<bool> IsNoneChildren(List<Guid> ids);
+        Task<bool> IsNoneChildren(Guid[] ids);
 
 
     }

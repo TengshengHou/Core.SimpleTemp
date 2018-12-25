@@ -29,6 +29,7 @@ namespace Core.SimpleTemp.Application.UserApp
             return pageModelDto;
         }
 
+
         public async Task<bool> UpdatePwdAsync(UpdatePwdDto dto)
         {
             var userEntity = await FirstOrDefaultEntityAsync(user => user.LoginName == dto.LoginName && user.Password == dto.OldPwd);
@@ -46,6 +47,12 @@ namespace Core.SimpleTemp.Application.UserApp
             var entity = await FirstOrDefaultEntityAsync(u => u.LoginName == LoginName);
             entity.Password = WebAppConfiguration.InitialPassword;
             await UpdateAsync(entity, true);
+        }
+
+
+        public Task<SysUserRole> FindFirstUserRoleByRoleIdsAsync(Guid[] roleIds)
+        {
+            return _repository.FindFirstUserRoleByRoleIdsAsync(roleIds);
         }
     }
 }

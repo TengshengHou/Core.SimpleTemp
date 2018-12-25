@@ -39,5 +39,11 @@ namespace Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore.Sys
         {
             return _dbContext.SysUserRole.Where(ur => ur.SysUserId == userId).AsNoTracking().Select(ur => ur.SysRoleId).ToListAsync();
         }
+
+        public async Task<SysUserRole> FindFirstUserRoleByRoleIdsAsync(Guid[] roleIds)
+        {
+            return await _dbContext.SysUserRole.Include(ur => ur.SysUser).FirstOrDefaultAsync(ur => roleIds.Contains(ur.SysRoleId));
+        }
+
     }
 }
