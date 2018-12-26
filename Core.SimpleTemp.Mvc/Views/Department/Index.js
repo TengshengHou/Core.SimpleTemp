@@ -56,6 +56,10 @@ function operateFormatter(value, row, index) {
     var btnList = GetBaseOperateHtml('Department_Edit', 'Department_details', 'Department_Delete')
     return btnList.join('');
 }
+function nameFormatter(value, row, index) {
+    var strUrl = CreateUrlFilterOne("/user/index", "SysDepartmentId", row.id, row.name)
+    return "<a  title='点击查看【" + row.name + "】下所有用户' href=" + strUrl + "> " + row.name + "<a>";
+}
 
 //设置Table
 $table.bootstrapTable({
@@ -70,6 +74,7 @@ $table.bootstrapTable({
             field: 'name',
             title: '部门名称',
             align: 'center',
+            formatter: nameFormatter
         }, {
             field: 'code',
             title: '部门编号',
@@ -130,7 +135,7 @@ function initTree() {
                         SetTreeSelectEmpty();
                     else {
                         selectedId = node.id;
-                        
+
                     }
                     $table.bootstrapTable('refresh');
                 };

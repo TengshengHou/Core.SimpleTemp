@@ -83,11 +83,22 @@ $table.bootstrapTable({
 
 
 $(function () {
+    $("#SysDepartmentId").CoreSelect2("/Department/SelcetTwoAsync", function (responseData) {
+        var pageModel = responseData.data;
+        console.log(pageModel);
+        var selectList = [];
+        $.each(pageModel.pageData, function () {
+            console.log(this);
+            selectList.push({ "id": this.id, "text": this.name });
+        });
+        return selectList;
+    });
     $(document).ajaxStart(function () {
         if (ajaxCount != 0)
             layer.load(1);
         ajaxCount++;
     }).ajaxStop(function () {
+        layer.closeAll('loading');
         layer.closeAll('loading');
     })
 
@@ -102,5 +113,6 @@ $(function () {
     $btnScreen.click(function () {
         $table.bootstrapTable('refresh');
     });
+
 });
 
