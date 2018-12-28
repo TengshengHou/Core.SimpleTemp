@@ -39,8 +39,8 @@ namespace Core.SimpleTemp.Mvc
             #region 数据仓储链接设置 DbContext
             services.AddDbContext<CoreDBContext>(options =>
                {
-                  // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                  options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                   //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                   options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
                });
 
             //多Db链接实例
@@ -64,14 +64,14 @@ namespace Core.SimpleTemp.Mvc
 
           }).AddCookie(option =>
           {
+
+              option.Cookie.SameSite = SameSiteMode.None;
               //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
               option.ExpireTimeSpan = TimeSpan.FromMinutes(WebAppConfiguration.TimeOutOfLogin);
-
               //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
               option.SlidingExpiration = true;
-
+           
               //SessionStore 暂时放弃现功能
-
               //第一版不支持ValidatePrincipal 以后再说
               //option.Events = new CookieAuthenticationEvents() {
               //    OnValidatePrincipal

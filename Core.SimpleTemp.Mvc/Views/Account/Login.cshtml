@@ -105,11 +105,6 @@
 
     <script>
         $(function () {
-            var UA = navigator.userAgent.toLowerCase().toString();
-            //判断浏览器是否为QQ浏览器兼容模式
-            if (UA.indexOf("qqbrowser") > -1 && UA.indexOf("trident") > -1) {
-                $(".login-box-msg").html($(".login-box-msg").html() + "<br/> <font color='red'  >小弟不才，目前不支持QQ浏览器兼容模式，Ta真是个祖宗</font>")
-            }
 
             $('input').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
