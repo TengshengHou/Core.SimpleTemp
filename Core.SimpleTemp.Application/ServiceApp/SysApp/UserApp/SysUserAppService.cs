@@ -4,6 +4,7 @@ using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Repositories.IRepositories;
 using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,8 +15,10 @@ namespace Core.SimpleTemp.Application.UserApp
 
     public class SysUserAppService : BaseAppService<SysUserDto, SysUser, ISysUserRepository>, ISysUserAppService
     {
-        public SysUserAppService(ISysUserRepository repository) : base(repository)
+        readonly WebAppOptions _webAppOptions;
+        public SysUserAppService(ISysUserRepository repository, IOptionsMonitor<WebAppOptions> webAppOptions) : base(repository)
         {
+            _webAppOptions = webAppOptions.CurrentValue;
         }
 
         public async Task<IPageModel<SysUserDto>> GetUserByDepartmentAsync(Guid departmentId, int startPage, int pageSize)
@@ -45,7 +48,7 @@ namespace Core.SimpleTemp.Application.UserApp
         public async Task RestoreUserPwdAsync(string LoginName)
         {
             var entity = await FirstOrDefaultEntityAsync(u => u.LoginName == LoginName);
-            entity.Password = WebAppConfiguration.InitialPassword;
+            entity.Password = _webAppOptions.InitialPassword;
             await UpdateAsync(entity, true);
         }
 

@@ -10,6 +10,7 @@ namespace Core.SimpleTemp.Mvc
         {
             var webHost = CreateWebHostBuilder(args).Build();
             // 初始化DB
+            
             DBInitializer.Initialize(webHost);
             CoreMapper.Initialize();
             webHost.Run();

@@ -7,6 +7,7 @@ using Core.SimpleTemp.Repositories.IRepositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -27,12 +28,14 @@ namespace Core.SimpleTemp.Application
         ISysMenuAppService _sysMenuAppService;
         IDistributedCache _distributedCache;
         ISysLoginLogAppService _sysLoginLogAppService;
-        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService, IDistributedCache distributedCache, ISysLoginLogAppService sysLoginLogAppService)
+        readonly WebAppOptions _webAppOptions;
+        public SysLoginService(ISysUserRepository sysUserRepository, ISysMenuAppService sysMenuAppService, IDistributedCache distributedCache, ISysLoginLogAppService sysLoginLogAppService, IOptionsMonitor<WebAppOptions> webAppOptions)
         {
             _sysUserRepository = sysUserRepository;
             _sysMenuAppService = sysMenuAppService;
             _distributedCache = distributedCache;
             _sysLoginLogAppService = sysLoginLogAppService;
+            _webAppOptions = webAppOptions.CurrentValue;
         }
 
 
@@ -74,9 +77,9 @@ namespace Core.SimpleTemp.Application
         public async Task<string> JwtAuthenticate(string userName, string pwd)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(WebAppConfiguration.JwtIssuerSigningKey);//Jwt秘钥
+            var key = Encoding.ASCII.GetBytes(_webAppOptions.JwtIssuerSigningKey);//Jwt秘钥
             var authTime = DateTime.UtcNow;
-            var expiresAt = authTime.AddMinutes(WebAppConfiguration.TimeOutOfLogin);//过期时间
+            var expiresAt = authTime.AddMinutes(_webAppOptions.TimeOutOfLogin);//过期时间
 
             //验证账号&密码信息
             var user = await _sysUserRepository.FindUserForLoginAsync(userName, pwd);
@@ -85,15 +88,15 @@ namespace Core.SimpleTemp.Application
                 return "用户密码信息验证失败";
             }
             //登录日志
-            await _sysLoginLogAppService.InsertLogAsync(new SysLoginLogDto { LoginName = user.LoginName, Name = user.Name ,LoginType = LoginType.Cookie });
+            await _sysLoginLogAppService.InsertLogAsync(new SysLoginLogDto { LoginName = user.LoginName, Name = user.Name, LoginType = LoginType.Cookie });
             #region 构建票据基础信息
             //创建用户claimIdentity
             var claimIdentity = this.CreateClaimsIdentity(user);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = claimIdentity,
-                Issuer = WebAppConfiguration.JwtValidIssuer,
-                Audience = WebAppConfiguration.JwtValidAudience,
+                Issuer = _webAppOptions.JwtValidIssuer,
+                Audience = _webAppOptions.JwtValidAudience,
                 Expires = expiresAt,
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

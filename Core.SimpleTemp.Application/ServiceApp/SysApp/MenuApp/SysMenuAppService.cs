@@ -6,6 +6,7 @@ using Core.SimpleTemp.Repositories.IRepositories;
 using Core.SimpleTemp.Repositories.IRepositories.Internal.Data;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal.Data;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,13 +23,15 @@ namespace Core.SimpleTemp.Application.MenuApp
         private readonly ISysUserRepository _sysUserRepository;
         private readonly ISysRoleRepository _sysRoleRepository;
         private readonly IDistributedCache _distributedCache;
+        private readonly WebAppOptions _webAppOptions;
 
-        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository, IDistributedCache distributedCache) : base(sysMenuRepository)
+        public SysMenuAppService(ISysMenuRepository sysMenuRepository, ISysUserRepository sysUserRepository, ISysRoleRepository sysRoleRepository, IDistributedCache distributedCache, IOptionsMonitor<WebAppOptions> webAppOptions) : base(sysMenuRepository)
         {
             _sysMenuRepository = sysMenuRepository;
             _sysUserRepository = sysUserRepository;
             _sysRoleRepository = sysRoleRepository;
             _distributedCache = distributedCache;
+            _webAppOptions = webAppOptions.CurrentValue;
         }
 
 
@@ -88,7 +91,7 @@ namespace Core.SimpleTemp.Application.MenuApp
             var allMenus = await _sysMenuRepository.GetAllListAsync();
             allMenus = allMenus.OrderBy(it => it.SerialNumber).ToList();
 
-            if (sysUserDto.LoginName == WebAppConfiguration.AdminLoginName) //超级管理员
+            if (sysUserDto.LoginName == _webAppOptions.AdminLoginName) //超级管理员
                 return Mapper.Map<List<SysMenuDto>>(allMenus);
 
             //查询当前用户角色

@@ -6,6 +6,7 @@ using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.Controllers
@@ -15,12 +16,13 @@ namespace Core.SimpleTemp.Mvc.Controllers
     {
         private ISysLoginService _sysLoginService;
         private IHostingEnvironment _env;
+        readonly WebAppOptions _webAppOptions;
 
-
-        public AccountController(ISysLoginService sysLoginService, IHostingEnvironment env)
+        public AccountController(ISysLoginService sysLoginService, IHostingEnvironment env, IOptionsMonitor<WebAppOptions> webAppOptions)
         {
             _sysLoginService = sysLoginService;
             _env = env;
+            _webAppOptions = webAppOptions.CurrentValue;
         }
 
         [HttpGet("Login")]
@@ -87,7 +89,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             if (_env.IsDevelopment())
             {
-                await sysUserAppService.RestoreUserPwdAsync(WebAppConfiguration.AdminLoginName);
+                await sysUserAppService.RestoreUserPwdAsync(_webAppOptions.AdminLoginName);
             }
             return Ok();
         }

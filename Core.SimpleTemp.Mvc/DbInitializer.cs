@@ -8,12 +8,13 @@ using System;
 using System.Linq;
 using Core.SimpleTemp.Repository;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
+using Microsoft.Extensions.Options;
 
 namespace Core.SimpleTemp.Mvc
 {
     public class DBInitializer
     {
-        private static void Initialize(CoreDBContext context, LogDBContext logDBContexc)
+        private static void Initialize(CoreDBContext context, LogDBContext logDBContexc, WebAppOptions _webAppOptions)
         {
             context.Database.EnsureCreated();
             logDBContexc.Database.EnsureCreated();
@@ -35,8 +36,8 @@ namespace Core.SimpleTemp.Mvc
             var dep = context.SysDepartment.FirstOrDefault();
 
             //添加系统默认管理员
-            context.SysUser.Add(new SysUser { LoginName = WebAppConfiguration.AdminLoginName, Password = WebAppConfiguration.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
-            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = WebAppConfiguration.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
+            context.SysUser.Add(new SysUser { LoginName = _webAppOptions.AdminLoginName, Password = _webAppOptions.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
+            context.SysUser.Add(new SysUser { LoginName = "admin2", Password = _webAppOptions.InitialPassword, LastUpdate = DateTime.Now, SysDepartmentId = dep.Id });
 
 
             #region 增加四个基本功能菜单
@@ -359,7 +360,8 @@ namespace Core.SimpleTemp.Mvc
                 {
                     var context = services.GetRequiredService<CoreDBContext>();
                     var logDBContext = services.GetRequiredService<LogDBContext>();
-                    DBInitializer.Initialize(context, logDBContext);
+                    var webAppOptions = services.GetRequiredService<IOptionsMonitor<WebAppOptions>>();
+                    DBInitializer.Initialize(context, logDBContext, webAppOptions.CurrentValue);
                 }
                 catch (Exception ex)
                 {

@@ -23,13 +23,16 @@ namespace Core.SimpleTemp.Mvc
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        public IConfiguration _configuration { get; }
         private readonly ILogger _logger;
-
+        private readonly WebAppOptions _webAppOptions;
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
-            Configuration = configuration;
+            _configuration = configuration;
             _logger = logger;
+            _webAppOptions = new WebAppOptions();
+            //_configuration.GetSection("WebAppOptions").Bind(_webAppOptions);
+            _configuration.GetSection("WebAppOptions").Get<WebAppOptions>();
         }
 
 
@@ -39,17 +42,19 @@ namespace Core.SimpleTemp.Mvc
             #region 数据仓储链接设置 DbContext
             services.AddDbContext<CoreDBContext>(options =>
                {
-                   //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                   options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+                   options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                   //options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
                });
 
             //多Db链接实例
             services.AddDbContext<LogDBContext>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("LogConnection"));
-                options.UseNpgsql(Configuration.GetConnectionString("LogConnection"));
+                options.UseSqlServer(_configuration.GetConnectionString("LogConnection"));
+                //options.UseNpgsql(_configuration.GetConnectionString("LogConnection"));
             });
             #endregion
+
+
 
             #region 认证相关
             services.AddAuthentication(option =>
@@ -67,10 +72,10 @@ namespace Core.SimpleTemp.Mvc
 
               option.Cookie.SameSite = SameSiteMode.None;
               //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
-              option.ExpireTimeSpan = TimeSpan.FromMinutes(WebAppConfiguration.TimeOutOfLogin);
+              option.ExpireTimeSpan = TimeSpan.FromMinutes(_webAppOptions.TimeOutOfLogin);
               //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
               option.SlidingExpiration = true;
-           
+
               //SessionStore 暂时放弃现功能
               //第一版不支持ValidatePrincipal 以后再说
               //option.Events = new CookieAuthenticationEvents() {
@@ -83,16 +88,18 @@ namespace Core.SimpleTemp.Mvc
               JwtOption.TokenValidationParameters = new TokenValidationParameters
               {
                   ValidateAudience = true,
-                  ValidAudience = WebAppConfiguration.JwtValidAudience,
+                  ValidAudience = _webAppOptions.JwtValidAudience,
                   ValidateIssuer = true,
-                  ValidIssuer = WebAppConfiguration.JwtValidIssuer,
+                  ValidIssuer = _webAppOptions.JwtValidIssuer,
                   //是否验证失效时间
                   ValidateLifetime = true,
 
-                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(WebAppConfiguration.JwtIssuerSigningKey))
+                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_webAppOptions.JwtIssuerSigningKey))
               };
           });
             #endregion
+
+            services.Configure<WebAppOptions>(_configuration.GetSection("WebAppOptions"));
 
             //AutoDI
             services.AutoDi(_logger);
