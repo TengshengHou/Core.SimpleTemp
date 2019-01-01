@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Common.ActionResultHelp;
 using Core.SimpleTemp.Common.PagingQuery;
 using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,15 +16,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
     {
 
         #region JsonResult
-        /// <summary>
-        /// 返回基于AjaxJsonModel模型的Json字符串
-        /// </summary>
-        /// <param name="ajaxJsonModel"></param>
-        /// <returns></returns>
-        public virtual JsonResult Json(AjaxJsonModel ajaxJsonModel)
-        {
-            return base.Json(ajaxJsonModel);
-        }
 
         /// <summary>
         /// 返回带有成功标识的JsonModel
@@ -32,12 +24,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         public virtual JsonResult JsonSuccess(object data = null)
         {
-            var ajaxJsonModel = new AjaxJsonModel()
-            {
-                Result = SysConsts.AJAX_RESULT_SUCCESS,
-                Data = data
-            };
-            return this.Json(ajaxJsonModel);
+            return JsonResultHelp.JsonSuccess(data);
         }
 
         /// <summary>
@@ -47,12 +34,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// <returns></returns>
         public virtual JsonResult JsonFaild(string message = null)
         {
-            var ajaxJsonModel = new AjaxJsonModel()
-            {
-                Result = SysConsts.AJAX_RESULT_FAILD,
-                Message = message
-            };
-            return this.Json(ajaxJsonModel);
+            return JsonResultHelp.JsonSuccess(message);
         }
         #endregion
 

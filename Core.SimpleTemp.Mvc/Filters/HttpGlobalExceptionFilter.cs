@@ -16,7 +16,7 @@ namespace Core.SimpleTemp.Mvc.Filters
         public void OnException(ExceptionContext context)
         {
             //只处理Ajax 其他交给 异常中间件处理
-            if (context.HttpContext.Request.IsAjaxRequest())
+            if (context.HttpContext.Request.IsAjaxRequest() || context.HttpContext.Request.Path.Value.StartsWith("/api/"))
             {
                 context.HttpContext.Response.StatusCode = 200;
                 context.HttpContext.Response.ContentType = "application/json;charset=utf-8";

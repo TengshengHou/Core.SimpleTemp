@@ -70,6 +70,7 @@ namespace Core.SimpleTemp.Mvc
 
               option.Cookie.SameSite = SameSiteMode.None;
               //设置Cookie过期时间 ,如不设置 默认为14天挺恐怖的 注意如不设置票据过期时间，默认票据采用此时间
+
               option.ExpireTimeSpan = TimeSpan.FromMinutes(_webAppOptions.TimeOutOfLogin);
               //当Cookie过期时间已达一半时，是否重置ExpireTimeSpan 每次认证确认，handle 在Http响应重写Cookie
               option.SlidingExpiration = true;
@@ -132,7 +133,7 @@ namespace Core.SimpleTemp.Mvc
                     ExceptionHandler = async context =>
                     {
                         //Ajax处理
-                        if (context.Request.IsAjaxRequest())
+                        if (context.Request.IsAjaxRequest()|| context.Request.Path.Value.StartsWith("/api/"))
                         {
                             context.Response.StatusCode = 200;
                             context.Response.ContentType = "application/json;charset=utf-8";

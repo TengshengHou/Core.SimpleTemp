@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Application;
+using Core.SimpleTemp.Mvc.Api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ namespace Core.SimpleTemp.Mvc.Controllers.Sys
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : CoreApiController
     {
         private ISysLoginService _sysLoginService;
 
@@ -23,10 +24,10 @@ namespace Core.SimpleTemp.Mvc.Controllers.Sys
         }
 
         [HttpGet("GetToken")]
-        public async Task<IActionResult> AuthenticateAsync(string userName, string pwd)
+        public async Task<IActionResult> GetToken(string userName, string pwd)
         {
             var tokenStr = await _sysLoginService.JwtAuthenticate(userName, pwd);
-            return Ok(tokenStr);
+            return JsonSuccess(tokenStr);
         }
     }
 }

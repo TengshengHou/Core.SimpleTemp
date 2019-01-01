@@ -11,7 +11,7 @@ namespace Core.SimpleTemp.Entitys.Sys
         public string LoginName { get; set; }
         [StringLength(20)]
         public string Name { get; set; }
-        [StringLength(20)]
+        [StringLength(30)]
         public string Ip { get; set; }
         public string OtherInfo { get; set; }
         [StringLength(10)]

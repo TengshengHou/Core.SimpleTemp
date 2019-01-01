@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.SimpleTemp.Mvc.Models
+namespace Core.SimpleTemp.Common.ActionResultHelp
 {
     /// <summary>
     /// 用于返回Ajax请求数据格式
