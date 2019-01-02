@@ -14,6 +14,8 @@ function GetQueryData(offset, limit) {
     var filterList = PagingQuery($("#searchForm")[0]);
     var filterListJson = JSON.stringify(filterList);
     var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
+    if ($("#roles").val())
+        pagingQueryData.roles = $("#roles").val();
     return pagingQueryData;
 }
 //获取数据
@@ -93,6 +95,14 @@ $(function () {
         });
         return selectList;
     });
+
+
+    $("#roles").select2({
+        multiple: false,
+        placeholder: "请选择",
+        allowClear: true//可以清除选项
+    });
+
     $(document).ajaxStart(function () {
         if (ajaxCount != 0)
             layer.load(1);

@@ -12,11 +12,8 @@ var PagingQuery = function (form) {
         filterObjList.push(filterOjb);
     });
 
-
-
     return filterObjList;
 }
-
 
 var GetFilterObj = function (dom) {
     $dom = $(dom);
@@ -29,7 +26,6 @@ var GetFilterObj = function (dom) {
     return filterOjb;
 }
 
-
 //UrlJumpQuery 
 function UrlFilter() {
     //处理通过Url传来的查询条件 
@@ -37,10 +33,12 @@ function UrlFilter() {
     if (filterNames) {
         for (var i = 0; i < filterNames.length; i++) {
             $dom = $form.find("[name='" + filterNames[i].key + "']");
-            $dom.val(filterNames[i].value).attr("disabled", "disabled");
+            
             if ($dom.attr("data-domType") == "CoreSelect2") {
                 $dom.html('<option value="' + filterNames[i].value + '">' + filterNames[i].text + '</option>')
             }
+
+            $dom.val(filterNames[i].value).attr("disabled", "disabled");
         }
     }
 }
@@ -49,7 +47,8 @@ function UrlFilter() {
 var GetUrlFilterArray = function () {
     //[{ key:"domName" ,value:"123123" }]
     var qfc = GetQueryString("qfc");
-    qfc = decodeURI(qfc);
+    qfc = $.base64.atob(qfc, true)
+    //qfc = decodeURI(qfc);
     qfc = eval(qfc)
     return qfc;
 }
@@ -58,7 +57,8 @@ var GetUrlFilterArray = function () {
 //strUrl：页面相对路径 ，filterList：[{ key:"domName" ,value:"123123" }]
 function CreateUrlFilter(strUrl, filterList) {
     var strQfc = JSON.stringify(filterList);
-    strQfc = encodeURI(strQfc);
+    //strQfc = encodeURI(strQfc);
+    strQfc = $.base64.btoa(strQfc, true)
     var strUrl = strUrl + "?qfc=" + strQfc
     return strUrl;
 }

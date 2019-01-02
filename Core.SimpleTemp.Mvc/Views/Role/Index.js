@@ -69,6 +69,10 @@ function operateFormatter(value, row, index) {
     var btnList = GetBaseOperateHtml('Role_Edit', 'Role_details', 'Role_Delete')
     return btnList.join('');
 }
+function nameFormatter(value, row, index) {
+    var strUrl = CreateUrlFilterOne("/user/index", "roles", row.id, row.name)
+    return "<a  title='点击查看【" + row.name + "】下所有用户' href=" + strUrl + "> " + row.name + "<a>";
+}
 
 //设置Table
 $table.bootstrapTable({
@@ -83,6 +87,7 @@ $table.bootstrapTable({
             field: 'name',
             title: '角色编号',
             align: 'center',
+            formatter: nameFormatter
         }, {
             field: 'code',
             title: '角色名称',

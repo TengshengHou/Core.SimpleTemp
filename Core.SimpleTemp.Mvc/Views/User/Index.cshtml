@@ -10,11 +10,14 @@
                         <input type="text" asp-for="Name" class="form-control" data-filter="true" data-action="in" value="" />
                     </div>
                     <div class="form-group ">
-                        <label for="Name">部门&nbsp;&nbsp;</label>
-                        <select asp-for="SysDepartmentId" data-filter="true" data-action="=" data-datatype="guid" data-domType="CoreSelect2" class="form-control" style="width:213px">
-                            @*<option value="cb37079b-abd5-4213-c5bc-08d668d9f66b">text</option>*@
+                        <label for="roles">角色&nbsp;&nbsp;</label>
+                        <select id="roles" name="roles"  asp-items="ViewBag.roleSelectList"    class="form-control" style="padding:0px;width:213px" multiple="multiple">
+                            <option></option>
                         </select>
-
+                    </div>
+                    <div class="form-group ">
+                        <label for="SysDepartmentId">部门&nbsp;&nbsp;</label>
+                        <select asp-for="SysDepartmentId" data-filter="true" data-action="=" data-datatype="guid" data-domType="CoreSelect2" class="form-control" style="width:213px"></select>
                     </div>
                     &nbsp;&nbsp;
                     <button id="btnScreen" type="button" class="btn btn-default">查询</button>

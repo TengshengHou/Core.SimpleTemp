@@ -20,6 +20,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
     {
         private readonly ISysUserAppService _service;
         private readonly ISysRoleAppService _roleService;
+
         public UserController(ISysUserAppService service, ISysRoleAppService sysRoleAppService) : base(service)
         {
             _service = service;
@@ -30,16 +31,27 @@ namespace Core.SimpleTemp.Mvc.Controllers
         [PermissionFilter(UserPermission.UserController_Index)]
         public async Task<IActionResult> IndexAsync()
         {
+            await SetroleSelectListAsync();
             await base.AuthorizeListAsync(new string[] { UserPermission.UserController_Edit, UserPermission.UserController_DeleteMuti, UserPermission.UserController_Delete });
-
             return base.Index();
         }
 
         [HttpPost("GetList")]
         [PermissionFilter(UserPermission.UserController_GetList)]
-        public async Task<IActionResult> GetList()
+        public async Task<IActionResult> GetList(string[] roles)
         {
+            #region 过滤条件
             var pagingQueryModel = base.GetPagingQueryModel();
+            if (!object.Equals(roles, null) && roles.Any())
+            {
+                if (pagingQueryModel.FilterExpression == null)
+                {
+                    pagingQueryModel.FilterExpression = ExpressionExtension.True<SysUser>();
+                }
+                pagingQueryModel.FilterExpression = pagingQueryModel.FilterExpression.And(u => u.UserRoles.Where(ur => roles.Contains(ur.SysRoleId.ToString())).Select(ur => ur.SysUserId).Contains(u.Id));
+            }
+            #endregion
+
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.LastUpdate);
             result.PageData.ForEach(u => u.Password = string.Empty);
             return JsonSuccess(result);
@@ -50,12 +62,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         public async Task<IActionResult> EditAsync(Guid id)
         {
             SysUserDto model = new SysUserDto();
-
-            var allRoleList = await _roleService.GetAllListAsync();
-            var roleSelectList = allRoleList.Select(role => (new SelectListItem() { Text = role.Name, Value = role.Id.ToString() }));
-            ViewBag.roleSelectList = roleSelectList;
-
-
+            await SetroleSelectListAsync();
 
             if (id != Guid.Empty)
             {
@@ -124,13 +131,6 @@ namespace Core.SimpleTemp.Mvc.Controllers
         }
 
 
-
-
-
-
-
-
-
         [HttpGet("UpdatePwd")]
         public IActionResult UpdatePwd()
         {
@@ -174,6 +174,17 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// 生存Role SelectListItem
+        /// </summary>
+        /// <returns></returns>
+        private async Task SetroleSelectListAsync()
+        {
+            var allRoleList = await _roleService.GetAllListAsync();
+            var roleSelectList = allRoleList.Select(role => (new SelectListItem() { Text = role.Name, Value = role.Id.ToString() }));
+            ViewBag.roleSelectList = roleSelectList;
         }
 
     }

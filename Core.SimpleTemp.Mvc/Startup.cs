@@ -23,14 +23,16 @@ namespace Core.SimpleTemp.Mvc
 {
     public class Startup
     {
+        private const string WEBAPP_OPTIONS = "WebAppOptions";
         public IConfiguration _configuration { get; }
         private readonly ILogger _logger;
         private readonly WebAppOptions _webAppOptions;
+
         public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             _configuration = configuration;
             _logger = logger;
-            _webAppOptions = _configuration.GetSection("WebAppOptions").Get<WebAppOptions>();
+            _webAppOptions = _configuration.GetSection(WEBAPP_OPTIONS).Get<WebAppOptions>();
         }
 
 
@@ -51,7 +53,6 @@ namespace Core.SimpleTemp.Mvc
                 options.UseNpgsql(_configuration.GetConnectionString("LogConnection"));
             });
             #endregion
-
 
 
             #region 认证相关
@@ -98,7 +99,7 @@ namespace Core.SimpleTemp.Mvc
           });
             #endregion
 
-            services.Configure<WebAppOptions>(_configuration.GetSection("WebAppOptions"));
+            services.Configure<WebAppOptions>(_configuration.GetSection(WEBAPP_OPTIONS));
 
             //AutoDI
             services.AutoDi(_logger);
@@ -133,7 +134,7 @@ namespace Core.SimpleTemp.Mvc
                     ExceptionHandler = async context =>
                     {
                         //Ajax处理
-                        if (context.Request.IsAjaxRequest()|| context.Request.Path.Value.StartsWith("/api/"))
+                        if (context.Request.IsAjaxRequest() || context.Request.Path.Value.StartsWith("/api/"))
                         {
                             context.Response.StatusCode = 200;
                             context.Response.ContentType = "application/json;charset=utf-8";
