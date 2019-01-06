@@ -45,17 +45,19 @@
         $('.sidebar-menu a').each(function () {
             var aHref = $(this).attr("href")
             if (aHref != '#' && aHref != "") {
-                var cur = window.location.href;
+                var pathname = window.location.pathname;
                 var url = this.href;
-                if (cur == url) {
+
+                if (url.indexOf(pathname) > 0) {
                     //一级菜单
                     if ($(this).parents(".treeview").length <= 0) {
                         $(this).parent().addClass('active');
                     } else {
                         //二级/二级以上菜单
+                        console.log(this);
                         $(this).parents(".treeview").each(function () {
                             $(this).addClass('menu-open').addClass("active");
-                        });
+                        }).addClass("active");
                     }
                 }
             }

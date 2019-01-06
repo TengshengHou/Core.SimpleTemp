@@ -42,15 +42,15 @@ namespace Core.SimpleTemp.Mvc
             #region 数据仓储链接设置 DbContext
             services.AddDbContext<CoreDBContext>(options =>
                {
-                   //options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
-                   options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
+                   options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+                   //options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection"));
                });
 
             //多Db链接实例
             services.AddDbContext<LogDBContext>(options =>
             {
-                //options.UseSqlServer(_configuration.GetConnectionString("LogConnection"));
-                options.UseNpgsql(_configuration.GetConnectionString("LogConnection"));
+                options.UseSqlServer(_configuration.GetConnectionString("LogConnection"));
+                //options.UseNpgsql(_configuration.GetConnectionString("LogConnection"));
             });
             #endregion
 
