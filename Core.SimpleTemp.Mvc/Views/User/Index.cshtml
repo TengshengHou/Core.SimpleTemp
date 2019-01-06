@@ -7,11 +7,11 @@
                 <form role="form" id="searchForm" class="form-inline">
                     <div class="form-group">
                         <label for="Name">用户&nbsp;&nbsp;</label>
-                        <input type="text" asp-for="Name" class="form-control" data-filter="true" data-action="in" value="" />
+                        <input type="text" asp-for="Name" class="form-control" filter-isFilter="true" filter-action="in" value="" />
                     </div>
                     <div class="form-group ">
                         <label for="roles">角色&nbsp;&nbsp;</label>
-                        <select id="roles" name="roles"  asp-items="ViewBag.roleSelectList"    class="form-control" style="padding:0px;width:213px" multiple="multiple">
+                        <select id="roles" name="roles" asp-items="ViewBag.roleSelectList" class="form-control" style="padding:0px;width:213px" multiple="multiple">
                             <option></option>
                         </select>
                     </div>

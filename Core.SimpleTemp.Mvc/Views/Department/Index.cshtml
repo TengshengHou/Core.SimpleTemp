@@ -20,12 +20,12 @@
                 <form role="form" id="searchForm" class="form-inline">
                     <div class="form-group">
                         <label for="Name">组织机构名称&nbsp;&nbsp;</label>
-                        <input type="text" asp-for="Name" class="form-control" data-filter="true" data-action="in" value="" />
+                        <input type="text" asp-for="Name" class="form-control" filter-isFilter="true" filter-action="in" value="" />
                     </div>
                     &nbsp;&nbsp;
                     <div class="form-group">
                         <label for="Name">负责人&nbsp;&nbsp;</label>
-                        <input type="text" asp-for="Manager" class="form-control" data-filter="true" data-action="in" value="" />
+                        <input type="text" asp-for="Manager" class="form-control" filter-isFilter="true" filter-action="in" value="" />
                     </div>
                     &nbsp;&nbsp;
                     <button id="btnScreen" type="button" class="btn btn-default">查询</button>

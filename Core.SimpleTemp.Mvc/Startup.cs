@@ -128,7 +128,6 @@ namespace Core.SimpleTemp.Mvc
             else
             {
                 //生产环境异常处理
-                //app.UseExceptionHandler("/Shared/Error");
                 app.UseExceptionHandler(new ExceptionHandlerOptions()
                 {
                     ExceptionHandler = async context =>
@@ -145,7 +144,7 @@ namespace Core.SimpleTemp.Mvc
                         }
                         else
                         {
-                            context.Response.Redirect("/error");
+                            context.Response.Redirect("/error.html");
                         }
 
                     }
