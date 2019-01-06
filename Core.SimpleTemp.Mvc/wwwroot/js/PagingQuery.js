@@ -2,7 +2,7 @@
 var PagingQuery = function (form) {
     var filterObjList = [];
     $form = $(form);
-    filterDomList = $form.find("[data-filter=true]");
+    filterDomList = $form.find("[data-filter=True]");
 
     UrlFilter();
 

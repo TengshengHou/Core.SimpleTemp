@@ -6,14 +6,29 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Mvc.TagHelpers
 {
+    /// <summary>
+    /// 用于辅助前端创建 FilterModel
+    /// </summary>
+    [HtmlTargetElement("input", Attributes = DataFilterForAttributeName)]
+
     [HtmlTargetElement("input", Attributes = DataActionForAttributeName)]
     [HtmlTargetElement("input", Attributes = DataLogicForAttributeName)]
     [HtmlTargetElement("input", Attributes = DataDataTypeForAttributeName)]
     public class CoreInputTagHelper : TagHelper
     {
+        private const string DataFilterForAttributeName = "filter-isFilter";
         private const string DataActionForAttributeName = "filter-action";
         private const string DataLogicForAttributeName = "filter-logic";
         private const string DataDataTypeForAttributeName = "filter-datatype";
+
+
+
+        /// <summary>
+        /// 是否是过滤条件
+        /// </summary>
+        [HtmlAttributeName(DataFilterForAttributeName)]
+        public bool DataFilter { get; set; }
+
 
         /// <summary>
         /// 查询字段运算符
@@ -35,8 +50,15 @@ namespace Core.SimpleTemp.Mvc.TagHelpers
         public string DataDataType { get; set; }
 
 
+
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if (DataFilter)
+            {
+                output.Attributes.SetAttribute("data-filter", DataFilter);
+            }
+
             if (DataAction != null)
             {
                 //  var childContent = output.Content.IsModified ? output.Content.GetContent() :
@@ -51,6 +73,7 @@ namespace Core.SimpleTemp.Mvc.TagHelpers
             {
                 output.Attributes.SetAttribute("data-datatype", DataDataType);
             }
+
         }
     }
 }
