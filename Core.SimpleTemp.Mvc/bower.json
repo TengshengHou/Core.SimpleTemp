@@ -19,7 +19,7 @@
     "jstree": "3.3.5",
     "layer": "*",
     "select2": "*",
-    "bootstrap-table": "*",
+    "bootstrap-table": "1.13.1",
     "layui": "*"
 
   }
