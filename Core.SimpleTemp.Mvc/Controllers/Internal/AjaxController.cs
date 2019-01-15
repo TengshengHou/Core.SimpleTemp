@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Core.SimpleTemp.Mvc.Controllers.Internal;
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
     public class AjaxController<Tdto, TEntity, TService> : CoreController<TEntity> where TService : IBaseAppService<Tdto, TEntity> where Tdto : Dto
@@ -25,25 +26,25 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return JsonFaild(GetModelStateError());
+                return this.JsonFaild(GetModelStateError());
             }
             if (object.Equals(dto.Id, Guid.Empty))
             {
                 await _service.InsertAsync(dto);
-                return JsonSuccess(string.Empty);
+                return this.JsonSuccess(string.Empty);
             }
             else
             {
 
                 await _service.UpdateAsync(dto, true, noUpdateProperties);
-                return JsonSuccess(string.Empty);
+                return this.JsonSuccess(string.Empty);
             }
         }
 
         public virtual async Task<IActionResult> DeleteMutiAsync(string ids)
         {
             await _service.DeleteBatchAsync(base.Str2GuidArray(ids));
-            return JsonSuccess();
+            return this.JsonSuccess();
         }
 
 
@@ -51,7 +52,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
 
             await _service.DeleteAsync(id);
-            return JsonSuccess();
+            return this.JsonSuccess();
 
         }
 

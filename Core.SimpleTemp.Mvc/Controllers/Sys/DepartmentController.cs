@@ -3,6 +3,7 @@ using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Application.UserApp;
 using Core.SimpleTemp.Common;
 using Core.SimpleTemp.Entitys;
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,12 +80,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var retbool = await _service.IsNoneChildren(idArray);
             if (!retbool)
             {
-                return JsonFaild("删除失败,不能删除带有子节点的数据");
+                return this.JsonFaild("删除失败,不能删除带有子节点的数据");
             }
             var user = await _sysUserAppService.FirstOrDefaultAsync(u => idArray.Contains(u.SysDepartmentId));
             if (!object.Equals(user, null))
             {
-                return JsonFaild("删除失败,此部门下还存在用户数据");
+                return this.JsonFaild("删除失败,此部门下还存在用户数据");
             }
             return await base.DeleteMutiAsync(ids);
         }
@@ -97,12 +98,12 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var retbool = await _service.IsNoneChildren(new Guid[] { id });
             if (!retbool)
             {
-                return JsonFaild("删除失败,不能删除带有子节点的数据");
+                return this.JsonFaild("删除失败,不能删除带有子节点的数据");
             }
             var user = await _sysUserAppService.FirstOrDefaultAsync(u => u.SysDepartmentId == id);
             if (!object.Equals(user, null))
             {
-                return JsonFaild("删除失败,此部门下还存在用户数据");
+                return this.JsonFaild("删除失败,此部门下还存在用户数据");
             }
             return await base.DeleteAsync(id);
         }
@@ -135,7 +136,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             var pagingQueryModel = base.GetPagingQueryModel();
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
-            return JsonSuccess(result);
+            return this.JsonSuccess(result);
         }
 
 
@@ -146,7 +147,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             if (!Equals(q, null))
                 trueExp = trueExp.And(d => d.Name.Contains(q));
             var result = await _service.GetAllPageListAsync(page, pageSize, trueExp, d => d.Name);
-            return JsonSuccess(result);
+            return this.JsonSuccess(result);
         }
 
     }

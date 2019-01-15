@@ -4,7 +4,7 @@
 }
 @using Microsoft.AspNetCore.Hosting
 @model Core.SimpleTemp.Mvc.Models.LoginViewModel
-@inject IHostingEnvironment env
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,15 +56,9 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
-                        @if (env.IsDevelopment())
-                        {
+                        <environment  include="Development" >
                             <button type="button" id="RestoreAdminBtn" class="btn btn-primary btn-block btn-flat">重置测试账号密码</button>
-                        }
-                        @*<div class="checkbox icheck">
-                                <label>
-                                    <input type="checkbox"> 记住我
-                                </label>
-                            </div>*@
+                        </environment>
                     </div>
                     <!-- /.col -->
                     <div class="col-xs-4">
@@ -112,17 +106,6 @@
                 increaseArea: '20%' /* optional */
             });
 
-            //测试环境重置管理员密码
-            $("#RestoreAdminBtn").click(function () {
-                $.ajax({
-                    type: "Get",
-                    url: "/Account/RestoreAdminPwd?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
-                    success: function (data) {
-                        $(".login-box-msg").html("重置密码成功！");
-                    }
-                });
-            });
-
             //用于处理layer弹窗进入登录页面
             if (window.frames.length != parent.frames.length) {
                 var currHref = window.parent.location.href;
@@ -131,7 +114,28 @@
             }
 
         });
+
+
     </script>
+
+
+    <environment include="Development"  >
+        <script>
+            $(function () {
+                //测试环境重置管理员密码
+                $("#RestoreAdminBtn").click(function () {
+                    $.ajax({
+                        type: "Get",
+                        url: "/Account/RestoreAdminPwd?_t=" + new Date().getTime(),    //获取数据的ajax请求地址
+                        success: function (data) {
+                            $(".login-box-msg").html("重置密码成功！");
+                        }
+                    });
+                });
+            })
+        </script>
+
+    </environment>
 </body>
 </html>
 

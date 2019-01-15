@@ -1,5 +1,6 @@
 ﻿using Core.SimpleTemp.Application.Authorization;
 using Core.SimpleTemp.Common;
+using Core.SimpleTemp.Common.PagingQuery;
 using Core.SimpleTemp.Mvc.Filters;
 using Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -109,6 +110,8 @@ namespace Core.SimpleTemp.Mvc
             //services.AddAuthorization();
             //采用内存版分布缓存 方便以后切换Redis
             services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
+            services.AddSingleton(typeof(IPagingQueryModelBuild<>), typeof(PagingQueryModelBuild<>));
+
             services.AddHttpClient();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc(options =>

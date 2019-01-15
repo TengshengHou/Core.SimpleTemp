@@ -5,6 +5,7 @@ using Core.SimpleTemp.Common.PagingQuery;
 using Core.SimpleTemp.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,28 +16,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
     public class CoreController<TEntity> : Controller
     {
 
-        #region JsonResult
 
-        /// <summary>
-        /// 返回带有成功标识的JsonModel
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public virtual JsonResult JsonSuccess(object data = null)
-        {
-            return JsonResultHelp.JsonSuccess(data);
-        }
 
-        /// <summary>
-        /// 返回带有失败标识的JsonModel
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        public virtual JsonResult JsonFaild(string message = null)
-        {
-            return JsonResultHelp.JsonSuccess(message);
-        }
-        #endregion
 
         public async System.Threading.Tasks.Task AuthorizeListAsync(string[] functionCodes)
         {
@@ -47,6 +28,8 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var strJson = sj.Serialize(dic);
             ViewBag.AuthorizeList = strJson;
         }
+
+
 
         public Guid[] Str2GuidArray(string strGuids)
         {
@@ -62,8 +45,14 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
         public PagingQueryModel<TEntity> GetPagingQueryModel()
         {
-            var pagingQueryModelBuild = new PagingQueryModelBuild<TEntity>(HttpContext);
-            return pagingQueryModelBuild.Build();
+            IPagingQueryModelBuild<TEntity> pagingQueryModelBuild = null;
+            pagingQueryModelBuild = HttpContext.RequestServices.GetService<IPagingQueryModelBuild<TEntity>>();
+
+            PagingQueryModelDesigner<TEntity> pagingQueryModelDesigner = new PagingQueryModelDesigner<TEntity>();
+
+            pagingQueryModelDesigner.Build(pagingQueryModelBuild);
+
+            return pagingQueryModelBuild.GetPaginQueryModel();
         }
 
     }
