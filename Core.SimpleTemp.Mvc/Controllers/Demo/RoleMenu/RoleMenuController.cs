@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 namespace Core.SimpleTemp.Mvc.Controllers.Demo.RoleMenu
 {
 
@@ -33,7 +34,7 @@ namespace Core.SimpleTemp.Mvc.Controllers.Demo.RoleMenu
         {
             var pagingQueryModel = GetPagingQueryModel();
             var v = await _roleMenApp.ILoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, new string[] { nameof(SysRoleMenu.SysMenu), nameof(SysRoleMenu.SysRole) }, pagingQueryModel.FilterExpression, a => a.Id);
-            return JsonSuccess(v);
+            return this.JsonSuccess(v);
         }
 
         [HttpGet("index")]

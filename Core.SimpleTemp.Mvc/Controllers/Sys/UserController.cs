@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
     [Authorize]
@@ -54,7 +54,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
 
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.LastUpdate);
             result.PageData.ForEach(u => u.Password = string.Empty);
-            return JsonSuccess(result);
+            return this.JsonSuccess(result);
         }
 
         [HttpGet("Edit")]
@@ -170,7 +170,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
                 adminId = (Guid)admin.FirstOrDefault()?.Id;
                 if (delIds.Contains(adminId))
                 {
-                    return JsonFaild("admin用户不能删除");
+                    return this.JsonFaild("admin用户不能删除");
                 }
             }
             return null;

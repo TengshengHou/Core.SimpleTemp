@@ -6,7 +6,7 @@ using System.Text;
 using Core.SimpleTemp.Common.FilterExpression;
 namespace Core.SimpleTemp.Common.PagingQuery
 {
-    public class PagingQueryModelBuild<TEntity>
+    public class PagingQueryModelBuild<TEntity> : IPagingQueryModelBuild<TEntity>
     {
         #region 常量定义
         const string FILTER_CONDITION_LIST_KEY = "filterConditionList";
@@ -14,18 +14,24 @@ namespace Core.SimpleTemp.Common.PagingQuery
         const string LIMIT = "limit";
         #endregion
 
+        JsonSerializer jsonSerializer = new JsonSerializer();
+        PagingQueryModel<TEntity> pagingQueryModel = new PagingQueryModel<TEntity>();
+
         HttpContext _httpContext;
 
-        public PagingQueryModelBuild(HttpContext httpContext)
+        public PagingQueryModelBuild(IHttpContextAccessor accessor)
         {
-            _httpContext = httpContext;
+            _httpContext = accessor.HttpContext;
         }
+
+
+
 
         /// <summary>
         /// 根据当前Http请求创建PagingQuery对象
         /// </summary>
         /// <returns></returns>
-        public PagingQueryModel<TEntity> Build()
+        public void MakePagingQueryModel()
         {
             #region 数据验证
             if (!_httpContext.Request.Form.ContainsKey(FILTER_CONDITION_LIST_KEY))
@@ -38,9 +44,6 @@ namespace Core.SimpleTemp.Common.PagingQuery
                 throw new Exception($"PagingQueryModelBuild 在请求数据中未找到{LIMIT}");
             #endregion
 
-
-            var jsonSerializer = new JsonSerializer();
-            PagingQueryModel<TEntity> pagingQueryModel = new PagingQueryModel<TEntity>();
             string filterConditionList = _httpContext.Request.Form[FILTER_CONDITION_LIST_KEY];
             int offset = int.Parse(_httpContext.Request.Form[OFFSET]);
             int limit = int.Parse(_httpContext.Request.Form[LIMIT]);
@@ -49,6 +52,10 @@ namespace Core.SimpleTemp.Common.PagingQuery
             pagingQueryModel.Offset = offset;
             pagingQueryModel.FilterConditionList = jsonSerializer.Deserialize<List<FilterModel>>(filterConditionList);
             pagingQueryModel.FilterExpression = ExpressionExtension.GetFilterExpression<TEntity>(pagingQueryModel.FilterConditionList);
+        }
+
+        public PagingQueryModel<TEntity> GetPaginQueryModel()
+        {
             return pagingQueryModel;
         }
     }

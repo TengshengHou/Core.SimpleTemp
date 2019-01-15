@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
     [Authorize]
@@ -72,7 +72,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var user = await _sysUserAppService.FindFirstUserRoleByRoleIdsAsync(base.Str2GuidArray(ids));
             if (!object.Equals(user, null))
             {
-                return JsonFaild("删除失败,此角色下还存在用户数据");
+                return this.JsonFaild("删除失败,此角色下还存在用户数据");
             }
             return await base.DeleteMutiAsync(ids);
         }
@@ -84,7 +84,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             var user = await _sysUserAppService.FindFirstUserRoleByRoleIdsAsync(new Guid[1] { id });
             if (!object.Equals(user, null))
             {
-                return JsonFaild("删除失败,此角色下还存在用户数据");
+                return this.JsonFaild("删除失败,此角色下还存在用户数据");
             }
             return await base.DeleteAsync(id);
         }
@@ -103,7 +103,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             var pagingQueryModel = base.GetPagingQueryModel();
             var result = await _service.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression, orderModel => orderModel.CreateTime);
-            return JsonSuccess(result);
+            return this.JsonSuccess(result);
         }
 
 
@@ -128,9 +128,9 @@ namespace Core.SimpleTemp.Mvc.Controllers
         {
             if (await _service.UpdateRoleMenuAsync(roleId, roleMenus))
             {
-                return JsonSuccess();
+                return this.JsonSuccess();
             }
-            return JsonFaild();
+            return this.JsonFaild();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.SimpleTemp.Application;
 using Core.SimpleTemp.Mvc.Api;
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,7 @@ namespace Core.SimpleTemp.Mvc.Controllers.Sys
         public async Task<IActionResult> GetToken(string userName, string pwd)
         {
             var tokenStr = await _sysLoginService.JwtAuthenticate(userName, pwd);
-            return JsonSuccess(tokenStr);
+            return this.JsonSuccess(tokenStr);
         }
     }
 }

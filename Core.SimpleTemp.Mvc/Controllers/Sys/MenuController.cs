@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using Core.SimpleTemp.Mvc.Controllers.Internal;
 namespace Core.SimpleTemp.Mvc.Controllers
 {
     [Authorize]
@@ -87,7 +87,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             //有子节点不能删除
             if (!retbool)
             {
-                return JsonFaild("删除失败,不能删除带有子节点的数据");
+                return this.JsonFaild("删除失败,不能删除带有子节点的数据");
             }
             return await base.DeleteMutiAsync(ids);
         }
@@ -101,7 +101,7 @@ namespace Core.SimpleTemp.Mvc.Controllers
             //有子节点不能删除
             if (!retbool)
             {
-                return JsonFaild("删除失败,不能删除带有子节点的数据");
+                return this.JsonFaild("删除失败,不能删除带有子节点的数据");
             }
             return await base.DeleteAsync(id);
 
