@@ -8,12 +8,14 @@ using Core.SimpleTemp.Mvc.Api;
 using Core.SimpleTemp.Mvc.Controllers.Internal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Core.SimpleTemp.Mvc.Controllers.Sys
 {
     [Route("api/[controller]")]
+    [EnableCors("any")]
     [ApiController]
     public class AccountController : CoreApiController
     {

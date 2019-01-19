@@ -39,6 +39,20 @@ namespace Core.SimpleTemp.Mvc
 
         public void ConfigureServices(IServiceCollection services)
         {
+            #region 跨域规则
+            //配置跨域规则 [EnableCors("any")]
+            services.AddCors(options =>
+            {
+                options.AddPolicy("any", builder =>
+                {
+                    builder.AllowAnyOrigin() //允许任何来源的主机访问
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();//指定处理cookie
+                });
+            }); 
+            #endregion
+
 
             #region 数据仓储链接设置 DbContext
             services.AddDbContext<CoreDBContext>(options =>
@@ -119,6 +133,9 @@ namespace Core.SimpleTemp.Mvc
                 //自定义全局异常过滤器
                 options.Filters.Add<HttpGlobalExceptionFilter>();
             });
+
+
+
 
         }
 
