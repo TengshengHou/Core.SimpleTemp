@@ -3,7 +3,8 @@ using Core.SimpleTemp.Entitys;
 using Core.SimpleTemp.Application.MenuApp;
 using Core.SimpleTemp.Application.RoleApp;
 using Core.SimpleTemp.Application.UserApp;
-using Core.SimpleTemp.Application.ServiceApp.DemoApp.RoleMenu;
+using Core.SimpleTemp.Entitys.Script;
+using Core.SimpleTemp.Application.ServiceApp.ScriptApp;
 
 namespace Core.SimpleTemp.Application
 {
@@ -13,6 +14,7 @@ namespace Core.SimpleTemp.Application
         {
             Mapper.Initialize(cfg =>
             {
+                #region 内部
                 cfg.CreateMap<SysMenu, SysMenuDto>();
                 cfg.CreateMap<SysMenuDto, SysMenu>();
 
@@ -30,10 +32,13 @@ namespace Core.SimpleTemp.Application
 
                 cfg.CreateMap<SysUserRole, SysUserRoleDto>();
                 cfg.CreateMap<SysUserRoleDto, SysUserRole>();
+                #endregion
 
-                #region Demo
-                cfg.CreateMap<RoleMenuDto, SysRoleMenu>();
-                cfg.CreateMap<SysRoleMenu, RoleMenuDto>();
+                #region 业务
+                cfg.CreateMap<ScriptDetails, ScriptDetailsDto>();
+                cfg.CreateMap<ScriptDetailsDto, ScriptDetails>();
+                cfg.CreateMap<Script, ScriptDto>();
+                cfg.CreateMap<ScriptDto, Script>();
                 #endregion
 
             });

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Script\" />
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 

@@ -13,11 +13,11 @@ namespace Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore.Sys
 {
     /// <summary>
     /// 登录日志记录仓储
-    /// *此类为演示支持多DB
+    /// 
     /// </summary>
-    public class SysLoginLogRepository : BaseRepository<LogDBContext,SysLoginLog>, ISysLoginLogRepository
+    public class SysLoginLogRepository : BaseRepository<SysLoginLog>, ISysLoginLogRepository
     {
-        public SysLoginLogRepository(LogDBContext dbContext) : base(dbContext)
+        public SysLoginLogRepository(CoreDBContext dbContext) : base(dbContext)
         {
         }
     }
