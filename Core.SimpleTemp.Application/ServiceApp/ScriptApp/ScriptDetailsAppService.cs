@@ -10,6 +10,7 @@ using System.Linq;
 using Core.SimpleTemp.Entitys.Script;
 using Core.SimpleTemp.Application.ServiceApp.ScriptApp;
 using Core.SimpleTemp.Repositories.RepositoryEntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace Core.SimpleTemp.Application
 {
@@ -19,5 +20,7 @@ namespace Core.SimpleTemp.Application
         {
         }
 
+
+    
     }
 }

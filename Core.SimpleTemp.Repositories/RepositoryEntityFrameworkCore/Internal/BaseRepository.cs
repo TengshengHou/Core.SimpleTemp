@@ -100,23 +100,46 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
             var obj = await GetAsync(entity.Id);
-            EntityToEntity(entity, obj, noUpdateProperties);
-            return await UpdateAsync(obj, autoSave);
-        }
-
-
-        /// <summary>
-        /// 更新实体（需要先从EF中查询出来再做更新)
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="autoSave"></param>
-        /// <returns></returns>
-        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
-        {
+            if (!object.Equals(noUpdateProperties, null))
+                EntityToEntity(entity, obj, noUpdateProperties);
             if (autoSave)
                 await SaveAsync();
-            return entity;
+            return obj;
         }
+
+        /// <summary>
+        /// 更新实体(待优化)
+        /// </summary>
+        /// <param name="entity">实体</param>
+        /// <param name="autoSave">是否立即执行保存</param>
+        public virtual async Task<List<TEntity>> UpdateAsync(List<TEntity> entitys, bool autoSave = true, List<string> noUpdateProperties = null)
+        {
+            List<TEntity> updateList = new List<TEntity>();
+            foreach (var entity in entitys)
+            {
+                var obj = await GetAsync(entity.Id);
+                if (!object.Equals(noUpdateProperties, null))
+                    EntityToEntity(entity, obj, noUpdateProperties);
+                updateList.Add(obj);
+            }
+            if (autoSave)
+                await SaveAsync();
+            return updateList;
+        }
+
+
+        ///// <summary>
+        ///// 更新实体（需要先从EF中查询出来再做更新)
+        ///// </summary>
+        ///// <param name="entity"></param>
+        ///// <param name="autoSave"></param>
+        ///// <returns></returns>
+        //public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true)
+        //{
+        //    if (autoSave)
+        //        await SaveAsync();
+        //    return entity;
+        //}
 
         /// <summary>
         /// 删除实体
@@ -162,7 +185,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
             return _dbContext.SaveChangesAsync();
         }
     }
-   
+
     /// <summary>
     /// 主键为Guid 的指定仓储
     /// </summary>

@@ -25,5 +25,11 @@ namespace Core.SimpleTemp.Common
         public string JwtValidIssuer { get; set; }
         public string JwtIssuerSigningKey { get; set; }
         #endregion
+
+        /// <summary>
+        /// 文件上传保存路径
+        /// </summary>
+        public string FileSaveBasePath { get; set; }
+
     }
 }

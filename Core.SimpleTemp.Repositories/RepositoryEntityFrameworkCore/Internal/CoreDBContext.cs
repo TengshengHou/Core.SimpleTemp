@@ -24,7 +24,9 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         public DbSet<SysUser> SysUser { get; set; }
         public DbSet<SysUserRole> SysUserRole { get; set; }
         public DbSet<SysLoginLog> SysLoginLog { get; set; }
+        public DbSet<SysFile> SysFile { get; set; }
 
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

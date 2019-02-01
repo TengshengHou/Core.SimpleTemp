@@ -5,6 +5,8 @@ using Core.SimpleTemp.Application.RoleApp;
 using Core.SimpleTemp.Application.UserApp;
 using Core.SimpleTemp.Entitys.Script;
 using Core.SimpleTemp.Application.ServiceApp.ScriptApp;
+using Core.SimpleTemp.Application.ServiceApp.SysApp.FileApp;
+using Core.SimpleTemp.Entitys.Sys;
 
 namespace Core.SimpleTemp.Application
 {
@@ -32,6 +34,9 @@ namespace Core.SimpleTemp.Application
 
                 cfg.CreateMap<SysUserRole, SysUserRoleDto>();
                 cfg.CreateMap<SysUserRoleDto, SysUserRole>();
+
+                cfg.CreateMap<SysFile, SysFileDto>();
+                cfg.CreateMap<SysFileDto, SysFile>();
                 #endregion
 
                 #region 业务
@@ -39,6 +44,7 @@ namespace Core.SimpleTemp.Application
                 cfg.CreateMap<ScriptDetailsDto, ScriptDetails>();
                 cfg.CreateMap<Script, ScriptDto>();
                 cfg.CreateMap<ScriptDto, Script>();
+                
                 #endregion
 
             });

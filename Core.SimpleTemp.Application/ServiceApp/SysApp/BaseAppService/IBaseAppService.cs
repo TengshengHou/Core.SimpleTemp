@@ -19,6 +19,7 @@ namespace Core.SimpleTemp.Application
         Task<TDto> InsertAsync(TDto dto, bool autoSave = true);
         Task<TDto> UpdateAsync(TDto dto, bool autoSave = true, List<string> noUpdateProperties = null);
         Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true);
+        Task<List<TDto>>  UpdateAsync(List<TDto> dtos, bool autoSave = true, List<string> noUpdateProperties = null);
 
 
         Task DeleteAsync(TEntity entity, bool autoSave = true);

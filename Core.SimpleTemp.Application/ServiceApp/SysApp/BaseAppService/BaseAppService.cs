@@ -76,5 +76,11 @@ namespace Core.SimpleTemp.Application
             return await _repository.UpdateAsync(entity, autoSave);
         }
 
+        public async Task<List<TDto>> UpdateAsync(List<TDto> dtos, bool autoSave = true, List<string> noUpdateProperties = null)
+        {
+            var entityList = await _repository.UpdateAsync(Mapper.Map<List<TEntity>>(dtos), autoSave, noUpdateProperties); ;
+            return Mapper.Map<List<TDto>>(entityList);
+        }
+
     }
 }
