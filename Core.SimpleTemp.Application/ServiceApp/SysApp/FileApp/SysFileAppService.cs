@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SimpleLibrary;
+using SimpleLibrary.File;
 
 namespace Core.SimpleTemp.Application.UserApp
 {
@@ -26,7 +28,11 @@ namespace Core.SimpleTemp.Application.UserApp
             _webAppOptions = webAppOptions.CurrentValue;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updateFileDto"></param>
+        /// <returns></returns>
         public async Task<List<SysFileDto>> UploadFileAsync(UpdateFileDto updateFileDto)
         {
             List<SysFileDto> dtoList = new List<SysFileDto>();
@@ -36,14 +42,14 @@ namespace Core.SimpleTemp.Application.UserApp
                 {
                     var dto = new SysFileDto();
                     dto.FileName = item.FileName;
-                    dto.FilePath = GetFilePath();
+                    dto.FilePath = Filehelp.GetFilePath(_webAppOptions.FileSaveBasePath);
                     dto.Extension = System.IO.Path.GetExtension(item.FileName);
                     dto.Size = item.Length;
                     dto.Type = "UUID";
                     dto.IDate = DateTime.Now;
                     dto.UDate = DateTime.Now;
-                    
-                    await SaveFileAsync(item.OpenReadStream(), dto.FilePath);
+
+                    await Filehelp.WriteFileAsync(item.OpenReadStream(), dto.FilePath);
                     var retDot = await InsertAsync(dto, false);
                     dtoList.Add(retDot);
                 }
@@ -52,20 +58,7 @@ namespace Core.SimpleTemp.Application.UserApp
             return dtoList;
         }
 
-        private string GetFilePath()
-        {
-            string filePath = string.Empty;
-            string fileName = Guid.NewGuid().ToString("N");
-            filePath = _webAppOptions.FileSaveBasePath;
 
-            string dirName = DateTime.Now.ToString("yyyyMMdd");
-            filePath = System.IO.Path.Combine(filePath, dirName);
-            if (!System.IO.Directory.Exists(filePath))
-                System.IO.Directory.CreateDirectory(filePath);
-
-            filePath = System.IO.Path.Combine(filePath, fileName);
-            return filePath;
-        }
 
         private async Task<int> SaveFileAsync(System.IO.Stream stream, string path)
         {

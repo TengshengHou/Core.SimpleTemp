@@ -28,4 +28,10 @@
     <ProjectReference Include="..\Core.SimpleTemp.Repositories\Core.SimpleTemp.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="SimpleLibrary">
+      <HintPath>..\lib\SimpleLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
