@@ -1,8 +1,44 @@
 ﻿
 @{
     ViewData["Title"] = "Index";
-    Layout = null;
+   
 }
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $("#btn-up").click(function () {
+
+            var formData = new FormData();
+            formData.append("files", document.getElementById("files").files[0]);
+            $.ajax({
+                url: "../File/UpdateFile",
+                type: "POST",
+                data: formData,
+                /**
+                *必须false才会自动加上正确的Content-Type
+                */
+                contentType: false,
+                /**
+                * 必须false才会避开jQuery对 formdata 的默认处理
+                * XMLHttpRequest会对 formdata 进行正确的处理
+                */
+                processData: false,
+                success: function (data) {
+                    if (data.status == "true") {
+                        alert("上传成功！");
+                    }
+                    if (data.status == "error") {
+                        alert(data.msg);
+                    }
+
+                },
+                error: function () {
+                    alert("上传失败！");
+                }
+            });
+        });
+    });
+</script>
 
 <h2>Index</h2>
 
@@ -10,20 +46,33 @@
     <div class="form-group">
         <div class="col-md-10">
             <p>Upload one or more files using this form:</p>
-            <input type="file" name="files"  />
+            <input type="file" id="files" name="files" />
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-10">
             <input type="submit" value="Upload" />
         </div>
+        <input type="button" name="name" id="btn-up" value="ajax上传文件" />
     </div>
 </form>
 
-@*<form asp-action="UpdateFile"
-      asp-controller="File"
-      method="post"
-      enctype="multipart/form-data">
-    <input type="file" name="files" multiple />
-    <input type="submit" value="Upload Selected Files" />
-</form>*@
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">...1</div>
+        <div role="tabpanel" class="tab-pane" id="profile">...2</div>
+        <div role="tabpanel" class="tab-pane" id="messages">..3.</div>
+        <div role="tabpanel" class="tab-pane" id="settings">...4</div>
+    </div>
+
+</div>

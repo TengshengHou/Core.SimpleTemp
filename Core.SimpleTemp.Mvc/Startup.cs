@@ -124,7 +124,8 @@ namespace Core.SimpleTemp.Mvc
             //services.AddAuthorization();
             //采用内存版分布缓存 方便以后切换Redis
             services.AddDistributedMemoryCache(); //services.AddDistributeRedisCache(null);
-            services.AddSingleton(typeof(IPagingQueryModelBuild<>), typeof(PagingQueryModelBuild<>));
+            //services.AddSingleton(typeof(IPagingQueryModelBuild<>), typeof(PagingQueryModelBuild<>));
+            services.AddScoped(typeof(IPagingQueryModelBuild<>), typeof(PagingQueryModelBuild<>));
 
             services.AddHttpClient();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
