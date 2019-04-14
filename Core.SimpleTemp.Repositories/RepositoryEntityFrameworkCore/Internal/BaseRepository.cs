@@ -36,6 +36,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
 
         public virtual IQueryable<TEntity> QueryBase()
         {
+            GetEntityKeyInfo(null);
             return _dbContext.Set<TEntity>();
         }
 

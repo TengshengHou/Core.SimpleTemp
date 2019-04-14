@@ -11,33 +11,14 @@ using System.Threading.Tasks;
 
 namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
 {
+    /// <summary>
+    /// 仓储辅助
+    /// </summary>
+    /// <typeparam name="TDbContext"></typeparam>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TPrimaryKey"></typeparam>
     public partial class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IRepository<TEntity, TPrimaryKey> where TEntity : Entity<TPrimaryKey> where TDbContext : DbContext
     {
-        ///// <summary>
-        ///// 分页查询
-        ///// </summary>
-        ///// <param name="startPage">页码</param>
-        ///// <param name="pageSize">单页数据数</param>
-        ///// <param name="where">条件</param>
-        ///// <param name="order">排序</param>
-        ///// <returns></returns>
-        //public virtual async Task<IPageModel<TEntity>> LoadPageListAsync(int startPage, int pageSize, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null, bool autoInclude = false)
-        //{
-
-        //    //var result = QueryBase();
-
-        //    //if (where != null)
-        //    //    result = result.Where(where);
-        //    //if (order != null)
-        //    //    result = result.OrderBy(order);
-        //    //else
-        //    //    result = result.OrderBy(m => m.Id);
-        //    //int rowCount = await result.CountAsync();
-        //    //var pageData = await result.Skip((startPage - 1) * pageSize).Take(pageSize).ToListAsync();
-
-        //    return await LoadPageOffsetAsync((startPage - 1) * pageSize, pageSize, where, order);
-        //}
-
         public virtual async Task<IPageModel<TEntity>> LoadPageOffsetAsync(int offset, int limit, Expression<Func<TEntity, bool>> where = null, Expression<Func<TEntity, object>> order = null)
         {
             var result = QueryBase();
@@ -89,6 +70,23 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
                 );
 
             return Expression.Lambda<Func<TEntity, bool>>(lambdaBody, lambdaParam);
+        }
+
+        protected void GetEntityKeyInfo(TEntity entity)
+        {
+
+            foreach (var entityType in _dbContext.Model.GetEntityTypes())
+            {
+                System.Diagnostics.Debug.WriteLine($"entityType:{entityType.Name}");
+                foreach (var key in entityType.GetKeys())//ikey:Represents a primary or alternate key on an entity.
+                {
+                    System.Diagnostics.Debug.WriteLine($"---key.Tostring():{key.ToString()}");
+                    foreach (var property in key.Properties) //iproperty：表示实体的标量属性。
+                    {
+                        System.Diagnostics.Debug.WriteLine($"-------property.Name:{property.Name}");
+                    }
+                }
+            }
         }
     }
 }
