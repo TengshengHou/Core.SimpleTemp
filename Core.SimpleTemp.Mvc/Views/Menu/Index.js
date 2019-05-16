@@ -1,26 +1,106 @@
-﻿var selectedMenuId = "00000000-0000-0000-0000-000000000000";
+﻿var $table = $('#table'), $btnScreen = $("#btnScreen"), $btnDele = $("#btnDele");
+var selectedId = guidEmpty;
 var ajaxCount = 0;
-$(function () {
+var delOjb = new Delete($table);
 
-    $(document).ajaxStart(function () {
-        if (ajaxCount != 0)
-            layer.load(1);
-        ajaxCount++;
-    }).ajaxStop(function () {
-        layer.closeAll('loading');
+
+
+//生成查询条件
+function GetQueryData(offset, limit) {
+    var filterList = PagingQuery($("#searchForm")[0]);
+    var filterOjb = {};
+    filterOjb.Field = "parentId";
+    filterOjb.Action = "=";
+    filterOjb.Logic = "and";
+    filterOjb.Value = selectedId;
+    filterOjb.DataType = "guid";
+    filterList.push(filterOjb);
+    var filterListJson = JSON.stringify(filterList);
+    var pagingQueryData = { "filterConditionList": filterListJson, "offset": offset, limit: limit };
+    return pagingQueryData;
+}
+//获取数据
+function ajaxRequest(params) {
+    $.ajax({
+        type: "post",
+        dataType: "json",
+        url: "/Menu/GetMneusByParent?_t=" + new Date().getTime(),
+        data: GetQueryData(params.data.offset, params.data.limit),
+        success: function (ret) {
+            params.success({
+                total: ret.data.rowCount,
+                rows: ret.data.pageData
+            });
+        }
     })
-    $("#Icon").iconPicker({ parentSelector: "#addRootModal" });
-    $("#btnAddRoot").click(function () { add(0); });
-    $("#btnAdd").click(function () { add(1); });
-    $("#btnSave").click(function () { save(); });
-    $("#btnDelete").click(function () { deleteMulti(); });
-    $("#btnLoadRoot").click(function () {
-        selectedMenuId = "00000000-0000-0000-0000-000000000000";
-        loadTables(1, 10);
-    });
-    $("#checkAll").click(function () { checkAll(this) });
-    initTree();
+}
+
+//Table行内事件
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+        EditWindow('edit?id=' + row.id);
+    },
+    'click .delete': function (e, value, row, index) {
+        delOjb.deleteSingle("/menu/Delete", row.id, function () {
+            initTree();
+        });
+    },
+    'click .details': function (e, value, row, index) {
+        var url = 'details?id=' + row.id + '&isDetails=true';
+        EditWindow(url, "确定");
+    }
+};
+
+//行内样式
+function operateFormatter(value, row, index) {
+    var btnList = GetBaseOperateHtml('Menu_Edit', 'Menu_details', 'Menu_Delete')
+    return btnList.join('');
+}
+//function nameFormatter(value, row, index) {
+//    var strUrl = CreateUrlFilterOne("/user/index", "SysDepartmentId", row.id, row.name)
+//    return "<a  title='点击查看【" + row.name + "】下所有用户' href=" + strUrl + "> " + row.name + "<a>";
+//}
+
+//设置Table
+$table.bootstrapTable({
+
+    columns: [
+        {
+            field: 'state',
+            align: 'center',
+            checkbox: true
+        },
+        {
+            field: 'name',
+            title: 'name',
+            align: 'center'
+        }, {
+            field: 'code',
+            title: 'code',
+            align: 'center',
+        }, {
+            field: 'url',
+            title: 'url',
+            align: 'center',
+        }, {
+            field: 'type',
+            title: 'type',
+            align: 'center',
+            //formatter: nameFormatter
+        }, {
+            field: 'remarks',
+            title: 'remarks',
+            align: 'center',
+        }, {
+            field: 'operate',
+            title: '操作',
+            align: 'center',
+            events: operateEvents,
+            formatter: operateFormatter
+        }
+    ]
 });
+
 //加载功能树
 function initTree() {
     $.jstree.destroy();
@@ -38,187 +118,59 @@ function initTree() {
             $("#treeDiv").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
                 //默认选中根节点
-                var inst = data.instance;
-                var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
-                inst.select_node(obj);
+                if (selectedId == guidEmpty) {
+                    //var inst = data.instance;
+                    //var obj = inst.get_node(e.target.firstChild.firstChild.lastChild);
+                    //inst.select_node(obj);
+                } else {
+
+                    $('#treeDiv').jstree('select_node', selectedId);
+                }
             });
             $("#treeDiv").on('changed.jstree', function (e, data) {   //选中节点改变事件
+
                 var node = data.instance.get_node(data.selected[0]);  //获取选中的节点
                 if (node) {
-                    selectedMenuId = node.id;
-                    loadTables(1, 10);
+                    if (selectedId == node.id && data.event)
+                        SetTreeSelectEmpty();
+                    else {
+                        selectedId = node.id;
+
+                    }
+                    $table.bootstrapTable('refresh');
                 };
             });
         }
     });
-
 }
-//加载功能列表数据
-function loadTables(startPage, pageSize) {
-    $("#tableBody").html("");
-    $("#checkAll").prop("checked", false);
-    $.ajax({
-        type: "GET",
-        url: "/Menu/GetMneusByParent?parentId=" + selectedMenuId + "&startPage=" + startPage + "&pageSize=" + pageSize + "&_t=" + new Date().getTime(),
-        success: function (data) {
-            $.each(data.rows, function (i, item) {
-                var tr = "<tr>";
-                tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
-                tr += "<td>" + item.name + "</td>";
-                tr += "<td>" + (item.code == null ? "" : item.code) + "</td>";
-                tr += "<td>" + (item.url == null ? "" : item.url) + "</td>";
-                tr += "<td>" + (item.type == 0 ? "功能菜单" : "操作按钮") + "</td>";
-                tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
-                tr += "<td><button class='btn btn-info btn-xs Menu_Edit' href='javascript:;' onclick='edit(\"" + item.id + "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs Menu_Delete' href='javascript:;' onclick='deleteSingle(\"" + item.id + "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>"
-                tr += "</tr>";
-                $("#tableBody").append(tr);
-            })
-            var elment = $("#grid_paging_part"); //分页插件的容器id
-            Authorize();
-            if (data.rowCount > 0) {
-                var options = { //分页插件配置项
-                    bootstrapMajorVersion: 3,
-                    currentPage: startPage, //当前页
-                    numberOfPages: data.rowsCount, //总数
-                    totalPages: data.pageCount, //总页数
-                    onPageChanged: function (event, oldPage, newPage) { //页面切换事件
-                        loadTables(newPage, pageSize);
-                    }
-                }
-                elment.bootstrapPaginator(options); //分页插件初始化
-            }
-        }
-    })
-}
-//全选
-function checkAll(obj) {
-    $(".checkboxs").each(function () {
-        if (obj.checked == true) {
-            $(this).prop("checked", true)
 
-        }
-        if (obj.checked == false) {
-            $(this).prop("checked", false)
-        }
-    });
-};
-//新增
-function add(type) {
-    if (type === 1) {
-        if (selectedMenuId === "00000000-0000-0000-0000-000000000000") {
-            layer.alert("请选择功能。");
-            return;
-        }
-        $("#ParentId").val(selectedMenuId);
-    }
-    else {
-        $("#ParentId").val("00000000-0000-0000-0000-000000000000");
-    }
-    $("#Id").val("00000000-0000-0000-0000-000000000000");
-    $("#Code").val("");
-    $("#Name").val("");
-    $("#Type").val(0);
-    $("#Url").val("");
-    $("#Icon").val("");
-    $("#SerialNumber").val(0);
-    $("#Remarks").val("");
-    $("#Title").text("新增顶级");
-    //弹出新增窗体
-    $("#addRootModal").modal("show");
-};
-//编辑
-function edit(id) {
-    $.ajax({
-        type: "Get",
-        url: "/Menu/Get?id=" + id + "&_t=" + new Date(),
-        success: function (data) {
-            $("#Id").val(data.id);
-            $("#ParentId").val(data.parentId);
-            $("#Name").val(data.name);
-            $("#Code").val(data.code);
-            $("#Type").val(data.type);
-            $("#Url").val(data.url);
-            $("#Icon").val(data.icon);
-            $("#SerialNumber").val(data.serialNumber);
-            $("#Remarks").val("");
-
-            $("#Title").text("编辑功能")
-            $("#addRootModal").modal("show");
-        }
+$(function () {
+    $(document).ajaxStart(function () {
+        if (ajaxCount != 0)
+            layer.load(1);
+        ajaxCount++;
+    }).ajaxStop(function () {
+        layer.closeAll('loading');
     })
-};
-//保存
-function save() {
-    var postData = { "dto": { "Id": $("#Id").val(), "ParentId": $("#ParentId").val(), "Name": $("#Name").val(), "Code": $("#Code").val(), "Type": $("#Type").val(), "Url": $("#Url").val(), "Icon": $("#Icon").val(), "SerialNumber": $("#SerialNumber").val(), "Remarks": $("#Remarks").val() } };
-    $.ajax({
-        type: "Post",
-        url: "/Menu/Save",
-        data: postData,
-        success: function (data) {
-            debugger
-            if (data.result == "Success") {
-                initTree();
-                $("#addRootModal").modal("hide");
-            } else {
-                layer.tips(data.message, "#btnSave");
-            };
-        }
+
+    $("#btnAdd").click(function () {
+        EditWindow('edit?ParentId=' + selectedId);
     });
-};
-//批量删除
-function deleteMulti() {
-    var ids = "";
-    $(".checkboxs").each(function () {
-        if ($(this).prop("checked") == true) {
-            ids += $(this).val() + ","
-        }
-    });
-    ids = ids.substring(0, ids.length - 1);
-    if (ids.length == 0) {
-        layer.alert("请选择要删除的记录。");
-        return;
-    };
-    //询问框
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        var sendData = { "ids": ids };
-        $.ajax({
-            type: "Post",
-            url: "/Menu/DeleteMuti",
-            data: sendData,
-            success: function (data) {
-                if (data.result == "Success") {
-                    initTree();
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert(data.message);
-                }
-            }
+    $("#btnDelete").click(function () {
+        delOjb.deleteMulti("/Department/DeleteMuti", function () {
+            initTree();
         });
     });
-};
-//删除单条数据
-function deleteSingle(id) {
-    layer.confirm("您确认删除选定的记录吗？", {
-        btn: ["确定", "取消"]
-    }, function () {
-        $.ajax({
-            type: "POST",
-            url: "/Menu/Delete",
-            data: { "id": id },
-            success: function (data) {
-                if (data.result == "Success") {
-                    initTree();
-                    layer.closeAll();
-                }
-                else {
-                    layer.alert(data.message);
-                }
-            }
-        })
+    $btnScreen.click(function () {
+        $table.bootstrapTable('refresh');
     });
-};
 
+    initTree();
+});
 
+//取消当前选中，并设置选中节点为GuidEmpty
+var SetTreeSelectEmpty = function () {
+    //取消当前选择
+    $('#treeDiv').jstree('deselect_node', selectedId);
+    selectedId = guidEmpty;
+}

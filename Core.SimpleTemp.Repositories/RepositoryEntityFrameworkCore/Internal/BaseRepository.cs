@@ -101,8 +101,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
         public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = true, List<string> noUpdateProperties = null)
         {
             var obj = await GetAsync(entity.Id);
-            if (!object.Equals(noUpdateProperties, null))
-                EntityToEntity(entity, obj, noUpdateProperties);
+            EntityToEntity(entity, obj, noUpdateProperties);
             if (autoSave)
                 await SaveAsync();
             return obj;

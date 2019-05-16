@@ -50,20 +50,13 @@ namespace Core.SimpleTemp.Mvc.Controllers
         /// 获取子级功能列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetMneusByParent")]
+        [HttpPost("GetMneusByParent")]
         [PermissionFilter(MenuPermission.Menu_GetMneusByParent)]
-        public async Task<IActionResult> GetMneusByParentAsync(Guid parentId, int startPage, int pageSize)
+        public async Task<IActionResult> GetMneusByParentAsync()
         {
-            int rowCount = 0;
-            var pageModel = await _sysMenuAppService.GetMenusByParentAsync(parentId, startPage, pageSize);
-            rowCount = pageModel.RowCount;
-
-            return Json(new
-            {
-                rowCount = rowCount,
-                pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize),
-                rows = pageModel.PageData,
-            });
+            var pagingQueryModel = base.GetPagingQueryModel();
+            var result = await _sysMenuAppService.LoadPageOffsetAsync(pagingQueryModel.Offset, pagingQueryModel.Limit, pagingQueryModel.FilterExpression);
+            return this.JsonSuccess(result);
         }
 
         /// <summary>
@@ -112,6 +105,23 @@ namespace Core.SimpleTemp.Mvc.Controllers
         public override async Task<IActionResult> GetAsync(Guid id)
         {
             return await base.GetAsync(id);
+        }
+
+        [HttpGet("Edit")]
+        [PermissionFilter(MenuPermission.Menu_Edit)]
+
+        public async Task<IActionResult> EditAsync(Guid id, Guid ParentId)
+        {
+            SysMenuDto model = new SysMenuDto();
+            if (id != Guid.Empty)
+            {
+                model = await _sysMenuAppService.GetAsync(id);
+            }
+            else
+            {
+                model.ParentId = ParentId;
+            }
+            return View("Edit", model);
         }
 
     }
