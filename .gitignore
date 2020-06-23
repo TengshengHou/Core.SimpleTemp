@@ -1,7 +1,6 @@
 .vs/
 Core.SimpleTemp.Repository/bin/
 /Core.SimpleTemp.Entity/bin/Debug/netcoreapp2.1
-Core.SimpleTemp.Mvc/wwwroot/lib/
 Core.SimpleTemp.Mvc/bin/
 Core.SimpleTemp.Service/bin/
 Core.SimpleTemp.EntityFrameworkCore/Migrations/
