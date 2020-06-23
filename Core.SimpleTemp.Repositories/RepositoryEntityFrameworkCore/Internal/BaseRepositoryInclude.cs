@@ -75,7 +75,7 @@ namespace Core.SimpleTemp.Repository.RepositoryEntityFrameworkCore.Internal
             if (where != null)
                 result = result.Where(where);
             if (order != null)
-                result = result.OrderBy(order);
+                result = result.OrderBy(order); 
             else
                 result = result.OrderBy(m => m.Id);
             int rowCount = await result.CountAsync();
